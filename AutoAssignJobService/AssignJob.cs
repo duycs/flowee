@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Text.Json;
 
 namespace AutoAssignJobService
 {
@@ -24,7 +25,7 @@ namespace AutoAssignJobService
             {
                 UserCredential credential;
                 // Load client secrets.
-                using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+                using (var stream = new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
                 {
                     /* The file token.json stores the user's access and refresh tokens, and is created
                      automatically when the authorization flow completes for the first time. */
@@ -46,26 +47,44 @@ namespace AutoAssignJobService
                 });
 
                 // Define request parameters.
-                String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
-                String range = "Class Data!A2:E";
-                SpreadsheetsResource.ValuesResource.GetRequest request =
-                    service.Spreadsheets.Values.Get(spreadsheetId, range);
+                const string SPREADSHEET_ID = "1eR-eOgG09RG8k8JDZWoPDoU0ovnsBTMvJ7DC5d3kcwE";
+                const string SHEET_NAME = "Items";
+                var range = $"{SHEET_NAME}!A:D";
 
-                // Prints the names and majors of students in a sample spreadsheet:
-                // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-                ValueRange response = request.Execute();
-                IList<IList<Object>> values = response.Values;
+                var googleSheetValues = service.Spreadsheets.Values;
+                var getRequest = googleSheetValues.Get(SPREADSHEET_ID, range);
+
+                ValueRange getResponse = getRequest.Execute();
+                IList<IList<Object>> values = getResponse.Values;
                 if (values == null || values.Count == 0)
                 {
                     Console.WriteLine("No data found.");
                     return;
                 }
-                Console.WriteLine("Name, Major");
-                foreach (var row in values)
+                Console.WriteLine(JsonSerializer.Serialize(values));
+
+
+                var values2 = new List<List<object>>()
                 {
-                    // Print columns A and E, which correspond to indices 0 and 4.
-                    Console.WriteLine("{0}, {1}", row[0], row[4]);
-                }
+                    new List<object>() { "1", "2" }
+                };
+                List<ValueRange> data = new List<ValueRange>();
+                data.Add(new ValueRange()
+                {
+                    Range = range,
+                    Values = (IList<IList<object>>)values2,
+                });
+
+                BatchUpdateValuesRequest body = new BatchUpdateValuesRequest()
+                {
+                    ValueInputOption = "10",
+                    Data = data
+                };
+
+                BatchUpdateValuesResponse result =
+                        googleSheetValues.BatchUpdate(body, SPREADSHEET_ID).Execute();
+
+                Console.WriteLine(result);
             }
             catch (FileNotFoundException e)
             {
