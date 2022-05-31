@@ -230,5 +230,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-.client_secret.json
-.credentials.json
+/client_secret.json
+/credentials.json
