@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace WorkerInfrastructure.CrossCuttingIoC
 {
     public static class InjectorBootStrapper
     {
-        public static void AddLayersInjector(this IServiceCollection services)
+        public static void AddLayersInjector(this IServiceCollection services, IConfiguration configuration)
         {
             ApplicationInjector.Register(services);
             DomainInjector.Register(services);
-            InfrastructureInjector.Register(services);
+            InfrastructureInjector.Register(services, configuration);
         }
     }
 }

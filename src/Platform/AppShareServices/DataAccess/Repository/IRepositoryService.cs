@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppShareServices.DataAccess.Repository
 {
-    public interface IRepositoryService
+    public interface IRepositoryService<T> where T : class, IEntityService
     {
         IDatabaseService Database { get; set; }
 
@@ -95,11 +95,11 @@ namespace AppShareServices.DataAccess.Repository
 
         IEnumerable<T> Find<T>(SpecificationBase<T> specification) where T : class, IEntityService;
         IEnumerable<T> Find<T>(int pageIndex, int pageSize, SpecificationBase<T> specification, out int totalPage) where T : class, IEntityService;
- 
+
         /// <summary>
         /// Save all changes of any reservations
         /// </summary>
         /// <returns></returns>
-         bool SaveChanges();
+        bool SaveChanges();
     }
 }

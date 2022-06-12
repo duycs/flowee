@@ -15,7 +15,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         public WorkerSpecification(Expression<Func<Worker, bool>> criteria, string searchValue, List<ColumnOrder> columnOrders) : base(criteria)
         {
             if (!string.IsNullOrEmpty(searchValue))
-                AddInclude(w => searchValue.Contains(w.Email) || searchValue.Contains(w.Name));
+                AddInclude(w => searchValue.Contains(w.Email) || searchValue.Contains(w.FullName));
 
             var fieldNames = typeof(Worker).GetMembers().Select(m => m.Name);
 
@@ -28,6 +28,8 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                     {
                         switch (columnOrder.Name)
                         {
+                            // TODO: order by clumns
+
                             default:
                                 AddOrderByDescending(w => w.DateCreated);
                                 break;

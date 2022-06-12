@@ -9,7 +9,7 @@ namespace AppShareServices.DataAccess.Persistences
 {
     public interface IDatabaseService
     {
-        DbSet<T> GetDbSet<T>() where T : class;
+        DbSet<T> GetDbSet<T>() where T : class, IEntityService;
         Task SaveChanges();
     }
 }

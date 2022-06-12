@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppShareServices.DataAccess.Repository
 {
-    public class RepositoryService : IRepositoryService
+    public class RepositoryService<T> : IRepositoryService<T> where T : class, IEntityService
     {
         public IDatabaseService Database { get; set; }
 
@@ -23,7 +23,7 @@ namespace AppShareServices.DataAccess.Repository
             try
             {
                 var dbset = Database.GetDbSet<T>();
-                // Date modify = date created
+                entity.DateCreated = DateTime.UtcNow;
                 dbset.Add(entity);
             }
             catch (Exception)
@@ -41,6 +41,7 @@ namespace AppShareServices.DataAccess.Repository
                 var dbset = Database.GetDbSet<T>();
                 foreach (var entity in entities)
                 {
+                    entity.DateCreated = DateTime.UtcNow;
                     dbset.Add(entity);
                 }
             }

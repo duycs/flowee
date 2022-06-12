@@ -18,11 +18,10 @@ namespace WorkerInfrastructure.CrossCuttingIoC
         public static void Register(IServiceCollection services)
         {
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUriService>(o =>
             {
-                var accessor = o.GetRequiredService<IHttpContextAccessor>();
-                var request = accessor.HttpContext.Request;
+                var request = o.GetRequiredService<IHttpContextAccessor>().HttpContext.Request;
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
                 //TODO: https://codewithmukesh.com/blog/pagination-in-aspnet-core-webapi/
                 return new UriService(uri);

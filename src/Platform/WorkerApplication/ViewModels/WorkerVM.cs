@@ -1,14 +1,13 @@
-﻿using AppShareServices.DataAccess.Persistences;
-using AppShareServices.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
-namespace WorkerDomain.AgreegateModels.WorkerAgreegate
+namespace WorkerApplication.ViewModels
 {
-    public class Worker : Entity, IAggregateRoot
+    public class WorkerVM
     {
         public string FullName { get; set; }
         public string Email { get; set; }
