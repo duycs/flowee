@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppShareServices.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
-    public enum Department
+    public class Department : Entity
     {
-        Sale,
-        Editor,
-        QC,
-        CS // CustomerSucces
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -13,6 +13,9 @@ namespace WorkerInfrastructure.DataAccess
     public class WorkerContext : DbContext, IDatabaseService
     {
         public DbSet<Worker> Workers { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Department> Departments { get; set; }
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<TimeKeeping> TimeKeepings { get; set; }
 

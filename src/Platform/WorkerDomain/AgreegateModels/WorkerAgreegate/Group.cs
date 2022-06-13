@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
-    public class Role : Entity
+    public class Group : Entity
     {
         public string Code { get; set; }
         public string Name { get; set; }
