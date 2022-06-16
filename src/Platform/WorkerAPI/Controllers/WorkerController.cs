@@ -47,7 +47,7 @@ namespace WorkerAPI.Controllers
         }
 
         [HttpDelete("workers/{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             var workerExisting = _workerRepository.Find<Worker>(id);
             if (workerExisting == null)
@@ -78,7 +78,7 @@ namespace WorkerAPI.Controllers
         }
 
         [HttpGet("workers/{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(int id)
         {
             var worker = _workerRepository.Find<Worker>(id);
             return Ok(worker);

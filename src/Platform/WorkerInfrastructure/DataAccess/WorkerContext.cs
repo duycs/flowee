@@ -7,16 +7,23 @@ using System.Data;
 using System.Reflection;
 using WorkerDomain.AgreegateModels.TimeKeepingAgreegate;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
+using WorkerInfrastructure.DataAccess.EntityConfigurations;
 
 namespace WorkerInfrastructure.DataAccess
 {
     public class WorkerContext : DbContext, IDatabaseService
     {
+        public const string DEFAULT_SCHEMA = "workerdb";
+
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<SkillLevel> SkillLevels { get; set; }
+        public DbSet<WorkerSkill> WorkerSkills { get; set; }
         public DbSet<Shift> Shifts { get; set; }
+        public DbSet<ShiftType> ShiftTypes { get; set; }
         public DbSet<TimeKeeping> TimeKeepings { get; set; }
 
         private readonly IMediator _mediator;
@@ -45,7 +52,9 @@ namespace WorkerInfrastructure.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfiguration(new ShiftTypeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SkillLevelEntityTypeConfiguration());
+            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         public DbSet<T> GetDbSet<T>() where T : class, IEntityService

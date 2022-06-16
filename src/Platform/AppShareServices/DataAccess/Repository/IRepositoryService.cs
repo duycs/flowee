@@ -29,17 +29,17 @@ namespace AppShareServices.DataAccess.Repository
         /// <returns></returns>
         List<T> Add<T>(params T[] entities) where T : class, IEntityService;
 
-        T Find<T>(Guid Id) where T : class, IEntityService;
+        T Find<T>(int Id) where T : class, IEntityService;
 
         T Find<T>(Expression<Func<T, bool>> where) where T : class, IEntityService;
 
-        List<T> List<T>(Guid[] Ids) where T : class, IEntityService;
+        List<T> List<T>(int[] Ids) where T : class, IEntityService;
 
         List<T> List<T>(Expression<Func<T, bool>> where) where T : class, IEntityService;
 
         IQueryable<T> ListAsQueryable<T>(Expression<Func<T, bool>> where) where T : class, IEntityService;
 
-        IQueryable<T> ListAsQueryable<T>(Guid[] Ids) where T : class, IEntityService;
+        IQueryable<T> ListAsQueryable<T>(int[] Ids) where T : class, IEntityService;
 
         List<T> List<T>(int pageIndex, int pageSize) where T : class, IEntityService;
 
@@ -79,7 +79,7 @@ namespace AppShareServices.DataAccess.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="Id"></param>
         /// <returns></returns>
-        bool Delete<T>(Guid Id) where T : class, IEntityService;
+        bool Delete<T>(int Id) where T : class, IEntityService;
 
         /// <summary>
         /// Reserve to delete any entity match with condition. Call SaveChanges to save any deleting items.

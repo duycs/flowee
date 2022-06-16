@@ -12,7 +12,7 @@ namespace WorkerDomain.AgreegateModels.TimeKeepingAgreegate
         public static ShiftType Shift1 = new ShiftType(1, nameof(Shift1).ToLowerInvariant());
         public static ShiftType Shift2 = new ShiftType(2, nameof(Shift2).ToLowerInvariant());
         public static ShiftType Shift3 = new ShiftType(3, nameof(Shift3).ToLowerInvariant());
-        public static ShiftType ShiftAbnormal = new ShiftType(3, nameof(ShiftAbnormal).ToLowerInvariant());
+        public static ShiftType ShiftAbnormal = new ShiftType(4, nameof(ShiftAbnormal).ToLowerInvariant());
 
         public ShiftType(int id, string name) : base(id, name)
         {

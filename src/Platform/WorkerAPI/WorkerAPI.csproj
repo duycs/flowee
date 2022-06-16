@@ -8,14 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="SeedData\Roles.csv" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Include="SeedData\Roles.csv" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 	</ItemGroup>
 

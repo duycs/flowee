@@ -14,7 +14,7 @@ namespace AppShareServices.Models
       /// Gets or sets the identifier.
       /// </summary>
       /// <value>The identifier.</value>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public DateTime DateDeleted { get; set; }

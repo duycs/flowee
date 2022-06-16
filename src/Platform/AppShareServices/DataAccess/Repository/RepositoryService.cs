@@ -53,7 +53,7 @@ namespace AppShareServices.DataAccess.Repository
             return entities.ToList();
         }
 
-        public T Find<T>(Guid Id) where T : class, IEntityService
+        public T Find<T>(int Id) where T : class, IEntityService
         {
             return Database.GetDbSet<T>().FirstOrDefault(x => x.Id.Equals(Id));
         }
@@ -64,7 +64,7 @@ namespace AppShareServices.DataAccess.Repository
             return dbset.FirstOrDefault(@where);
         }
 
-        public List<T> List<T>(Guid[] Ids) where T : class, IEntityService
+        public List<T> List<T>(int[] Ids) where T : class, IEntityService
         {
             return Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id)).ToList();
         }
@@ -83,7 +83,7 @@ namespace AppShareServices.DataAccess.Repository
             return dbset.Where(@where);
         }
 
-        public IQueryable<T> ListAsQueryable<T>(Guid[] Ids) where T : class, IEntityService
+        public IQueryable<T> ListAsQueryable<T>(int[] Ids) where T : class, IEntityService
         {
             return Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id));
         }
@@ -170,7 +170,7 @@ namespace AppShareServices.DataAccess.Repository
             }
         }
 
-        public bool Delete<T>(Guid Id) where T : class, IEntityService
+        public bool Delete<T>(int Id) where T : class, IEntityService
         {
             try
             {
