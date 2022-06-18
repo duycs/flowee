@@ -1,7 +1,7 @@
-﻿Code,Name,Description
-QC,QC,QC
-HightQuality,Hight Quality,Hight Quality
-PhotoEditing,Photo Editing,Photo Editing
-Merge_Retouch,Merge - Retouch,Merge - Retouch
-Video,Video,Video
-2D_3D,2D & 3D,2D & 3D
+﻿Code,Name,Description,DepartmentCode
+PhotoEditing,Photo Editing,Photo Editing,Production
+MergeRetouch,Merge - Retouch,Merge - Retouch,Production
+Video,Video,Video,Production
+2D3D,2D & 3D,2D & 3D,Production
+QC,QC,QC,Production
+HightQuality,Hight Quality,Hight Quality,Production

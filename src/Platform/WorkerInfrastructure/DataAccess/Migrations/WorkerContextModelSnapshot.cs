@@ -25,45 +25,37 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(26)
+                        .HasColumnType("varchar(26)");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ShiftTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShiftTypeId");
-
-                    b.ToTable("Shifts");
-                });
-
-            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.ShiftType", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                    b.Property<bool>("IsNormal")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<TimeOnly>("TimeEnd")
+                        .HasColumnType("time(6)");
+
+                    b.Property<TimeOnly>("TimeStart")
+                        .HasColumnType("time(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("shifttypes", (string)null);
+                    b.ToTable("Shifts");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.TimeKeeping", b =>
@@ -75,20 +67,20 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateEnded")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime>("DateStarted")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("ShiftId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("WorkerId")
                         .HasColumnType("int");
@@ -110,31 +102,29 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("WorkerId")
-                        .HasColumnType("int");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("WorkerId");
 
                     b.ToTable("Departments");
                 });
@@ -147,31 +137,34 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("WorkerId")
-                        .HasColumnType("int");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkerId");
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Groups");
                 });
@@ -184,24 +177,27 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -216,24 +212,27 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -264,33 +263,73 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
 
-                    b.Property<int?>("RoleId")
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("Workers");
+                });
+
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("WorkerGroups");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerSkill", b =>
@@ -302,8 +341,8 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDeleted")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
@@ -320,24 +359,18 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Property<int>("SkillLevelId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SkillId");
 
                     b.HasIndex("SkillLevelId");
 
+                    b.HasIndex("WorkerId");
+
                     b.ToTable("WorkerSkills");
-                });
-
-            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.Shift", b =>
-                {
-                    b.HasOne("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.ShiftType", "ShiftType")
-                        .WithMany()
-                        .HasForeignKey("ShiftTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShiftType");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.TimeKeeping", b =>
@@ -359,27 +392,49 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Navigation("Worker");
                 });
 
-            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Department", b =>
-                {
-                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", null)
-                        .WithMany("Departments")
-                        .HasForeignKey("WorkerId");
-                });
-
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Group", b =>
                 {
-                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", null)
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Department", "Department")
                         .WithMany("Groups")
-                        .HasForeignKey("WorkerId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", b =>
                 {
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Group", null)
+                        .WithMany("Workers")
+                        .HasForeignKey("GroupId");
+
                     b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerGroup", b =>
+                {
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerSkill", b =>
@@ -396,16 +451,27 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Skill");
 
                     b.Navigation("SkillLevel");
+
+                    b.Navigation("Worker");
                 });
 
-            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", b =>
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Department", b =>
                 {
-                    b.Navigation("Departments");
-
                     b.Navigation("Groups");
+                });
+
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Group", b =>
+                {
+                    b.Navigation("Workers");
                 });
 #pragma warning restore 612, 618
         }

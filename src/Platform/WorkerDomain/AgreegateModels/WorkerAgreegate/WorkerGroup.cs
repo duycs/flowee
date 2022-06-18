@@ -8,20 +8,16 @@ using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
-    public class WorkerSkill : Entity
+    public class WorkerGroup : Entity
     {
         [Required]
         public int WorkerId { get; set; }
         public Worker Worker { get; set; }
 
         [Required]
-        public int SkillId { get; set; }
-        public Skill Skill { get; set; }
-
-        public int SkillLevelId { get; set; }
-        public SkillLevel? SkillLevel { get; set; }
+        public int GroupId { get; set; }
+        public Group Group { get; set; }
 
         public bool IsActive { get; set; }
-        public bool IsPriority { get; set; }
     }
 }

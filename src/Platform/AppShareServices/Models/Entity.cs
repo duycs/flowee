@@ -17,7 +17,7 @@ namespace AppShareServices.Models
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
-        public DateTime DateDeleted { get; set; }
+        public long DateDeleted { get; set; }
 
         private List<INotification> _domainEvents;
 

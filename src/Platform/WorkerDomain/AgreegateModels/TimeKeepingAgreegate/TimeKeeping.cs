@@ -1,30 +1,28 @@
 ﻿using AppShareServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
 namespace WorkerDomain.AgreegateModels.TimeKeepingAgreegate
 {
     public class TimeKeeping : Entity
     {
+        public int WorkerId { get; set; }
         public Worker Worker { get; set; }
+
+        public int ShiftId { get; set; }
         public Shift Shift { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
 
-        public void CheckIn(Worker worker, DateTime startTime)
-        {
-            Worker = worker;
-            StartTime = startTime;
-        }
+        public DateTime DateStarted { get; set; }
+        public DateTime DateEnded { get; set; }
 
-        public void CheckOut(Worker worker, DateTime endTime)
+        public static TimeKeeping Create(int workerId, int shiftId, DateTime dateStarted, DateTime dateEnded)
         {
-            Worker = worker;
-            EndTime = endTime;
+            return new TimeKeeping()
+            {
+                WorkerId = workerId,
+                ShiftId = shiftId,
+                DateStarted = dateStarted,
+                DateEnded = dateEnded
+            };
         }
     }
 }

@@ -12,10 +12,10 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
     public class WorkerSpecification : SpecificationBase<Worker>
     {
-        public WorkerSpecification(Expression<Func<Worker, bool>> criteria, string searchValue, List<ColumnOrder> columnOrders) : base(criteria)
+        public WorkerSpecification(Expression<Func<Worker, bool>> criteria, bool isInclude, string? searchValue, List<ColumnOrder>? columnOrders) : base(criteria)
         {
-            if (!string.IsNullOrEmpty(searchValue))
-                AddInclude(w => searchValue.Contains(w.Email) || searchValue.Contains(w.FullName));
+            //if (!string.IsNullOrEmpty(searchValue))
+            //    criteria.(w => searchValue.Contains(w.Email) || searchValue.Contains(w.FullName));
 
             var fieldNames = typeof(Worker).GetMembers().Select(m => m.Name);
 
@@ -38,6 +38,12 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                     }
                 }
             }
+
+            if ((bool)isInclude)
+            {
+                AddInclude(w => w.Role);
+            }
+
         }
     }
 }

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using WorkerAPI.SeedData;
 using WorkerApplication.MappingConfigurations;
 using WorkerInfrastructure.CrossCuttingIoC;
 using WorkerInfrastructure.DataAccess;
@@ -46,13 +47,13 @@ builder.Services.AddCors();
 var app = builder.Build();
 
 // Migrate and seed database
-using (var scope = app.Services.CreateScope())
+using (var serviceScope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<WorkerContext>();
-    var logger = scope.ServiceProvider.GetService<ILogger<WorkerContextSeed>>();
-
-    context.Database.Migrate();
-    new WorkerContextSeed().SeedAsync(context, builder.Environment, configuration, logger).Wait();
+    var context = serviceScope.ServiceProvider.GetRequiredService<WorkerContext>();
+    var logger = serviceScope.ServiceProvider.GetService<ILogger<WorkerContextSeed>>();
+    var workerContextSeed = new WorkerContextSeed(context, logger, builder.Environment, configuration);
+    workerContextSeed.Migrate();
+    workerContextSeed.SeedAsync().Wait();
 }
 
 // Configure the HTTP request pipeline.

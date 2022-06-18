@@ -65,13 +65,13 @@ namespace WorkerAPI.Controllers
         }
 
         [HttpGet("workers")]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilter filter, string searchValue, List<ColumnOrder> columnOrders)
+        public async Task<IActionResult> Get([FromQuery] PaginationFilter filter, string? searchValue, List<ColumnOrder>? columnOrders)
         {
             var route = Request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
             var totalRecords = 0;
             Expression<Func<Worker, bool>> criteria = w => true;
-            var workerSpecification = new WorkerSpecification(criteria, searchValue, columnOrders);
+            var workerSpecification = new WorkerSpecification(criteria, false, searchValue, columnOrders);
             var pagedData = _workerRepository.Find<Worker>(validFilter.PageNumber, validFilter.PageSize, workerSpecification, out totalRecords).ToList();
             var pagedReponse = PaginationHelper.CreatePagedReponse<Worker>(pagedData, validFilter, totalRecords, _uriService, route);
             return Ok(pagedReponse);

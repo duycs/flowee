@@ -33,7 +33,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="DataAccess\EntityConfigurations\" />
 		<Folder Include="DataAccess\Migrations\" />
 	</ItemGroup>
 

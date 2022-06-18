@@ -1,5 +1,6 @@
 ﻿using AppShareServices.DataAccess.Persistences;
 using AppShareServices.Events;
+using AppShareServices.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -18,12 +19,12 @@ namespace WorkerInfrastructure.DataAccess
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<WorkerGroup> WorkerGroups { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SkillLevel> SkillLevels { get; set; }
         public DbSet<WorkerSkill> WorkerSkills { get; set; }
         public DbSet<Shift> Shifts { get; set; }
-        public DbSet<ShiftType> ShiftTypes { get; set; }
         public DbSet<TimeKeeping> TimeKeepings { get; set; }
 
         private readonly IMediator _mediator;
@@ -52,7 +53,6 @@ namespace WorkerInfrastructure.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new ShiftTypeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SkillLevelEntityTypeConfiguration());
             //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }

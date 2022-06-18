@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
+    /// <summary>
+    /// level up
+    /// </summary>
     public class SkillLevel : Enumeration
     {
         public static SkillLevel Level0 = new SkillLevel(0, nameof(Level0).ToLowerInvariant());
