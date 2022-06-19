@@ -1,3 +1,4 @@
+using AppShareServices.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -35,25 +36,25 @@ configuration = configurationBuilder.Build();
 // TODO: move to infrastructure
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(typeof(AutoMapping));
-
 builder.Services.AddLayersInjector(configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 
-
-
 var app = builder.Build();
 
 // Migrate and seed database
 using (var serviceScope = app.Services.CreateScope())
 {
-    var context = serviceScope.ServiceProvider.GetRequiredService<WorkerContext>();
+    var workerContext = serviceScope.ServiceProvider.GetRequiredService<WorkerContext>();
     var logger = serviceScope.ServiceProvider.GetService<ILogger<WorkerContextSeed>>();
-    var workerContextSeed = new WorkerContextSeed(context, logger, builder.Environment, configuration);
+    var workerContextSeed = new WorkerContextSeed(workerContext, logger, builder.Environment, configuration);
     workerContextSeed.Migrate();
     workerContextSeed.SeedAsync().Wait();
+
+    var eventContext = serviceScope.ServiceProvider.GetRequiredService<EventContext>();
+    eventContext.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.

@@ -1,12 +1,13 @@
+using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Models;
 using AppShareServices.Pagging;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
-using WorkerApplication.DTOs;
 using WorkerApplication.ViewModels;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
+using WorkerDomain.Commands;
 
 namespace WorkerAPI.Controllers
 {
@@ -15,47 +16,52 @@ namespace WorkerAPI.Controllers
     public class WorkerController : ControllerBase
     {
         private readonly ILogger<WorkerController> _logger;
-        private readonly IRepositoryService<Worker> _workerRepository;
+        private readonly IRepositoryService _repositoryService;
+        private readonly ICommandDispatcher _commandDispatcher;
         private readonly IMapper _mapper;
         private readonly IUriService _uriService;
 
         public WorkerController(ILogger<WorkerController> logger,
             IUriService uriService,
-            IRepositoryService<Worker> workerRepository,
+            IRepositoryService repositoryService,
+            ICommandDispatcher commandDispatcher,
             IMapper mapper)
         {
             _logger = logger;
             _uriService = uriService;
-            _workerRepository = workerRepository;
+            _repositoryService = repositoryService;
+            _commandDispatcher = commandDispatcher;
             _mapper = mapper;
         }
 
         [HttpPost("workers")]
-        public async Task<IActionResult> Add([FromBody] WorkerVM workerVm)
+        public async Task<IActionResult> Add([FromBody] CreateWorkerVM createWorkerVM)
         {
-            var worker = _mapper.Map<Worker>(workerVm);
-            var workerAdded = _workerRepository.Add(worker);
-            _workerRepository.SaveChanges();
-            return Created(string.Format("workers\\{0}", workerAdded.Id), workerAdded);
+            //var workerId = await _commandDispatcher.SendGetResponse(createWorkerCommand);
+            //return Created(string.Format("\\workers\\{0}", workerId), workerId);
+
+            var createWorkerCommand = _mapper.Map<CreateWorkerCommand>(createWorkerVM);
+            await _commandDispatcher.Send(createWorkerCommand);
+            return Ok();
         }
 
         [HttpPut("workers")]
         public async Task<IActionResult> Update([FromBody] Worker worker)
         {
-            var workerUpdated = _workerRepository.Update(worker);
+            var workerUpdated = _repositoryService.Update(worker);
             return Ok(workerUpdated);
         }
 
         [HttpDelete("workers/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var workerExisting = _workerRepository.Find<Worker>(id);
+            var workerExisting = _repositoryService.Find<Worker>(id);
             if (workerExisting == null)
             {
                 return NotFound();
             }
 
-            var result = _workerRepository.Delete(workerExisting);
+            var result = _repositoryService.Delete(workerExisting);
             if (!result)
             {
                 return StatusCode(500);
@@ -72,7 +78,7 @@ namespace WorkerAPI.Controllers
             var totalRecords = 0;
             Expression<Func<Worker, bool>> criteria = w => true;
             var workerSpecification = new WorkerSpecification(criteria, false, searchValue, columnOrders);
-            var pagedData = _workerRepository.Find<Worker>(validFilter.PageNumber, validFilter.PageSize, workerSpecification, out totalRecords).ToList();
+            var pagedData = _repositoryService.Find<Worker>(validFilter.PageNumber, validFilter.PageSize, workerSpecification, out totalRecords).ToList();
             var pagedReponse = PaginationHelper.CreatePagedReponse<Worker>(pagedData, validFilter, totalRecords, _uriService, route);
             return Ok(pagedReponse);
         }
@@ -80,7 +86,7 @@ namespace WorkerAPI.Controllers
         [HttpGet("workers/{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var worker = _workerRepository.Find<Worker>(id);
+            var worker = _repositoryService.Find<Worker>(id);
             return Ok(worker);
         }
 

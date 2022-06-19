@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkerApplication.ViewModels;
-using WorkerDomain.AgreegateModels.WorkerAgreegate;
+using WorkerDomain.Commands;
 
 namespace WorkerApplication.MappingConfigurations
 {
@@ -13,7 +8,7 @@ namespace WorkerApplication.MappingConfigurations
     {
         public MappingViewModelToEntityProfile()
         {
-            CreateMap<WorkerVM, Worker>();
+            CreateMap<CreateWorkerVM, CreateWorkerCommand>().ConvertUsing(c => new CreateWorkerCommand(c.FullName, c.Code, c.Email, c.RoleId, c.GroupId));
         }
     }
 }

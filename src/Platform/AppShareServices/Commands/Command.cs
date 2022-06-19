@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppShareServices.Commands
 {
-    public abstract class Command
+    public abstract class Command : IRequest
     {
         public Guid Id { get; set; }
 
@@ -23,6 +24,7 @@ namespace AppShareServices.Commands
         /// Gets or sets the validation result.
         /// </summary>
         /// <value>The validation result.</value>
+        [JsonIgnore]
         public ValidationResult ValidationResult { get; set; }
 
         /// <summary>

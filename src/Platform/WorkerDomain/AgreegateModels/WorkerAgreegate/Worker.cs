@@ -24,5 +24,22 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 
         public int RoleId { get; set; }
         public Role Role { get; set; }
+
+        public static Worker Create(string email, string? code, string? fullName, int? roleId)
+        {
+            return new Worker()
+            {
+                Email = email,
+                Code = !string.IsNullOrEmpty(code) ? code : GetCode(email),
+                FullName = fullName ?? "",
+                RoleId = roleId ?? 0,
+            };
+        }
+
+        public static string GetCode(string email)
+        {
+            var code = email.Split("@")[0];
+            return code;
+        }
     }
 }

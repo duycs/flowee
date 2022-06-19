@@ -12,18 +12,18 @@ namespace WorkerInfrastructure.DataAccess.EntityConfigurations
 {
     public class SkillLevelEntityTypeConfiguration : IEntityTypeConfiguration<SkillLevel>
     {
-        public void Configure(EntityTypeBuilder<SkillLevel> cardTypesConfiguration)
+        public void Configure(EntityTypeBuilder<SkillLevel> configuration)
         {
-            cardTypesConfiguration.ToTable("skilllevels");
+            configuration.ToTable("skilllevels");
 
-            cardTypesConfiguration.HasKey(ct => ct.Id);
+            configuration.HasKey(ct => ct.Id);
 
-            cardTypesConfiguration.Property(ct => ct.Id)
+            configuration.Property(ct => ct.Id)
                 .HasDefaultValue(1)
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            cardTypesConfiguration.Property(ct => ct.Name)
+            configuration.Property(ct => ct.Name)
                 .HasMaxLength(200)
                 .IsRequired();
         }

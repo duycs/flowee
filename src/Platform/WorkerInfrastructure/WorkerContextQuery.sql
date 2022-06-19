@@ -1,6 +1,5 @@
 
 use workerdb;
-
 select * from roles;
 select * from workerdb.groups;
 select * from departments;

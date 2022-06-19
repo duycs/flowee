@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppShareServices.DataAccess.Repository
 {
-    public class RepositoryService<T> : IRepositoryService<T> where T : class, IEntityService
+    public class RepositoryService : IRepositoryService
     {
         public IDatabaseService Database { get; set; }
 

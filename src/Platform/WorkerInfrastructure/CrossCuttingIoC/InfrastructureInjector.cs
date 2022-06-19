@@ -1,4 +1,5 @@
-﻿using AppShareServices.DataAccess.Persistences;
+﻿using AppShareServices.DataAccess;
+using AppShareServices.DataAccess.Persistences;
 using AppShareServices.DataAccess.Repository;
 using FluentAssertions.Common;
 using Microsoft.EntityFrameworkCore;
@@ -23,9 +24,11 @@ namespace WorkerInfrastructure.CrossCuttingIoC
         public static void Register(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<WorkerContext>(options => options.UseMySql(configuration.GetConnectionString("WorkerDb"), new MySqlServerVersion(new Version(8, 0, 21))));
+            services.AddDbContext<EventContext>(options => options.UseMySql(configuration.GetConnectionString("EventDb"), new MySqlServerVersion(new Version(8, 0, 21))));
             services.AddTransient<IDatabaseService, WorkerContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
+            services.AddScoped<IRepositoryService, RepositoryService>();
+            services.AddScoped<IDomainEventRepository, DomainEventRepository>();
         }
     }
 }
