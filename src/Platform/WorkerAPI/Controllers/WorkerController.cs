@@ -3,6 +3,7 @@ using AppShareServices.DataAccess.Repository;
 using AppShareServices.Models;
 using AppShareServices.Pagging;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using WorkerApplication.ViewModels;
@@ -37,9 +38,6 @@ namespace WorkerAPI.Controllers
         [HttpPost("workers")]
         public async Task<IActionResult> Add([FromBody] CreateWorkerVM createWorkerVM)
         {
-            //var workerId = await _commandDispatcher.SendGetResponse(createWorkerCommand);
-            //return Created(string.Format("\\workers\\{0}", workerId), workerId);
-
             var createWorkerCommand = _mapper.Map<CreateWorkerCommand>(createWorkerVM);
             await _commandDispatcher.Send(createWorkerCommand);
             return Ok();

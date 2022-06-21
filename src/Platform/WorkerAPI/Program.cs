@@ -2,6 +2,7 @@ using AppShareServices.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using WorkerAPI.Controllers;
 using WorkerAPI.SeedData;
 using WorkerApplication.MappingConfigurations;
 using WorkerInfrastructure.CrossCuttingIoC;
@@ -35,6 +36,7 @@ configuration = configurationBuilder.Build();
 
 // TODO: move to infrastructure
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(typeof(WorkerController));
 builder.Services.AddAutoMapper(typeof(AutoMapping));
 builder.Services.AddLayersInjector(configuration);
 builder.Services.AddControllers();

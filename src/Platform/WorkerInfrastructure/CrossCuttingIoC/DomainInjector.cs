@@ -3,11 +3,7 @@ using AppShareServices.Events;
 using AppShareServices.Notification;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using WorkerDomain.Commands;
 using WorkerDomain.Events;
 
@@ -21,6 +17,7 @@ namespace WorkerInfrastructure.CrossCuttingIoC
         public static void Register(IServiceCollection services)
         {
             // Mediatr
+            services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddScoped<IEventDispatcher, EventDispatcher>();
 
