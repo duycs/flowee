@@ -12,6 +12,7 @@ namespace WorkerCrossCutting.DependencyInjections
     {
         public static void AddLayersInjector(this IServiceCollection services, IConfiguration configuration)
         {
+            // Must be have position
             ApplicationInjector.Register(services);
             DomainInjector.Register(services);
             InfrastructureInjector.Register(services, configuration);

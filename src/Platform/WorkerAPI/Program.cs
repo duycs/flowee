@@ -2,10 +2,9 @@ using AppShareServices.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using WorkerAPI.Controllers;
 using WorkerAPI.SeedData;
 using WorkerApplication.MappingConfigurations;
-using WorkerCrossCutting.Injections;
+using WorkerCrossCutting.DependencyInjections;
 using WorkerInfrastructure.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +36,7 @@ configuration = configurationBuilder.Build();
 // TODO: move to infrastructure
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(typeof(AutoMapping));
+
 builder.Services.AddLayersInjector(configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

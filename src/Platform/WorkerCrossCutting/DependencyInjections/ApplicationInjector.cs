@@ -2,12 +2,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WorkerApplication.Services;
 
 namespace WorkerCrossCutting.DependencyInjections
 {
@@ -28,7 +22,8 @@ namespace WorkerCrossCutting.DependencyInjections
                 return new UriService(uri);
             });
 
-            services.AddScoped<IWorkerManager, WorkerManager>();
+
+            // application services
         }
     }
 }

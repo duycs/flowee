@@ -1,12 +1,10 @@
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
+using AppShareServices.Mappings;
 using AppShareServices.Models;
 using AppShareServices.Pagging;
-using AutoMapper;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
-using WorkerApplication.Services;
 using WorkerApplication.ViewModels;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerDomain.Commands;
@@ -20,29 +18,28 @@ namespace WorkerAPI.Controllers
         private readonly ILogger<WorkerController> _logger;
         private readonly IRepositoryService _repositoryService;
         private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IMapper _mapper;
+        private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
-        private readonly IWorkerManager _workerManager;
 
         public WorkerController(ILogger<WorkerController> logger,
+            IMappingService mappingService,
             IUriService uriService,
             IRepositoryService repositoryService,
-            ICommandDispatcher commandDispatcher,
-            IWorkerManager workerManager,
-            IMapper mapper)
+            ICommandDispatcher commandDispatcher
+            )
         {
             _logger = logger;
             _uriService = uriService;
+            _mappingService = mappingService;
             _repositoryService = repositoryService;
             _commandDispatcher = commandDispatcher;
-            _workerManager = workerManager;
-            _mapper = mapper;
         }
 
         [HttpPost("workers")]
         public async Task<IActionResult> Add([FromBody] CreateWorkerVM createWorkerVM)
         {
-            await _workerManager.AddWorkerAsync(createWorkerVM);
+            var createWorkerCommand = _mappingService.Map<CreateWorkerCommand>(createWorkerVM);
+            await _commandDispatcher.Send(createWorkerCommand);
             return Ok();
         }
 

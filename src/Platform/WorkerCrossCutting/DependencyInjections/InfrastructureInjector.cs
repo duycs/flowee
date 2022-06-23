@@ -1,9 +1,12 @@
 ﻿using AppShareServices.DataAccess;
 using AppShareServices.DataAccess.Persistences;
 using AppShareServices.DataAccess.Repository;
+using AppShareServices.Mappings;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WorkerApplication.MappingConfigurations;
 using WorkerInfrastructure.DataAccess;
 
 namespace WorkerCrossCutting.DependencyInjections
@@ -22,6 +25,7 @@ namespace WorkerCrossCutting.DependencyInjections
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IDomainEventRepository, DomainEventRepository>();
+            services.AddScoped<IMappingService, MappingService>();
         }
     }
 }
