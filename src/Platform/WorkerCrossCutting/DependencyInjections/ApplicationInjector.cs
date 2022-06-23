@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkerApplication.Services;
 
-namespace WorkerInfrastructure.CrossCuttingIoC
+namespace WorkerCrossCutting.DependencyInjections
 {
     /// <summary>
     /// Mapping, Pagging
@@ -26,6 +27,8 @@ namespace WorkerInfrastructure.CrossCuttingIoC
                 //TODO: https://codewithmukesh.com/blog/pagination-in-aspnet-core-webapi/
                 return new UriService(uri);
             });
+
+            services.AddScoped<IWorkerManager, WorkerManager>();
         }
     }
 }

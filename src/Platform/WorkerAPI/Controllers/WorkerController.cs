@@ -6,6 +6,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
+using WorkerApplication.Services;
 using WorkerApplication.ViewModels;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerDomain.Commands;
@@ -21,25 +22,27 @@ namespace WorkerAPI.Controllers
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IMapper _mapper;
         private readonly IUriService _uriService;
+        private readonly IWorkerManager _workerManager;
 
         public WorkerController(ILogger<WorkerController> logger,
             IUriService uriService,
             IRepositoryService repositoryService,
             ICommandDispatcher commandDispatcher,
+            IWorkerManager workerManager,
             IMapper mapper)
         {
             _logger = logger;
             _uriService = uriService;
             _repositoryService = repositoryService;
             _commandDispatcher = commandDispatcher;
+            _workerManager = workerManager;
             _mapper = mapper;
         }
 
         [HttpPost("workers")]
         public async Task<IActionResult> Add([FromBody] CreateWorkerVM createWorkerVM)
         {
-            var createWorkerCommand = _mapper.Map<CreateWorkerCommand>(createWorkerVM);
-            await _commandDispatcher.Send(createWorkerCommand);
+            await _workerManager.AddWorkerAsync(createWorkerVM);
             return Ok();
         }
 

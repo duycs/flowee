@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkerInfrastructure.CrossCuttingIoC
+namespace WorkerCrossCutting.DependencyInjections
 {
     public static class InjectorBootStrapper
     {

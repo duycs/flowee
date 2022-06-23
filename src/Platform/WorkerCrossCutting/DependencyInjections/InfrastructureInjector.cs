@@ -1,19 +1,12 @@
 ﻿using AppShareServices.DataAccess;
 using AppShareServices.DataAccess.Persistences;
 using AppShareServices.DataAccess.Repository;
-using FluentAssertions.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerInfrastructure.DataAccess;
 
-namespace WorkerInfrastructure.CrossCuttingIoC
+namespace WorkerCrossCutting.DependencyInjections
 {
     /// <summary>
     /// Database Context, Repository, Queue, Logger

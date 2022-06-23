@@ -5,7 +5,7 @@ using System.Reflection;
 using WorkerAPI.Controllers;
 using WorkerAPI.SeedData;
 using WorkerApplication.MappingConfigurations;
-using WorkerInfrastructure.CrossCuttingIoC;
+using WorkerCrossCutting.Injections;
 using WorkerInfrastructure.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +36,6 @@ configuration = configurationBuilder.Build();
 
 // TODO: move to infrastructure
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddMediatR(typeof(WorkerController));
 builder.Services.AddAutoMapper(typeof(AutoMapping));
 builder.Services.AddLayersInjector(configuration);
 builder.Services.AddControllers();

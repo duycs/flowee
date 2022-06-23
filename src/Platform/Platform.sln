@@ -19,17 +19,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductAPI", "ProductAPI\Pr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobAPI", "JobAPI\JobAPI.csproj", "{4BE86FAA-C979-4B77-8C2D-66C29B94A3C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerAPI", "WorkerAPI\WorkerAPI.csproj", "{8A0AF399-DF3D-4A99-9D23-062CF8C09C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerAPI", "WorkerAPI\WorkerAPI.csproj", "{8A0AF399-DF3D-4A99-9D23-062CF8C09C3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobInfrastructure", "JobInfrastructure\JobInfrastructure.csproj", "{186B221D-EDA4-4D00-99BA-1D1FA2E43A2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobInfrastructure", "JobInfrastructure\JobInfrastructure.csproj", "{186B221D-EDA4-4D00-99BA-1D1FA2E43A2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductInfrastructure", "ProductInfrastructure\ProductInfrastructure.csproj", "{4C9BB96E-2422-42C0-8F75-E8BA96738F49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductInfrastructure", "ProductInfrastructure\ProductInfrastructure.csproj", "{4C9BB96E-2422-42C0-8F75-E8BA96738F49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerInfrastructure", "WorkerInfrastructure\WorkerInfrastructure.csproj", "{BCC69FFE-5DEC-4B64-819B-99A7E677CFA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerInfrastructure", "WorkerInfrastructure\WorkerInfrastructure.csproj", "{BCC69FFE-5DEC-4B64-819B-99A7E677CFA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppShareServices", "AppShareServices\AppShareServices.csproj", "{9B38DC3C-5B57-455D-B423-877F2C02CFFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppShareServices", "AppShareServices\AppShareServices.csproj", "{9B38DC3C-5B57-455D-B423-877F2C02CFFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerApplication", "WorkerApplication\WorkerApplication.csproj", "{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerApplication", "WorkerApplication\WorkerApplication.csproj", "{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerCrossCutting", "WorkerCrossCutting\WorkerCrossCutting.csproj", "{2B285130-D6AA-41A9-AD45-3867BCABA90E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B285130-D6AA-41A9-AD45-3867BCABA90E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B285130-D6AA-41A9-AD45-3867BCABA90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B285130-D6AA-41A9-AD45-3867BCABA90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B285130-D6AA-41A9-AD45-3867BCABA90E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +102,7 @@ Global
 		{4C9BB96E-2422-42C0-8F75-E8BA96738F49} = {124D9DC4-4614-4CA7-BFBC-0917BEE70414}
 		{BCC69FFE-5DEC-4B64-819B-99A7E677CFA4} = {0503E2B0-EBB2-4515-92A3-C7FD33FB3187}
 		{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7} = {0503E2B0-EBB2-4515-92A3-C7FD33FB3187}
+		{2B285130-D6AA-41A9-AD45-3867BCABA90E} = {0503E2B0-EBB2-4515-92A3-C7FD33FB3187}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7835FFFA-FB98-4C93-AE3B-F3DDEA4576E0}

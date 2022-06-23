@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\WorkerApplication\WorkerApplication.csproj" />
+		<ProjectReference Include="..\WorkerCrossCutting\WorkerCrossCutting.csproj" />
 		<ProjectReference Include="..\WorkerDomain\WorkerDomain.csproj" />
 		<ProjectReference Include="..\WorkerInfrastructure\WorkerInfrastructure.csproj" />
 		<PackageReference Include="MediatR" Version="10.0.1" />

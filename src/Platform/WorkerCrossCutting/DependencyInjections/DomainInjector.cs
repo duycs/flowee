@@ -7,7 +7,7 @@ using System.Reflection;
 using WorkerDomain.Commands;
 using WorkerDomain.Events;
 
-namespace WorkerInfrastructure.CrossCuttingIoC
+namespace WorkerCrossCutting.DependencyInjections
 {
     /// <summary>
     /// command, event, domain services
@@ -17,7 +17,6 @@ namespace WorkerInfrastructure.CrossCuttingIoC
         public static void Register(IServiceCollection services)
         {
             // Mediatr
-            services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddScoped<IEventDispatcher, EventDispatcher>();
 
@@ -26,6 +25,7 @@ namespace WorkerInfrastructure.CrossCuttingIoC
             services.AddScoped<INotificationHandler<WorkerCreatedEvent>, DomainEventHandler<WorkerCreatedEvent>>();
 
             // Command
+            services.AddMediatR(typeof(WorkerCommandHandler).GetTypeInfo().Assembly);
             services.AddScoped<IRequestHandler<CreateWorkerCommand>, WorkerCommandHandler>();
         }
     }
