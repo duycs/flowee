@@ -15,7 +15,7 @@ namespace AppShareServices.Pagging
         {
             _baseUri = baseUri;
         }
-        public Uri GetPageUri(PaginationFilter filter, string route)
+        public Uri GetPageUri(PaginationFilterOrder filter, string route)
         {
             var _enpointUri = new Uri(string.Concat(_baseUri, route));
             var modifiedUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "pageNumber", filter.PageNumber.ToString());

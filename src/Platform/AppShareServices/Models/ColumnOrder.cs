@@ -11,10 +11,15 @@ namespace AppShareServices.Models
 {
     public class ColumnOrder
     {
-        public int Column { get; set; }
         public string Name { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Order Order { get; set; }
+
+        public ColumnOrder(string name, Order order)
+        {
+            Name = name;
+            Order = order;
+        }
     }
 }

@@ -1,45 +1,88 @@
 ﻿using AppShareServices.Models;
 using AppShareServices.Queries.Specification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
     public class WorkerSpecification : SpecificationBase<Worker>
     {
-        public WorkerSpecification(Expression<Func<Worker, bool>> criteria, bool isInclude, string? searchValue, List<ColumnOrder>? columnOrders) : base(criteria)
+        public WorkerSpecification(bool isInclude, string? searchValue, List<ColumnOrder>? columnOrders) : base()
         {
-            //if (!string.IsNullOrEmpty(searchValue))
-            //    criteria.(w => searchValue.Contains(w.Email) || searchValue.Contains(w.FullName));
-
-            var fieldNames = typeof(Worker).GetMembers().Select(m => m.Name);
-
-            if (columnOrders.Any())
+            // filter
+            if (!string.IsNullOrEmpty(searchValue))
             {
-                foreach (var fieldName in fieldNames)
+                searchValue = searchValue.ToLower().Trim();
+                Expression<Func<Worker, bool>> criteria = c => searchValue.Contains(c.Email.ToLower())
+                 || searchValue.Contains(c.FullName ?? "")
+                 || searchValue.Contains(c.Code.ToLower());
+
+                AddCriteria(criteria);
+            }
+
+            // order by columns
+            if (columnOrders != null && columnOrders.Any())
+            {
+                foreach (var columnOrder in columnOrders)
                 {
-                    var columnOrder = columnOrders.Where(c => fieldNames.Contains(c.Name)).FirstOrDefault();
-                    if (columnOrder != null)
+                    switch (columnOrder.Name)
                     {
-                        switch (columnOrder.Name)
-                        {
-                            // TODO: order by clumns
+                        case nameof(Worker.FullName):
+                            if (columnOrder.Order == Order.DESC)
+                            {
+                                AddOrderByDescending(w => w.FullName ?? "");
+                            }
+                            else
+                            {
+                                AddOrderBy(w => w.FullName ?? "");
+                            }
 
-                            default:
+                            break;
+
+                        case nameof(Worker.Code):
+                            if (columnOrder.Order == Order.DESC)
+                            {
+                                AddOrderByDescending(w => w.Code);
+                            }
+                            else
+                            {
+                                AddOrderBy(w => w.Code);
+                            }
+
+                            break;
+
+                        case nameof(Worker.Email):
+                            if (columnOrder.Order == Order.DESC)
+                            {
+                                AddOrderByDescending(w => w.Email);
+                            }
+                            else
+                            {
+                                AddOrderBy(w => w.Email);
+                            }
+
+                            break;
+
+                        case nameof(Worker.DateCreated):
+                            if (columnOrder.Order == Order.DESC)
+                            {
                                 AddOrderByDescending(w => w.DateCreated);
-                                break;
+                            }
+                            else
+                            {
+                                AddOrderBy(w => w.DateCreated);
+                            }
 
-                        }
+                            break;
+
+                        default:
+                            AddOrderByDescending(w => w.DateCreated);
+                            break;
                     }
                 }
             }
 
-            if ((bool)isInclude)
+            // include related entity
+            if (isInclude)
             {
                 AddInclude(w => w.Role);
             }

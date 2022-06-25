@@ -20,14 +20,27 @@ namespace AppShareServices.Queries.Specification
             Criteria = criteria;
         }
 
+        /// <summary>
+        /// Default do not filter
+        /// </summary>
+        protected SpecificationBase()
+        {
+            Criteria = c => true;
+        }
 
         /// <summary>
         /// Gets the criteria.
         /// </summary>
         /// <value>The criteria.</value>
-        public Expression<Func<T, bool>> Criteria { get; }
+        public Expression<Func<T, bool>> Criteria { get; private set; }
         public Expression<Func<T, object>> OrderBy { get; private set; }
         public Expression<Func<T, object>> OrderByDescending { get; private set; }
+
+
+        protected virtual void AddCriteria(Expression<Func<T, bool>> criteria)
+        {
+            Criteria = criteria;
+        }
 
         /// <summary>
         /// Gets the compiled expression.

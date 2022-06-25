@@ -9,6 +9,6 @@ namespace AppShareServices.Pagging
 {
     public interface IUriService
     {
-        public Uri GetPageUri(PaginationFilter filter, string route);
+        public Uri GetPageUri(PaginationFilterOrder filter, string route);
     }
 }
