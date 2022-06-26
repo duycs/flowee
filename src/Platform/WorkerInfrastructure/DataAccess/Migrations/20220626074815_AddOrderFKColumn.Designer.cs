@@ -11,8 +11,8 @@ using WorkerInfrastructure.DataAccess;
 namespace WorkerInfrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(WorkerContext))]
-    [Migration("20220618145501_InitDatabase")]
-    partial class InitDatabase
+    [Migration("20220626074815_AddOrderFKColumn")]
+    partial class AddOrderFKColumn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -151,7 +151,8 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -164,9 +165,14 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("WorkerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Groups");
                 });
@@ -201,7 +207,12 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("WorkerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Roles");
                 });
@@ -236,7 +247,12 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("WorkerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Skills");
                 });
@@ -249,12 +265,12 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("skilllevels", (string)null);
+                    b.ToTable("SkillLevels", (string)null);
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", b =>
@@ -286,26 +302,20 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("varchar(250)");
 
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Workers");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerGroup", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
@@ -316,29 +326,52 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("WorkerId", "GroupId");
 
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("WorkerId");
 
                     b.ToTable("WorkerGroups");
                 });
 
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerRole", b =>
+                {
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("DateDeleted")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("WorkerId", "RoleId");
+
+                    b.ToTable("WorkerRoles");
+                });
+
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerSkill", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<int>("WorkerId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
@@ -355,22 +388,14 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Property<bool>("IsPriority")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SkillLevelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("WorkerId", "SkillId");
 
                     b.HasIndex("SkillId");
 
                     b.HasIndex("SkillLevelId");
-
-                    b.HasIndex("WorkerId");
 
                     b.ToTable("WorkerSkills");
                 });
@@ -378,13 +403,13 @@ namespace WorkerInfrastructure.DataAccess.Migrations
             modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.TimeKeeping", b =>
                 {
                     b.HasOne("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.Shift", "Shift")
-                        .WithMany()
+                        .WithMany("TimeKeepings")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", "Worker")
-                        .WithMany()
+                        .WithMany("TimeKeepings")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -402,34 +427,37 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", null)
+                        .WithMany("Groups")
+                        .HasForeignKey("WorkerId");
+
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", b =>
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Role", b =>
                 {
-                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Group", null)
-                        .WithMany("Workers")
-                        .HasForeignKey("GroupId");
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("WorkerId");
+                });
 
-                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Skill", b =>
+                {
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("WorkerId");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerGroup", b =>
                 {
                     b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Group", "Group")
-                        .WithMany()
+                        .WithMany("WorkerGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", "Worker")
-                        .WithMany()
+                        .WithMany("WorkerGroups")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -439,10 +467,29 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Navigation("Worker");
                 });
 
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerRole", b =>
+                {
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Role", "Role")
+                        .WithMany("WorkerRoles")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", "Worker")
+                        .WithMany("WorkerRoles")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("Worker");
+                });
+
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerSkill", b =>
                 {
                     b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Skill", "Skill")
-                        .WithMany()
+                        .WithMany("WorkerSkills")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -454,7 +501,7 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", "Worker")
-                        .WithMany()
+                        .WithMany("WorkerSkills")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -466,6 +513,11 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     b.Navigation("Worker");
                 });
 
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.Shift", b =>
+                {
+                    b.Navigation("TimeKeepings");
+                });
+
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Department", b =>
                 {
                     b.Navigation("Groups");
@@ -473,7 +525,34 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Group", b =>
                 {
-                    b.Navigation("Workers");
+                    b.Navigation("WorkerGroups");
+                });
+
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Role", b =>
+                {
+                    b.Navigation("WorkerRoles");
+                });
+
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Skill", b =>
+                {
+                    b.Navigation("WorkerSkills");
+                });
+
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", b =>
+                {
+                    b.Navigation("Groups");
+
+                    b.Navigation("Roles");
+
+                    b.Navigation("Skills");
+
+                    b.Navigation("TimeKeepings");
+
+                    b.Navigation("WorkerGroups");
+
+                    b.Navigation("WorkerRoles");
+
+                    b.Navigation("WorkerSkills");
                 });
 #pragma warning restore 612, 618
         }

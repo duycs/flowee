@@ -8,7 +8,7 @@ namespace WorkerApplication.MappingConfigurations
     {
         public MappingViewModelToEntityProfile()
         {
-            CreateMap<CreateWorkerVM, CreateWorkerCommand>().ConvertUsing(c => new CreateWorkerCommand(c.FullName, c.Code, c.Email, c.RoleId, c.GroupId));
+            CreateMap<CreateWorkerVM, CreateWorkerCommand>().ConvertUsing(c => new CreateWorkerCommand(c.FullName, c.Code, c.Email, c.RoleIds, c.GroupIds, c.SkillIds));
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkerInfrastructure.DataAccess;
 
@@ -10,9 +11,10 @@ using WorkerInfrastructure.DataAccess;
 namespace WorkerInfrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(WorkerContext))]
-    partial class WorkerContextModelSnapshot : ModelSnapshot
+    [Migration("20220626070724_InitData")]
+    partial class InitData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,12 +310,10 @@ namespace WorkerInfrastructure.DataAccess.Migrations
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerGroup", b =>
                 {
                     b.Property<int>("WorkerId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
@@ -337,12 +337,10 @@ namespace WorkerInfrastructure.DataAccess.Migrations
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerRole", b =>
                 {
                     b.Property<int>("WorkerId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
@@ -364,12 +362,10 @@ namespace WorkerInfrastructure.DataAccess.Migrations
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerSkill", b =>
                 {
                     b.Property<int>("WorkerId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     b.Property<int>("SkillId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");

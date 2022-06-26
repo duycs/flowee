@@ -49,8 +49,15 @@ namespace WorkerInfrastructure.DataAccess
         /// <exception cref="System.NotImplementedException"></exception>
         public int Commit()
         {
-            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
-            return _context.SaveChanges();
+            try
+            {
+                if (_disposed) throw new ObjectDisposedException(GetType().FullName);
+                return _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         /// <summary>

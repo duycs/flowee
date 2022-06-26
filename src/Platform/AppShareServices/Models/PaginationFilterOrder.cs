@@ -8,7 +8,9 @@ namespace AppShareServices.Models
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
 
-        // FullName_DESC,Code_ASC,Email_ASC
+        /// <summary>
+        /// eg: FullName_DESC,Code_ASC,Email_ASC
+        /// </summary>
         public string ColumnOrders { get; set; }
 
         public PaginationFilterOrder()

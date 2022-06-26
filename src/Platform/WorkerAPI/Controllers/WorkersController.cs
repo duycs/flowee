@@ -39,14 +39,17 @@ namespace WorkerAPI.Controllers
         {
             var createWorkerCommand = _mappingService.Map<CreateWorkerCommand>(createWorkerVM);
             await _commandDispatcher.Send(createWorkerCommand);
+
             return Ok();
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Worker worker)
         {
-            var workerUpdated = _repositoryService.Update(worker);
-            return Ok(workerUpdated);
+            _repositoryService.Update(worker);
+            _repositoryService.SaveChanges();
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -58,11 +61,8 @@ namespace WorkerAPI.Controllers
                 return NotFound();
             }
 
-            var result = _repositoryService.Delete(workerExisting);
-            if (!result)
-            {
-                return StatusCode(500);
-            }
+            _repositoryService.Delete(workerExisting);
+            _repositoryService.SaveChanges();
 
             return Ok();
         }

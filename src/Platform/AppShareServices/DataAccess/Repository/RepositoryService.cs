@@ -20,34 +20,18 @@ namespace AppShareServices.DataAccess.Repository
 
         public T Add<T>(T entity) where T : class, IEntityService
         {
-            try
-            {
-                var dbset = Database.GetDbSet<T>();
-                entity.DateCreated = DateTime.UtcNow;
-                dbset.Add(entity);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
+            entity.DateCreated = DateTime.UtcNow;
+            Database.GetDbSet<T>().Add(entity);
             return entity;
         }
 
         public List<T> Add<T>(params T[] entities) where T : class, IEntityService
         {
-            try
+            var dbset = Database.GetDbSet<T>();
+            foreach (var entity in entities)
             {
-                var dbset = Database.GetDbSet<T>();
-                foreach (var entity in entities)
-                {
-                    entity.DateCreated = DateTime.UtcNow;
-                    dbset.Add(entity);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                entity.DateCreated = DateTime.UtcNow;
+                dbset.Add(entity);
             }
 
             return entities.ToList();
@@ -60,8 +44,7 @@ namespace AppShareServices.DataAccess.Repository
 
         public T Find<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
         {
-            var dbset = Database.GetDbSet<T>();
-            return dbset.FirstOrDefault(@where);
+            return Database.GetDbSet<T>().FirstOrDefault(@where);
         }
 
         public List<T> List<T>(int[] Ids) where T : class, IEntityService
@@ -114,22 +97,15 @@ namespace AppShareServices.DataAccess.Repository
 
         public List<T> Update<T>(params T[] entities) where T : class, IEntityService
         {
-            try
+            var dbset = Database.GetDbSet<T>();
+            foreach (var entity in entities)
             {
-                var dbset = Database.GetDbSet<T>();
-                foreach (var entity in entities)
+                var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
+                if (item != null)
                 {
-                    var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
-                    if (item != null)
-                    {
-                        // mapping entity vs item
-                        item.DateModified = DateTime.Now.ToUniversalTime();
-                    }
+                    // mapping entity vs item
+                    item.DateModified = DateTime.Now.ToUniversalTime();
                 }
-            }
-            catch (Exception)
-            {
-                throw;
             }
 
             return entities.ToList();
@@ -137,73 +113,45 @@ namespace AppShareServices.DataAccess.Repository
 
         public bool Delete<T>(T entity) where T : class, IEntityService
         {
-            try
+            var dbset = Database.GetDbSet<T>();
+            var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
+            if (item != null)
             {
-                var dbset = Database.GetDbSet<T>();
-                var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
-                if (item != null)
-                {
-                    dbset.Remove(item);
-                }
-                return true;
+                dbset.Remove(item);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return true;
         }
 
         public bool Delete<T>(T[] entities) where T : class, IEntityService
         {
-            try
+            var dbset = Database.GetDbSet<T>();
+            foreach (var entity in entities)
             {
-                var dbset = Database.GetDbSet<T>();
-                foreach (var entity in entities)
-                {
-                    dbset.Remove(entity);
-                }
-                return true;
+                dbset.Remove(entity);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return true;
         }
 
         public bool Delete<T>(int Id) where T : class, IEntityService
         {
-            try
+            var dbset = Database.GetDbSet<T>();
+            var item = dbset.FirstOrDefault(x => x.Id == Id);
+            if (item != null)
             {
-                var dbset = Database.GetDbSet<T>();
-                var item = dbset.FirstOrDefault(x => x.Id == Id);
-                if (item != null)
-                {
-                    dbset.Remove(item);
-                }
-                return true;
+                dbset.Remove(item);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return true;
         }
 
         public bool Delete<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
         {
-            try
+            var dbset = Database.GetDbSet<T>();
+            var items = dbset.Where(@where);
+            if (items != null && items.Count() > 0)
             {
-                var dbset = Database.GetDbSet<T>();
-                var items = dbset.Where(@where);
-                if (items != null && items.Count() > 0)
-                {
-                    dbset.RemoveRange(items);
-                }
-                return true;
+                dbset.RemoveRange(items);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            return true;
         }
 
         public int CountWhere<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService

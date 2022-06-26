@@ -113,6 +113,16 @@ namespace WorkerAPI.SeedData
                     }
                 }
 
+                if (!_context.WorkerRoles.Any())
+                {
+                    var workerGroups = GetWorkerRoleFromFile();
+                    if (workerGroups.Any())
+                    {
+                        await _context.WorkerRoles.AddRangeAsync(workerGroups);
+                        _context.SaveChanges();
+                    }
+                }
+
                 if (!_context.WorkerGroups.Any())
                 {
                     var workerGroups = GetWorkerGroupFromFile();
@@ -295,6 +305,27 @@ namespace WorkerAPI.SeedData
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
+
+        private IEnumerable<WorkerRole> GetWorkerRoleFromFile()
+        {
+            string csvFile = GetPathToFile("WorkerRoles.csv");
+
+            if (!File.Exists(csvFile))
+            {
+                return new List<WorkerRole>();
+            }
+
+            string[] requiredHeaders = { "WorkerCode", "RoleCode", "IsActive" };
+            string[] headers = GetHeaders(csvFile, requiredHeaders);
+
+            return File.ReadAllLines(csvFile)
+                                        .Skip(1) // skip header row
+                                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                                        .SelectTry(column => CreateWorkerRole(column, headers))
+                                        .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                                        .Where(x => x != null);
+        }
+
         private IEnumerable<Worker> GetWorkersFromFile()
         {
             string csvFile = GetPathToFile("Workers.csv");
@@ -304,7 +335,7 @@ namespace WorkerAPI.SeedData
                 return new List<Worker>();
             }
 
-            string[] requiredHeaders = { "Email", "Code", "FullName", "RoleCode" };
+            string[] requiredHeaders = { "Email", "Code", "FullName" };
             string[] headers = GetHeaders(csvFile, requiredHeaders);
 
             return File.ReadAllLines(csvFile)
@@ -397,20 +428,11 @@ namespace WorkerAPI.SeedData
 
         private Worker CreateWorker(string[] column, string[] headers)
         {
-            var roleCode = column[Array.IndexOf(headers, "RoleCode".ToLower())].Trim('"').Trim();
-            var role = _context.Roles.FirstOrDefault(i => i.Code.ToLower() == roleCode);
-
-            if (role == null)
-            {
-                throw new Exception($"Role {roleCode} not found");
-            }
-
             var worker = new Worker()
             {
                 FullName = column[Array.IndexOf(headers, "FullName".ToLower())].Trim('"').Trim(),
                 Email = column[Array.IndexOf(headers, "Email".ToLower())].Trim('"').Trim(),
                 Code = column[Array.IndexOf(headers, "Code".ToLower())].Trim('"').Trim(),
-                RoleId = role.Id,
                 DateCreated = DateTime.UtcNow,
             };
 
@@ -459,10 +481,14 @@ namespace WorkerAPI.SeedData
                 throw new Exception($"Shift {shiftCode} not found");
             }
 
+            var now = DateTime.UtcNow;
+
             var timeKeeping = new TimeKeeping()
             {
                 WorkerId = worker.Id,
                 ShiftId = shift.Id,
+                DateStarted = new DateTime(now.Year, now.Month, now.Day, shift.TimeStart.Hour, shift.TimeStart.Minute, shift.TimeStart.Second),
+                DateEnded = new DateTime(now.Year, now.Month, now.Day, shift.TimeEnd.Hour, shift.TimeEnd.Minute, shift.TimeEnd.Second),
                 DateCreated = DateTime.UtcNow,
             };
 
@@ -533,6 +559,35 @@ namespace WorkerAPI.SeedData
 
             return workerSkill;
         }
+
+        private WorkerRole CreateWorkerRole(string[] column, string[] headers)
+        {
+            var workerCode = column[Array.IndexOf(headers, "WorkerCode".ToLower())].Trim('"').Trim();
+            var worker = _context.Workers.FirstOrDefault(i => i.Code.ToLower() == workerCode);
+            var roleCode = column[Array.IndexOf(headers, "RoleCode".ToLower())].Trim('"').Trim();
+            var role = _context.Roles.FirstOrDefault(i => i.Code.ToLower() == roleCode);
+
+            if (worker == null)
+            {
+                throw new Exception($"Worker {workerCode} not found");
+            }
+
+            if (role == null)
+            {
+                throw new Exception($"Role {roleCode} not found");
+            }
+
+            var workerRole = new WorkerRole()
+            {
+                WorkerId = worker.Id,
+                RoleId = role.Id,
+                IsActive = bool.Parse(column[Array.IndexOf(headers, "IsActive".ToLower())].Trim('"').Trim()),
+                DateCreated = DateTime.UtcNow,
+            };
+
+            return workerRole;
+        }
+
 
         // CSV helper
 

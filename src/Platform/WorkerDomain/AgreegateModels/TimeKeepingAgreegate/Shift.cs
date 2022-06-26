@@ -23,5 +23,7 @@ namespace WorkerDomain.AgreegateModels.TimeKeepingAgreegate
         public TimeOnly TimeStart { get; set; }
         public TimeOnly TimeEnd { get; set; }
         public bool IsNormal { get; set; }
+
+        public virtual ICollection<TimeKeeping> TimeKeepings { get; set; }
     }
 }

@@ -82,10 +82,12 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             }
 
             // include related entity
-            if (isInclude)
-            {
-                AddInclude(w => w.Role);
-            }
+            //if (isInclude)
+            //{
+            //    AddInclude(w => w.Roles);
+            //    AddInclude(w => w.Groups);
+            //    AddInclude(w => w.Skills);
+            //}
 
         }
     }

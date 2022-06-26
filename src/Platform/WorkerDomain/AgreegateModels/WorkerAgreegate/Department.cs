@@ -15,6 +15,11 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public ICollection<Group>? Groups { get; set; }
+        public virtual ICollection<Group>? Groups { get; set; }
+
+        public Department()
+        {
+            Groups = new HashSet<Group>();
+        }
     }
 }

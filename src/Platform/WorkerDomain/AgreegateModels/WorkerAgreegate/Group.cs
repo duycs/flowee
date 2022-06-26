@@ -15,9 +15,8 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public Department Department { get; set; }
-
-        public ICollection<Worker>? Workers { get; set; }
+        public virtual ICollection<WorkerGroup> WorkerGroups { get; set; }
     }
 }

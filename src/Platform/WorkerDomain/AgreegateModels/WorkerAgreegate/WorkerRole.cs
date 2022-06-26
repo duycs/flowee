@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
-    public class WorkerSkill : Entity
+    public class WorkerRole : Entity
     {
         [Required]
         [Column(Order = 0)]
@@ -18,13 +18,9 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 
         [Required]
         [Column(Order = 1)]
-        public int SkillId { get; set; }
-        public Skill Skill { get; set; }
-
-        public int SkillLevelId { get; set; }
-        public SkillLevel? SkillLevel { get; set; }
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
 
         public bool IsActive { get; set; }
-        public bool IsPriority { get; set; }
     }
 }

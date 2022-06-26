@@ -14,19 +14,21 @@ namespace WorkerDomain.Commands
         public string? FullName { get; set; }
         public string? Code { get; set; }
         public string Email { get; set; }
-        public int? RoleId { get; set; }
-        public int? GroupId { get; set; }
+        public List<int> RoleIds { get; set; }
+        public List<int> GroupIds { get; set; }
+        public List<int> SkillIds { get; set; }
     }
 
     public sealed class CreateWorkerCommand : WorkerCommand
     {
-        public CreateWorkerCommand(string fullName, string? code, string email, int? roleId, int? groupId)
+        public CreateWorkerCommand(string fullName, string? code, string email, List<int>? roleIds, List<int>? groupIds, List<int>? skillIds)
         {
             FullName = fullName;
             Code = code;
             Email = email;
-            RoleId = roleId;
-            GroupId = groupId;
+            RoleIds = roleIds ?? new List<int>();
+            GroupIds = groupIds ?? new List<int>();
+            SkillIds = skillIds ?? new List<int>();
         }
 
         public override bool IsValid()
@@ -40,6 +42,7 @@ namespace WorkerDomain.Commands
         public CreateWorkerCommandValidator()
         {
             RuleFor(i => i.Email).NotEmpty().WithMessage("The email is required");
+            RuleFor(i => i.Email).EmailAddress().WithMessage("The email is invalid");
         }
     }
 }

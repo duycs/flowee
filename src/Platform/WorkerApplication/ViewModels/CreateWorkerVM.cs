@@ -12,7 +12,8 @@ namespace WorkerApplication.ViewModels
         public string Email { get; set; }
 
         public string? Code { get; set; }
-        public int? RoleId { get; set; }
-        public int? GroupId { get; set; }
+        public List<int>? RoleIds { get; set; }
+        public List<int>? GroupIds { get; set; }
+        public List<int>? SkillIds { get; set; }
     }
 }

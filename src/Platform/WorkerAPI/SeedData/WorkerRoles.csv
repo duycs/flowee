@@ -1,0 +1,5 @@
+﻿WorkerCode,RoleCode,IsActive
+DuyCS,PhotoEditing,true
+DuyCS,QC,true
+WinVu2,PhotoEditing,false
+WinVu2,QC,true

@@ -7,4 +7,5 @@
 **Migrations CLI**
 dotnet ef migrations add [AddedFileName] -o DataAccess/Migrations
 dotnet ef migrations remove
+dotnet ef migrations remove -f
 dotnet ef database update

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkerDomain.AgreegateModels.TimeKeepingAgreegate;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
@@ -22,17 +23,26 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         [MaxLength(250)]
         public string? FullName { get; set; }
 
-        public int RoleId { get; set; }
-        public Role Role { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Group> Groups { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
 
-        public static Worker Create(string email, string? code, string? fullName, int? roleId)
+
+        public virtual ICollection<WorkerGroup> WorkerGroups { get; set; }
+        public virtual ICollection<WorkerRole> WorkerRoles { get; set; }
+        public virtual ICollection<WorkerSkill> WorkerSkills { get; set; }
+        public virtual ICollection<TimeKeeping> TimeKeepings { get; set; }
+
+        public static Worker Create(string email, string? code, string? fullName, List<Role> roles, List<Group> groups, List<Skill> skills)
         {
             return new Worker()
             {
                 Email = email,
                 Code = !string.IsNullOrEmpty(code) ? code : GetCode(email),
                 FullName = fullName ?? "",
-                RoleId = roleId ?? 0,
+                Roles = roles,
+                Groups = groups,
+                Skills = skills
             };
         }
 
