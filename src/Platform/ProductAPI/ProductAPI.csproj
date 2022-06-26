@@ -6,8 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Product.API' " />
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="SeedData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SeedData\" />
+  </ItemGroup>
 </Project>
