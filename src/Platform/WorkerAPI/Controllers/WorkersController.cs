@@ -72,7 +72,8 @@ namespace WorkerAPI.Controllers
         {
             var route = Request.Path.Value;
             int totalRecords;
-            var workerSpecification = new WorkerSpecification(true, searchValue, filter.ColumnOrders.ToColumnOrders());
+            bool isInclude = true;
+            var workerSpecification = new WorkerSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
             var pagedData = _repositoryService.Find<Worker>(filter.PageNumber, filter.PageSize, workerSpecification, out totalRecords).ToList();
             var pagedReponse = PaginationHelper.CreatePagedReponse<Worker>(pagedData, filter, totalRecords, _uriService, route);
             return Ok(pagedReponse);

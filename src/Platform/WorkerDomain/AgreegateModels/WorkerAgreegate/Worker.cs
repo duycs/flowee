@@ -23,15 +23,25 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         [MaxLength(250)]
         public string? FullName { get; set; }
 
-        public virtual ICollection<Role> Roles { get; set; }
-        public virtual ICollection<Group> Groups { get; set; }
-        public virtual ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Role>? Roles { get; set; }
+        public virtual ICollection<Group>? Groups { get; set; }
+        public virtual ICollection<Skill>? Skills { get; set; }
 
 
-        public virtual ICollection<WorkerGroup> WorkerGroups { get; set; }
-        public virtual ICollection<WorkerRole> WorkerRoles { get; set; }
-        public virtual ICollection<WorkerSkill> WorkerSkills { get; set; }
-        public virtual ICollection<TimeKeeping> TimeKeepings { get; set; }
+        public virtual ICollection<WorkerGroup>? WorkerGroups { get; set; }
+        public virtual ICollection<WorkerRole>? WorkerRoles { get; set; }
+        public virtual ICollection<WorkerSkill>? WorkerSkills { get; set; }
+        public virtual ICollection<TimeKeeping>? TimeKeepings { get; set; }
+
+        public static Worker Create(string email, string? code, string? fullName)
+        {
+            return new Worker()
+            {
+                Email = email,
+                Code = !string.IsNullOrEmpty(code) ? code : GetCode(email),
+                FullName = fullName ?? ""
+            };
+        }
 
         public static Worker Create(string email, string? code, string? fullName, List<Role> roles, List<Group> groups, List<Skill> skills)
         {

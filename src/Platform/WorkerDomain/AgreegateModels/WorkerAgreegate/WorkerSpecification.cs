@@ -8,6 +8,9 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
     {
         public WorkerSpecification(bool isInclude, string? searchValue, List<ColumnOrder>? columnOrders) : base()
         {
+            // set include
+            IsInclude = isInclude;
+
             // filter
             if (!string.IsNullOrEmpty(searchValue))
             {
@@ -82,12 +85,12 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             }
 
             // include related entity
-            //if (isInclude)
-            //{
-            //    AddInclude(w => w.Roles);
-            //    AddInclude(w => w.Groups);
-            //    AddInclude(w => w.Skills);
-            //}
+            if (IsInclude)
+            {
+                AddInclude(w => w.Roles ?? new List<Role>());
+                AddInclude(w => w.Groups ?? new List<Group>());
+                AddInclude(w => w.Skills ?? new List<Skill>());
+            }
 
         }
     }

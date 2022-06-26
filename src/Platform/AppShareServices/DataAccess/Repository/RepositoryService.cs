@@ -1,5 +1,6 @@
 ﻿using AppShareServices.DataAccess.Persistences;
 using AppShareServices.Queries.Specification;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,24 +172,46 @@ namespace AppShareServices.DataAccess.Repository
 
         public IEnumerable<T> Find<T>(int pageIndex, int pageSize, SpecificationBase<T> specification, out int totalPage) where T : class, IEntityService
         {
-            var query = Database.GetDbSet<T>().Where(specification.Criteria);
+            var query = Database.GetDbSet<T>().AsQueryable();
+
+            if (specification.IsInclude)
+            {
+                query = AsQueryInClude(specification);
+            }
+            else
+            {
+                query = query.Where(specification.Criteria);
+            }
+
             totalPage = query.Count();
 
             return query.OrderByDescending(x => x.DateCreated).Skip((pageIndex - 1) * pageSize).Take(pageSize).AsEnumerable();
         }
 
 
+        // https://github.com/dotnet-architecture/eShopOnWeb
+        public IQueryable<T> AsQueryInClude<T>(ISpecification<T> specification) where T : class, IEntityService
+        {
+            // fetch a Queryable that includes all expression-based includes
+            var queryableResultWithIncludes = specification.Includes
+                .Aggregate(Database.GetDbSet<T>().AsQueryable(),
+                    (current, include) => current.Include(include));
+
+            // modify the IQueryable to include any string-based include statements
+            var secondaryResult = specification.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+
+            // return the result of the query using the specification's criteria expression
+            return secondaryResult
+                            .Where(specification.Criteria)
+                            .AsQueryable();
+        }
+
         public bool SaveChanges()
         {
-            try
-            {
-                var result = Task.FromResult(Database.SaveChanges());
-                return result.Result.IsCompletedSuccessfully;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var result = Task.FromResult(Database.SaveChanges());
+            return result.Result.IsCompletedSuccessfully;
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WorkerInfrastructure.DataAccess.Migrations
+namespace WorkerInfrastructure.Migrations
 {
     public partial class InitData : Migration
     {
@@ -224,6 +224,7 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     WorkerId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateDeleted = table.Column<long>(type: "bigint", nullable: false)
@@ -253,6 +254,7 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     WorkerId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateDeleted = table.Column<long>(type: "bigint", nullable: false)
@@ -284,6 +286,7 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                     SkillLevelId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsPriority = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateDeleted = table.Column<long>(type: "bigint", nullable: false)

@@ -51,10 +51,12 @@ using (var serviceScope = app.Services.CreateScope())
     var workerContext = serviceScope.ServiceProvider.GetRequiredService<WorkerContext>();
     var logger = serviceScope.ServiceProvider.GetService<ILogger<WorkerContextSeed>>();
     var workerContextSeed = new WorkerContextSeed(workerContext, logger, builder.Environment, configuration);
+    workerContextSeed.Created();
     workerContextSeed.Migrate();
     workerContextSeed.SeedAsync().Wait();
 
     var eventContext = serviceScope.ServiceProvider.GetRequiredService<EventContext>();
+    eventContext.Database.EnsureCreated();
     eventContext.Database.Migrate();
 }
 

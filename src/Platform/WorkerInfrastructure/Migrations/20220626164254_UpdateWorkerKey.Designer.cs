@@ -8,11 +8,11 @@ using WorkerInfrastructure.DataAccess;
 
 #nullable disable
 
-namespace WorkerInfrastructure.DataAccess.Migrations
+namespace WorkerInfrastructure.Migrations
 {
     [DbContext(typeof(WorkerContext))]
-    [Migration("20220626074815_AddOrderFKColumn")]
-    partial class AddOrderFKColumn
+    [Migration("20220626164254_UpdateWorkerKey")]
+    partial class UpdateWorkerKey
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

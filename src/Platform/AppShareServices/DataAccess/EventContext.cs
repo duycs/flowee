@@ -30,7 +30,7 @@ namespace AppShareServices.DataAccess
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("Server=localhost;port=3306;Database=EventDb;user=root;password=abc@123;CharSet=utf8;", new MySqlServerVersion(new Version(8, 0, 21)));
+                optionsBuilder.UseMySql("Server=localhost;port=3306;Database=EventDb;user=root;password=abc@1234;CharSet=utf8;", new MySqlServerVersion(new Version(8, 0, 21)));
             }
         }
     }

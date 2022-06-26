@@ -11,13 +11,16 @@ namespace AppShareServices.Queries.Specification
     {
         private Func<T, bool> _compiledExpression;
 
+        public bool IsInclude { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecificationBase{T}"/> class.
         /// </summary>
         /// <param name="criteria">The criteria.</param>
-        protected SpecificationBase(Expression<Func<T, bool>> criteria)
+        protected SpecificationBase(Expression<Func<T, bool>> criteria, bool isInclude)
         {
             Criteria = criteria;
+            IsInclude = isInclude;
         }
 
         /// <summary>

@@ -8,10 +8,10 @@ using WorkerInfrastructure.DataAccess;
 
 #nullable disable
 
-namespace WorkerInfrastructure.DataAccess.Migrations
+namespace WorkerInfrastructure.Migrations
 {
     [DbContext(typeof(WorkerContext))]
-    [Migration("20220626070724_InitData")]
+    [Migration("20220626135512_InitData")]
     partial class InitData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,10 +310,12 @@ namespace WorkerInfrastructure.DataAccess.Migrations
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerGroup", b =>
                 {
                     b.Property<int>("WorkerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
@@ -323,6 +325,9 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -337,10 +342,12 @@ namespace WorkerInfrastructure.DataAccess.Migrations
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerRole", b =>
                 {
                     b.Property<int>("WorkerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
@@ -350,6 +357,9 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -362,10 +372,12 @@ namespace WorkerInfrastructure.DataAccess.Migrations
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.WorkerSkill", b =>
                 {
                     b.Property<int>("WorkerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("SkillId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
@@ -375,6 +387,9 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");

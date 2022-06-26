@@ -71,9 +71,12 @@ namespace WorkerDomain.Commands
 
             var worker = Worker.Create(request.Email, request.Code, request.FullName, roles, groups, skills);
             var workerAdded = _repositoryService.Add<Worker>(worker);
-            var isCommited = _unitOfWork.Commit() > 0;
+            var result = _repositoryService.SaveChanges();
 
-            if (!isCommited)
+            // TODO: unitOfWork return false
+            //var isCommited = _unitOfWork.Commit() > 0;
+
+            if (!result)
             {
                 await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"new worker could not insert"));
                 return Unit.Value;

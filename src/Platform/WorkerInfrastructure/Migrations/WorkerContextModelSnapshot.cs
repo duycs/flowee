@@ -7,7 +7,7 @@ using WorkerInfrastructure.DataAccess;
 
 #nullable disable
 
-namespace WorkerInfrastructure.DataAccess.Migrations
+namespace WorkerInfrastructure.Migrations
 {
     [DbContext(typeof(WorkerContext))]
     partial class WorkerContextModelSnapshot : ModelSnapshot

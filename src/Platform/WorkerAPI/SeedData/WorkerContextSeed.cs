@@ -39,6 +39,11 @@ namespace WorkerAPI.SeedData
             _context.Database.Migrate();
         }
 
+        public void Created()
+        {
+            _context.Database.EnsureCreated();
+        }
+
         // Seed to database
         public async Task SeedAsync()
         {
@@ -635,11 +640,6 @@ namespace WorkerAPI.SeedData
         private string GetPathToFile(string csvFile)
         {
             return Path.Combine(ContentRootPath, SeedDataFolder, csvFile);
-        }
-
-        private string GetPathToFile(string folder, string csvFile)
-        {
-            return Path.Combine(ContentRootPath, folder, "Departments.csv");
         }
     }
 }

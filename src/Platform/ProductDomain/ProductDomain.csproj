@@ -13,9 +13,7 @@
     <None Remove="AgreegateModels\OrderAgreegate\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AgreegateModels\" />
     <Folder Include="AgreegateModels\ProductAgreegate\" />
-    <Folder Include="AgreegateModels\OrderAgreegate\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />

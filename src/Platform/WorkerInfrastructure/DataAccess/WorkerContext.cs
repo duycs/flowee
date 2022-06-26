@@ -47,7 +47,7 @@ namespace WorkerInfrastructure.DataAccess
             if (!optionsBuilder.IsConfigured)
             {
                 // TODO: Move to out side
-                optionsBuilder.UseMySql("Server=localhost;port=3306;Database=WorkerDb;user=root;password=abc@123;CharSet=utf8;", new MySqlServerVersion(new Version(8, 0, 21)));
+                optionsBuilder.UseMySql("Server=localhost;port=3306;Database=WorkerDb;user=root;password=abc@1234;CharSet=utf8;", new MySqlServerVersion(new Version(8, 0, 21)));
             }
         }
 
@@ -61,7 +61,7 @@ namespace WorkerInfrastructure.DataAccess
 
             // SkillLevel
             modelBuilder.ApplyConfiguration(new SkillLevelEntityTypeConfiguration());
-      
+
             // Workers-Roles
             modelBuilder.Entity<WorkerRole>().Ignore(w => w.Id).HasKey(w => new { w.WorkerId, w.RoleId });
             modelBuilder.Entity<WorkerRole>()
