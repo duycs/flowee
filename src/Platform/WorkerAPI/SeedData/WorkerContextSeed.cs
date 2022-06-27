@@ -8,21 +8,23 @@ using WorkerDomain.AgreegateModels.TimeKeepingAgreegate;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerInfrastructure.DataAccess;
 using Group = WorkerDomain.AgreegateModels.WorkerAgreegate.Group;
+using AppShareServices.Extensions;
+using AppShareDomain.Models;
 
 namespace WorkerAPI.SeedData
 {
     /// <summary>
     /// Seed master data tables: departments, roles, shifts, skills, skillLevels
-    /// Seed Relations tables: groups, workers, workerGroups, workerSkills, timeKeepings
+    /// Seed Relations tables: groups, workers, workerGroups, workerSkills, workerShifts(timeKeepings)
     /// </summary>
     public class WorkerContextSeed
     {
         private WorkerContext _context;
-        private IConfiguration _configuration;
         private ILogger<WorkerContextSeed> _logger;
-        private IWebHostEnvironment _hostEnvironment;
         private string ContentRootPath;
         private const string SeedDataFolder = "SeedData";
+        private IConfiguration _configuration;
+        private IWebHostEnvironment _hostEnvironment;
 
         public WorkerContextSeed(WorkerContext context, ILogger<WorkerContextSeed> logger,
             IWebHostEnvironment hostEnvironment, IConfiguration configuration)
@@ -124,6 +126,8 @@ namespace WorkerAPI.SeedData
                     if (workerGroups.Any())
                     {
                         await _context.WorkerRoles.AddRangeAsync(workerGroups);
+
+                        // TODO: save change success but select include return empty?
                         _context.SaveChanges();
                     }
                 }
@@ -148,12 +152,12 @@ namespace WorkerAPI.SeedData
                     }
                 }
 
-                if (!_context.TimeKeepings.Any())
+                if (!_context.WorkerShifts.Any())
                 {
-                    var timeKeepings = GetTimeKeepingFromFile();
-                    if (timeKeepings.Any())
+                    var workerShifts = GetWorkerShiftFromFile();
+                    if (workerShifts.Any())
                     {
-                        await _context.TimeKeepings.AddRangeAsync(timeKeepings);
+                        await _context.WorkerShifts.AddRangeAsync(workerShifts);
                         _context.SaveChanges();
                     }
                 }
@@ -173,7 +177,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "Code", "Name", "Description" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -192,7 +196,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "Code", "Name", "Description", "DepartmentCode" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -211,7 +215,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "Code", "Name", "Description" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -230,7 +234,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "Code", "Name", "TimeStart", "TimeEnd", "IsNormal" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -263,7 +267,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "Code", "Name", "Description" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -272,22 +276,22 @@ namespace WorkerAPI.SeedData
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
-        private IEnumerable<TimeKeeping> GetTimeKeepingFromFile()
+        private IEnumerable<WorkerShift> GetWorkerShiftFromFile()
         {
-            string csvFile = GetPathToFile("TimeKeepings.csv");
+            string csvFile = GetPathToFile("WorkerShifts.csv");
 
             if (!File.Exists(csvFile))
             {
-                return new List<TimeKeeping>();
+                return new List<WorkerShift>();
             }
 
-            string[] requiredHeaders = { "WorkerCode", "ShiftCode" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] requiredHeaders = { "WorkerCode", "ShiftCode", "IsNormal" };
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                                        .SelectTry(column => CreateTimeKeeping(column, headers))
+                                        .SelectTry(column => CreateWorkerShift(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
@@ -301,7 +305,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "WorkerCode", "GroupCode", "IsActive" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -321,7 +325,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "WorkerCode", "RoleCode", "IsActive" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -341,7 +345,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "Email", "Code", "FullName" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -360,7 +364,7 @@ namespace WorkerAPI.SeedData
             }
 
             string[] requiredHeaders = { "WorkerCode", "SkillCode", "SkillLevelName", "IsActive", "IsPriority" };
-            string[] headers = GetHeaders(csvFile, requiredHeaders);
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
@@ -397,7 +401,7 @@ namespace WorkerAPI.SeedData
             {
                 Name = column[Array.IndexOf(headers, "Name".ToLower())].Trim('"').Trim(),
                 Code = column[Array.IndexOf(headers, "Code".ToLower())].Trim('"').Trim(),
-                DepartmentId = department.Id,
+                Department = department,
                 Description = column[Array.IndexOf(headers, "Description".ToLower())].Trim('"').Trim(),
                 DateCreated = DateTime.UtcNow,
             };
@@ -469,7 +473,7 @@ namespace WorkerAPI.SeedData
             return new SkillLevel(id++, value.Trim('"').Trim().ToLowerInvariant());
         }
 
-        private TimeKeeping CreateTimeKeeping(string[] column, string[] headers)
+        private WorkerShift CreateWorkerShift(string[] column, string[] headers)
         {
             var workerCode = column[Array.IndexOf(headers, "WorkerCode".ToLower())].Trim('"').Trim();
             var worker = _context.Workers.FirstOrDefault(i => i.Code.ToLower() == workerCode);
@@ -488,16 +492,17 @@ namespace WorkerAPI.SeedData
 
             var now = DateTime.UtcNow;
 
-            var timeKeeping = new TimeKeeping()
+            var workerShift = new WorkerShift()
             {
-                WorkerId = worker.Id,
-                ShiftId = shift.Id,
+                Worker = worker,
+                Shift = shift,
+                IsNormal = bool.Parse(column[Array.IndexOf(headers, "IsNormal".ToLower())].Trim('"').Trim()),
                 DateStarted = new DateTime(now.Year, now.Month, now.Day, shift.TimeStart.Hour, shift.TimeStart.Minute, shift.TimeStart.Second),
                 DateEnded = new DateTime(now.Year, now.Month, now.Day, shift.TimeEnd.Hour, shift.TimeEnd.Minute, shift.TimeEnd.Second),
                 DateCreated = DateTime.UtcNow,
             };
 
-            return timeKeeping;
+            return workerShift;
         }
 
         private WorkerGroup CreateWorkerGroup(string[] column, string[] headers)
@@ -519,8 +524,8 @@ namespace WorkerAPI.SeedData
 
             var workerGroup = new WorkerGroup()
             {
-                WorkerId = worker.Id,
-                GroupId = group.Id,
+                Worker = worker,
+                Group = group,
                 IsActive = bool.Parse(column[Array.IndexOf(headers, "IsActive".ToLower())].Trim('"').Trim()),
                 DateCreated = DateTime.UtcNow,
             };
@@ -554,9 +559,9 @@ namespace WorkerAPI.SeedData
 
             var workerSkill = new WorkerSkill()
             {
-                WorkerId = worker.Id,
-                SkillId = skill.Id,
-                SkillLevelId = skillLevel.Id,
+                Worker = worker,
+                Skill = skill,
+                SkillLevel = skillLevel,
                 IsActive = bool.Parse(column[Array.IndexOf(headers, "IsActive".ToLower())].Trim('"').Trim()),
                 IsPriority = bool.Parse(column[Array.IndexOf(headers, "IsPriority".ToLower())].Trim('"').Trim()),
                 DateCreated = DateTime.UtcNow,
@@ -584,8 +589,8 @@ namespace WorkerAPI.SeedData
 
             var workerRole = new WorkerRole()
             {
-                WorkerId = worker.Id,
-                RoleId = role.Id,
+                Worker = worker,
+                Role = role,
                 IsActive = bool.Parse(column[Array.IndexOf(headers, "IsActive".ToLower())].Trim('"').Trim()),
                 DateCreated = DateTime.UtcNow,
             };
@@ -595,35 +600,6 @@ namespace WorkerAPI.SeedData
 
 
         // CSV helper
-
-        private string[] GetHeaders(string csvfile, string[] requiredHeaders, string[] optionalHeaders = null)
-        {
-            string[] csvheaders = File.ReadLines(csvfile).First().ToLowerInvariant().Split(',');
-
-            if (csvheaders.Count() < requiredHeaders.Count())
-            {
-                throw new Exception($"requiredHeader count '{requiredHeaders.Count()}' is bigger then csv header count '{csvheaders.Count()}' ");
-            }
-
-            if (optionalHeaders != null)
-            {
-                if (csvheaders.Count() > (requiredHeaders.Count() + optionalHeaders.Count()))
-                {
-                    throw new Exception($"csv header count '{csvheaders.Count()}'  is larger then required '{requiredHeaders.Count()}' and optional '{optionalHeaders.Count()}' headers count");
-                }
-            }
-
-            foreach (var requiredHeader in requiredHeaders)
-            {
-                if (!csvheaders.Contains(requiredHeader.ToLower()))
-                {
-                    throw new Exception($"does not contain required header '{requiredHeader}'");
-                }
-            }
-
-            return csvheaders;
-        }
-
         private AsyncRetryPolicy CreatePolicy(ILogger<WorkerContextSeed> _logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().

@@ -4,11 +4,11 @@ using Polly;
 using Polly.Retry;
 using System.Data.SqlClient;
 
-namespace AppShareServices.Helpers
+namespace AppShareServices.Extensions
 {
     public static class CsvExtensions
     {
-        public static string[] GetHeaders(string csvfile, string[] requiredHeaders, string[] optionalHeaders = null)
+        public static string[] GetHeaders(this string csvfile, string[] requiredHeaders, string[]? optionalHeaders = null)
         {
             string[] csvheaders = File.ReadLines(csvfile).First().ToLowerInvariant().Split(',');
 
@@ -34,19 +34,6 @@ namespace AppShareServices.Helpers
             }
 
             return csvheaders;
-        }
-
-        public static AsyncRetryPolicy CreatePolicy(ILogger<DbContext> _logger, string prefix, int retries = 3)
-        {
-            return Policy.Handle<SqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        _logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
-                    }
-                );
         }
 
         public static string GetPathToFile(string csvFile, string contentRootPath, string seedDataFolder)

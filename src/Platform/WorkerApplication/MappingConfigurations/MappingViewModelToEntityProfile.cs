@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using WorkerApplication.Commands;
 using WorkerApplication.ViewModels;
-using WorkerDomain.Commands;
 
 namespace WorkerApplication.MappingConfigurations
 {

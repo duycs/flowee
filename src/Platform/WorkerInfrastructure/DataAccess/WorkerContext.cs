@@ -26,7 +26,7 @@ namespace WorkerInfrastructure.DataAccess
         public DbSet<WorkerGroup> WorkerGroups { get; set; }
         public DbSet<WorkerSkill> WorkerSkills { get; set; }
         public DbSet<Shift> Shifts { get; set; }
-        public DbSet<TimeKeeping> TimeKeepings { get; set; }
+        public DbSet<WorkerShift> WorkerShifts { get; set; }
 
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -98,10 +98,10 @@ namespace WorkerInfrastructure.DataAccess
             // Groups-Department
             modelBuilder.Entity<Group>().HasOne<Department>(s => s.Department).WithMany(c => c.Groups).HasForeignKey(c => c.DepartmentId);
 
-            // TimeKeeping
-            modelBuilder.Entity<TimeKeeping>().HasKey(c => c.Id);
-            modelBuilder.Entity<TimeKeeping>().HasOne<Worker>(c => c.Worker).WithMany(c => c.TimeKeepings);
-            modelBuilder.Entity<TimeKeeping>().HasOne<Shift>(c => c.Shift).WithMany(c => c.TimeKeepings);
+            // WorkerShifts(TimeKeeping)
+            modelBuilder.Entity<WorkerShift>().HasKey(c => c.Id);
+            modelBuilder.Entity<WorkerShift>().HasOne<Worker>(c => c.Worker).WithMany(c => c.WorkerShifts);
+            modelBuilder.Entity<WorkerShift>().HasOne<Shift>(c => c.Shift).WithMany(c => c.WorkerShifts);
         }
 
         public DbSet<T> GetDbSet<T>() where T : class, IEntityService

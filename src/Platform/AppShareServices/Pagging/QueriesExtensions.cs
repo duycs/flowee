@@ -1,4 +1,5 @@
-﻿using AppShareServices.Models;
+﻿using AppShareDomain.Models;
+using AppShareServices.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

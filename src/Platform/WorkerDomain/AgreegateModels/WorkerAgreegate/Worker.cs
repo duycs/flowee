@@ -1,11 +1,7 @@
-﻿using AppShareServices.DataAccess.Persistences;
+﻿using AppShareDomain.Models;
 using AppShareServices.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 using WorkerDomain.AgreegateModels.TimeKeepingAgreegate;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
@@ -26,12 +22,20 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         public virtual ICollection<Role>? Roles { get; set; }
         public virtual ICollection<Group>? Groups { get; set; }
         public virtual ICollection<Skill>? Skills { get; set; }
+        public virtual ICollection<Shift>? Shifts { get; set; }
 
 
+        [JsonIgnore]
         public virtual ICollection<WorkerGroup>? WorkerGroups { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<WorkerRole>? WorkerRoles { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<WorkerSkill>? WorkerSkills { get; set; }
-        public virtual ICollection<TimeKeeping>? TimeKeepings { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<WorkerShift>? WorkerShifts { get; set; }
 
         public static Worker Create(string email, string? code, string? fullName)
         {

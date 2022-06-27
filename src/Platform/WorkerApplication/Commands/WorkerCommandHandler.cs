@@ -6,7 +6,7 @@ using MediatR;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerDomain.Events;
 
-namespace WorkerDomain.Commands
+namespace WorkerApplication.Commands
 {
     public class WorkerCommandHandler : IRequestHandler<CreateWorkerCommand>
     {

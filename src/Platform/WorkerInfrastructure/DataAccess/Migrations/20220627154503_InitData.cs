@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WorkerInfrastructure.Migrations
+namespace WorkerInfrastructure.DataAccess.Migrations
 {
     public partial class InitData : Migration
     {
@@ -32,29 +32,6 @@ namespace WorkerInfrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Departments", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Shifts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Code = table.Column<string>(type: "varchar(26)", maxLength: 26, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TimeStart = table.Column<TimeOnly>(type: "time(6)", nullable: false),
-                    TimeEnd = table.Column<TimeOnly>(type: "time(6)", nullable: false),
-                    IsNormal = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateDeleted = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shifts", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -158,6 +135,35 @@ namespace WorkerInfrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Shifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<string>(type: "varchar(26)", maxLength: 26, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TimeStart = table.Column<TimeOnly>(type: "time(6)", nullable: false),
+                    TimeEnd = table.Column<TimeOnly>(type: "time(6)", nullable: false),
+                    IsNormal = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    WorkerId = table.Column<int>(type: "int", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DateDeleted = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shifts_Workers_WorkerId",
+                        column: x => x.WorkerId,
+                        principalTable: "Workers",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Skills",
                 columns: table => new
                 {
@@ -186,45 +192,12 @@ namespace WorkerInfrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TimeKeepings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    WorkerId = table.Column<int>(type: "int", nullable: false),
-                    ShiftId = table.Column<int>(type: "int", nullable: false),
-                    DateStarted = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateEnded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateDeleted = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TimeKeepings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TimeKeepings_Shifts_ShiftId",
-                        column: x => x.ShiftId,
-                        principalTable: "Shifts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TimeKeepings_Workers_WorkerId",
-                        column: x => x.WorkerId,
-                        principalTable: "Workers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "WorkerGroups",
                 columns: table => new
                 {
                     WorkerId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateDeleted = table.Column<long>(type: "bigint", nullable: false)
@@ -254,7 +227,6 @@ namespace WorkerInfrastructure.Migrations
                     WorkerId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateDeleted = table.Column<long>(type: "bigint", nullable: false)
@@ -278,6 +250,38 @@ namespace WorkerInfrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "WorkerShifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    WorkerId = table.Column<int>(type: "int", nullable: false),
+                    ShiftId = table.Column<int>(type: "int", nullable: false),
+                    DateStarted = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DateEnded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DateDeleted = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkerShifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkerShifts_Shifts_ShiftId",
+                        column: x => x.ShiftId,
+                        principalTable: "Shifts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkerShifts_Workers_WorkerId",
+                        column: x => x.WorkerId,
+                        principalTable: "Workers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "WorkerSkills",
                 columns: table => new
                 {
@@ -286,7 +290,6 @@ namespace WorkerInfrastructure.Migrations
                     SkillLevelId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsPriority = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateDeleted = table.Column<long>(type: "bigint", nullable: false)
@@ -331,24 +334,29 @@ namespace WorkerInfrastructure.Migrations
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Skills_WorkerId",
-                table: "Skills",
+                name: "IX_Shifts_WorkerId",
+                table: "Shifts",
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimeKeepings_ShiftId",
-                table: "TimeKeepings",
-                column: "ShiftId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimeKeepings_WorkerId",
-                table: "TimeKeepings",
+                name: "IX_Skills_WorkerId",
+                table: "Skills",
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkerGroups_GroupId",
                 table: "WorkerGroups",
                 column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkerShifts_ShiftId",
+                table: "WorkerShifts",
+                column: "ShiftId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkerShifts_WorkerId",
+                table: "WorkerShifts",
+                column: "WorkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkerSkills_SkillId",
@@ -364,25 +372,25 @@ namespace WorkerInfrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TimeKeepings");
-
-            migrationBuilder.DropTable(
                 name: "WorkerGroups");
 
             migrationBuilder.DropTable(
                 name: "WorkerRoles");
 
             migrationBuilder.DropTable(
-                name: "WorkerSkills");
+                name: "WorkerShifts");
 
             migrationBuilder.DropTable(
-                name: "Shifts");
+                name: "WorkerSkills");
 
             migrationBuilder.DropTable(
                 name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Shifts");
 
             migrationBuilder.DropTable(
                 name: "SkillLevels");

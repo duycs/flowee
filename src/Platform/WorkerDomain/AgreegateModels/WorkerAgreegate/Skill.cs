@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
@@ -19,6 +20,8 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 
         [MaxLength(500)]
         public string Description { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<WorkerSkill> WorkerSkills { get; set; }
     }
 }

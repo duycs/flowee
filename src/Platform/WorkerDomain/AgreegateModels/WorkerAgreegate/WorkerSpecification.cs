@@ -1,4 +1,5 @@
-﻿using AppShareServices.Models;
+﻿using AppShareDomain.Models;
+using AppShareServices.Pagging;
 using AppShareServices.Queries.Specification;
 using System.Linq.Expressions;
 
@@ -87,9 +88,10 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             // include related entity
             if (IsInclude)
             {
-                AddInclude(w => w.Roles ?? new List<Role>());
-                AddInclude(w => w.Groups ?? new List<Group>());
-                AddInclude(w => w.Skills ?? new List<Skill>());
+                AddInclude(w => w.Roles);
+                AddInclude(w => w.Groups);
+                AddInclude(w => w.Skills);
+                AddInclude(w => w.Shifts);
             }
 
         }

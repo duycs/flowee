@@ -12,6 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
 		<ProjectReference Include="..\WorkerApplication\WorkerApplication.csproj" />
 		<ProjectReference Include="..\WorkerCrossCutting\WorkerCrossCutting.csproj" />
 		<ProjectReference Include="..\WorkerDomain\WorkerDomain.csproj" />

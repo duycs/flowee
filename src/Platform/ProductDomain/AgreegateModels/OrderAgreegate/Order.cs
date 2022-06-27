@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using AppShareDomain.Models;
 using AppShareServices.Models;
 using ProductDomain.AgreegateModels.ProductAgreegate;
 

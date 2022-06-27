@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace AppShareServices.Models
+namespace AppShareDomain.Models
 {
     public abstract class Enumeration : IComparable
     {

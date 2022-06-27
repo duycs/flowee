@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
   </ItemGroup>
 

@@ -1,13 +1,7 @@
 ﻿using AppShareServices.Commands;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace WorkerDomain.Commands
+namespace WorkerApplication.Commands
 {
     public abstract class WorkerCommand : Command
     {

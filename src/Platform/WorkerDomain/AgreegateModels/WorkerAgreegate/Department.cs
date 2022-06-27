@@ -1,5 +1,6 @@
 ﻿using AppShareServices.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
@@ -15,6 +16,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         [MaxLength(500)]
         public string Description { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Group>? Groups { get; set; }
 
         public Department()

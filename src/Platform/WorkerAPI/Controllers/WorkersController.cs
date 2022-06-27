@@ -1,12 +1,11 @@
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
-using AppShareServices.Models;
 using AppShareServices.Pagging;
 using Microsoft.AspNetCore.Mvc;
+using WorkerApplication.Commands;
 using WorkerApplication.ViewModels;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
-using WorkerDomain.Commands;
 
 namespace WorkerAPI.Controllers
 {

@@ -4,7 +4,7 @@ using AppShareServices.Notification;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using WorkerDomain.Commands;
+using WorkerApplication.Commands;
 using WorkerDomain.Events;
 
 namespace WorkerCrossCutting.DependencyInjections

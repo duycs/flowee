@@ -2,21 +2,23 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkerInfrastructure.DataAccess;
 
 #nullable disable
 
-namespace WorkerInfrastructure.Migrations
+namespace WorkerInfrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(WorkerContext))]
-    partial class WorkerContextModelSnapshot : ModelSnapshot
+    [Migration("20220627161319_AddIsNormalTimeKeeping")]
+    partial class AddIsNormalTimeKeeping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.Shift", b =>
@@ -53,12 +55,17 @@ namespace WorkerInfrastructure.Migrations
                     b.Property<TimeOnly>("TimeStart")
                         .HasColumnType("time(6)");
 
+                    b.Property<int?>("WorkerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Shifts");
                 });
 
-            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.TimeKeeping", b =>
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.WorkerShift", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,6 +86,9 @@ namespace WorkerInfrastructure.Migrations
                     b.Property<DateTime>("DateStarted")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("IsNormal")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int>("ShiftId")
                         .HasColumnType("int");
 
@@ -91,7 +101,7 @@ namespace WorkerInfrastructure.Migrations
 
                     b.HasIndex("WorkerId");
 
-                    b.ToTable("TimeKeepings");
+                    b.ToTable("WorkerShifts");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Department", b =>
@@ -398,16 +408,23 @@ namespace WorkerInfrastructure.Migrations
                     b.ToTable("WorkerSkills");
                 });
 
-            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.TimeKeeping", b =>
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.Shift", b =>
+                {
+                    b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", null)
+                        .WithMany("Shifts")
+                        .HasForeignKey("WorkerId");
+                });
+
+            modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.WorkerShift", b =>
                 {
                     b.HasOne("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.Shift", "Shift")
-                        .WithMany("TimeKeepings")
+                        .WithMany("WorkerShifts")
                         .HasForeignKey("ShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WorkerDomain.AgreegateModels.WorkerAgreegate.Worker", "Worker")
-                        .WithMany("TimeKeepings")
+                        .WithMany("WorkerShifts")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -513,7 +530,7 @@ namespace WorkerInfrastructure.Migrations
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.TimeKeepingAgreegate.Shift", b =>
                 {
-                    b.Navigation("TimeKeepings");
+                    b.Navigation("WorkerShifts");
                 });
 
             modelBuilder.Entity("WorkerDomain.AgreegateModels.WorkerAgreegate.Department", b =>
@@ -542,13 +559,15 @@ namespace WorkerInfrastructure.Migrations
 
                     b.Navigation("Roles");
 
-                    b.Navigation("Skills");
+                    b.Navigation("Shifts");
 
-                    b.Navigation("TimeKeepings");
+                    b.Navigation("Skills");
 
                     b.Navigation("WorkerGroups");
 
                     b.Navigation("WorkerRoles");
+
+                    b.Navigation("WorkerShifts");
 
                     b.Navigation("WorkerSkills");
                 });

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
 
-namespace AppShareServices.Models
+namespace AppShareServices.Pagging
 {
     public class PaginationFilterOrder
     {
@@ -15,16 +15,16 @@ namespace AppShareServices.Models
 
         public PaginationFilterOrder()
         {
-            this.PageNumber = 1;
-            this.PageSize = 10;
-            this.ColumnOrders = "";
+            PageNumber = 1;
+            PageSize = 10;
+            ColumnOrders = "";
         }
 
         public PaginationFilterOrder(int pageNumber, int pageSize, string? columnOrders = "")
         {
-            this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
-            this.PageSize = pageSize > 10 ? 10 : pageSize;
-            this.ColumnOrders = columnOrders ?? "";
+            PageNumber = pageNumber < 1 ? 1 : pageNumber;
+            PageSize = pageSize > 10 ? 10 : pageSize;
+            ColumnOrders = columnOrders ?? "";
         }
     }
 }

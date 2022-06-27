@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WorkerDomain.AgreegateModels.TimeKeepingAgreegate
@@ -24,6 +25,7 @@ namespace WorkerDomain.AgreegateModels.TimeKeepingAgreegate
         public TimeOnly TimeEnd { get; set; }
         public bool IsNormal { get; set; }
 
-        public virtual ICollection<TimeKeeping> TimeKeepings { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<WorkerShift> WorkerShifts { get; set; }
     }
 }

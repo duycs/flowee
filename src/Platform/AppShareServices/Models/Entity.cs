@@ -1,20 +1,12 @@
-﻿using AppShareServices.DataAccess.Persistences;
+﻿using AppShareDomain.Models;
+using AppShareServices.DataAccess.Persistences;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace AppShareServices.Models
 {
-    public class Entity : IEntityService
-    { /// <summary>
-      /// Gets or sets the identifier.
-      /// </summary>
-      /// <value>The identifier.</value>
+    public class Entity : EntityBase, IEntityService
+    {
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
