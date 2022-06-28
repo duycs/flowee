@@ -8,7 +8,7 @@ using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
 namespace WorkerDomain.Events
 {
-    public class WorkerCreatedEvent : DomainEvent
+    public class WorkerCreateEvent : DomainEvent
     {
         public Worker Worker { get; set; }
 

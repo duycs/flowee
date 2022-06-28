@@ -42,11 +42,11 @@ namespace WorkerAPI.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] Worker worker)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Update([FromBody] PathUpdateWorkerVM pathUpdateWorkerVM)
         {
-            _repositoryService.Update(worker);
-            _repositoryService.SaveChanges();
+            var updateWorkerCommand = _mappingService.Map<UpdateWorkerCommand>(pathUpdateWorkerVM);
+            await _commandDispatcher.Send(updateWorkerCommand);
 
             return Ok();
         }

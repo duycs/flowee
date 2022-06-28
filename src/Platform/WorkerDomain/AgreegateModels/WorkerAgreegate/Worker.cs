@@ -47,7 +47,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             };
         }
 
-        public static Worker Create(string email, string? code, string? fullName, List<Role> roles, List<Group> groups, List<Skill> skills)
+        public static Worker Create(string email, string? code, string? fullName, List<Role>? roles, List<Group>? groups, List<Skill>? skills)
         {
             return new Worker()
             {
@@ -58,6 +58,39 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                 Groups = groups,
                 Skills = skills
             };
+        }
+
+        /// <summary>
+        /// optional update not null field
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <param name="roles"></param>
+        /// <param name="groups"></param>
+        /// <param name="skills"></param>
+        /// <returns></returns>
+        public Worker PathUpdateWorker(string? fullName, List<Role>? roles, List<Group>? groups, List<Skill>? skills)
+        {
+            if (!string.IsNullOrEmpty(fullName))
+            {
+                FullName = fullName;
+            }
+
+            if (roles != null)
+            {
+                Roles = roles;
+            }
+
+            if (groups != null)
+            {
+                Groups = groups;
+            }
+
+            if (skills != null)
+            {
+                Skills = skills;
+            }
+
+            return this;
         }
 
         public static string GetCode(string email)

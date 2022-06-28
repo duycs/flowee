@@ -3,12 +3,13 @@ using AppShareServices.DataAccess.Repository;
 using AppShareServices.Events;
 using AppShareServices.Notification;
 using MediatR;
+using WorkerApplication.Events;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerDomain.Events;
 
 namespace WorkerApplication.Commands
 {
-    public class WorkerCommandHandler : IRequestHandler<CreateWorkerCommand>
+    public class WorkerCommandHandler : IRequestHandler<CreateWorkerCommand>, IRequestHandler<UpdateWorkerCommand>
     {
         private readonly IRepositoryService _repositoryService;
         private readonly IEventDispatcher _eventDispatcher;
@@ -29,48 +30,42 @@ namespace WorkerApplication.Commands
                 return Unit.Value;
             }
 
-            // validate roles, groups, skills
-            var roles = new List<Role>();
-            foreach (var roleId in request.RoleIds)
+            // Validate roles, groups, skills
+            // Can nullable for not insert
+            List<Role>? roles = null;
+            List<Group>? groups = null;
+            List<Skill>? skills = null;
+            if (request.RoleIds != null)
             {
-                var role = _repositoryService.Find<Role>(roleId);
-                if (role == null)
+                roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
+                if (invalidRoleIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"roleId {roleId} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"roleId {string.Join(",", invalidRoleIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
-
-                roles.Add(role);
             }
 
-            var groups = new List<Group>();
-            foreach (var groupId in request.GroupIds)
+            if (request.GroupIds != null)
             {
-                var group = _repositoryService.Find<Group>(groupId);
-                if (group == null)
+                groups = _repositoryService.List<Group>(request.GroupIds, out int[] invalidGroupIds);
+                if (invalidGroupIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"groupId {groupId} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"groupId {string.Join(",", invalidGroupIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
-
-                groups.Add(group);
             }
 
-            var skills = new List<Skill>();
-            foreach (var skillId in request.SkillIds)
+            if (request.SkillIds != null)
             {
-                var skill = _repositoryService.Find<Skill>(skillId);
-                if (skill == null)
+                skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
+                if (invalidSkillIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"skillId {skillId} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"skillId {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
-
-                skills.Add(skill);
             }
 
-            var worker = Worker.Create(request.Email, request.Code, request.FullName, roles, groups, skills);
-            var workerAdded = _repositoryService.Add<Worker>(worker);
+            var workerAdded = _repositoryService.Add<Worker>(Worker.Create(request.Email, request.Code, request.FullName, roles, groups, skills));
             var result = _repositoryService.SaveChanges();
 
             // TODO: unitOfWork return false
@@ -84,7 +79,64 @@ namespace WorkerApplication.Commands
 
             // raise created event
             await _eventDispatcher.RaiseEvent(new WorkerCreatedEvent { Worker = workerAdded });
+            return Unit.Value;
+        }
 
+        public async Task<Unit> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
+        {
+            // Validate roles, groups, skills
+            // Can nullable for not update
+            List<Role>? roles = null;
+            List<Group>? groups = null;
+            List<Skill>? skills = null;
+            if (request.RoleIds != null)
+            {
+                roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
+                if (invalidRoleIds.Any())
+                {
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"roleId {string.Join(",", invalidRoleIds)} does not exist, new worker could not insert"));
+                    return Unit.Value;
+                }
+            }
+
+            if (request.GroupIds != null)
+            {
+                groups = _repositoryService.List<Group>(request.GroupIds, out int[] invalidGroupIds);
+                if (invalidGroupIds.Any())
+                {
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"groupId {string.Join(",", invalidGroupIds)} does not exist, new worker could not insert"));
+                    return Unit.Value;
+                }
+            }
+
+            if (request.SkillIds != null)
+            {
+                skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
+                if (invalidSkillIds.Any())
+                {
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"skillId {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
+                    return Unit.Value;
+                }
+            }
+
+            var workerExsiting = _repositoryService.Find<Worker>(request.Id);
+            if (workerExsiting == null)
+            {
+                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"worker does not existing"));
+                return Unit.Value;
+            }
+
+            // TODO: wrong update relations table: not override, not found relations data in tables
+            var workerUpdated = _repositoryService.Update(workerExsiting.PathUpdateWorker(request.FullName, roles, groups, skills));
+            var result = _repositoryService.SaveChanges();
+
+            if (!result)
+            {
+                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"worker could not update"));
+                return Unit.Value;
+            }
+
+            // raise updated event
             return Unit.Value;
         }
     }

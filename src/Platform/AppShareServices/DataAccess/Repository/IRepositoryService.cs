@@ -1,11 +1,6 @@
 ﻿using AppShareServices.DataAccess.Persistences;
 using AppShareServices.Queries.Specification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppShareServices.DataAccess.Repository
 {
@@ -34,6 +29,7 @@ namespace AppShareServices.DataAccess.Repository
         T Find<T>(Expression<Func<T, bool>> where) where T : class, IEntityService;
 
         List<T> List<T>(int[] Ids) where T : class, IEntityService;
+        List<T> List<T>(int[] Ids, out int[] invalidIds) where T : class, IEntityService;
 
         List<T> List<T>(Expression<Func<T, bool>> where) where T : class, IEntityService;
 
@@ -55,7 +51,9 @@ namespace AppShareServices.DataAccess.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="entities"></param>
         /// <returns></returns>
+        //List<T> Update<T>(params T[] entities) where T : class, IEntityService;
         List<T> Update<T>(params T[] entities) where T : class, IEntityService;
+        T Update<T>(T entity) where T : class, IEntityService;
 
         /// <summary>
         /// Reserve to delete entity. Call SaveChanges to save any deleting items.

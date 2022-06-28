@@ -53,6 +53,14 @@ namespace AppShareServices.DataAccess.Repository
             return Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id)).ToList();
         }
 
+        public List<T> List<T>(int[] Ids, out int[] invalidIds) where T : class, IEntityService
+        {
+            var result = Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id)).ToList();
+            invalidIds = Ids.Except(result.Select(i => i.Id).ToArray()).ToArray();
+
+            return result;
+        }
+
         public List<T> List<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
         {
             return Database.GetDbSet<T>().Where(@where).ToList();
@@ -96,20 +104,41 @@ namespace AppShareServices.DataAccess.Repository
             return Database.GetDbSet<T>().Where(@where).Skip((pageIndex - 1) * pageSize).Take(pageSize);
         }
 
+        // TODO: Can mapping item vs entity modified fields?
+        //public List<T> Update<T>(params T[] entities) where T : class, IEntityService
+        //{
+        //    var dbset = Database.GetDbSet<T>();
+        //    foreach (var entity in entities)
+        //    {
+        //        var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
+        //        if (item != null)
+        //        {
+
+        //            item.DateModified = DateTime.Now.ToUniversalTime();
+        //            dbset.Update(item);
+        //        }
+        //    }
+
+        //    return entities.ToList();
+        //}
+
         public List<T> Update<T>(params T[] entities) where T : class, IEntityService
         {
-            var dbset = Database.GetDbSet<T>();
-            foreach (var entity in entities)
+            entities.ToList().ForEach(item =>
             {
-                var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
-                if (item != null)
-                {
-                    // mapping entity vs item
-                    item.DateModified = DateTime.Now.ToUniversalTime();
-                }
-            }
+                item.DateModified = DateTime.Now.ToUniversalTime();
+            });
+
+            Database.GetDbSet<T>().UpdateRange(entities);
 
             return entities.ToList();
+        }
+
+        public T Update<T>(T entity) where T : class, IEntityService
+        {
+            entity.DateModified = DateTime.Now.ToUniversalTime();
+            Database.GetDbSet<T>().Update(entity);
+            return entity;
         }
 
         public bool Delete<T>(T entity) where T : class, IEntityService
