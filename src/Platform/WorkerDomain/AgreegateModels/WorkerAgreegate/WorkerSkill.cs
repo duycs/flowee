@@ -21,8 +21,10 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         public int SkillId { get; set; }
         public Skill Skill { get; set; }
 
-        public int SkillLevelId { get; set; }
-        public SkillLevel? SkillLevel { get; set; }
+        public int? SkillLevelId { get; set; }
+
+        // TODO: How to remove FK
+        //public SkillLevel? SkillLevel { get; set; }
 
         public bool IsActive { get; set; }
         public bool IsPriority { get; set; }

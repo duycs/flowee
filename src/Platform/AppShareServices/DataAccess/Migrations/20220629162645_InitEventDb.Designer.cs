@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppShareServices.DataAccess.Migrations
 {
     [DbContext(typeof(EventContext))]
-    [Migration("20220627154943_InitEventDb")]
+    [Migration("20220629162645_InitEventDb")]
     partial class InitEventDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -494,8 +494,8 @@ namespace WorkerAPI.SeedData
 
             var workerShift = new WorkerShift()
             {
-                Worker = worker,
-                Shift = shift,
+                WorkerId = worker.Id,
+                ShiftId = shift.Id,
                 IsNormal = bool.Parse(column[Array.IndexOf(headers, "IsNormal".ToLower())].Trim('"').Trim()),
                 DateStarted = new DateTime(now.Year, now.Month, now.Day, shift.TimeStart.Hour, shift.TimeStart.Minute, shift.TimeStart.Second),
                 DateEnded = new DateTime(now.Year, now.Month, now.Day, shift.TimeEnd.Hour, shift.TimeEnd.Minute, shift.TimeEnd.Second),
@@ -561,7 +561,7 @@ namespace WorkerAPI.SeedData
             {
                 Worker = worker,
                 Skill = skill,
-                SkillLevel = skillLevel,
+                SkillLevelId = skillLevel.Id,
                 IsActive = bool.Parse(column[Array.IndexOf(headers, "IsActive".ToLower())].Trim('"').Trim()),
                 IsPriority = bool.Parse(column[Array.IndexOf(headers, "IsPriority".ToLower())].Trim('"').Trim()),
                 DateCreated = DateTime.UtcNow,

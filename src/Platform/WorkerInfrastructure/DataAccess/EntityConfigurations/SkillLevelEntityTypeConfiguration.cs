@@ -9,12 +9,12 @@ namespace WorkerInfrastructure.DataAccess.EntityConfigurations
         public void Configure(EntityTypeBuilder<SkillLevel> configuration)
         {
             configuration.ToTable("SkillLevels");
-            configuration.HasKey(ct => ct.Id);
-            configuration.Property(ct => ct.Id)
+            configuration.HasKey(c => c.Id);
+            configuration.Property(c => c.Id)
                 .HasDefaultValue(1)
                 .ValueGeneratedNever()
                 .IsRequired();
-            configuration.Property(ct => ct.Name)
+            configuration.Property(c => c.Name)
                 .HasMaxLength(250)
                 .IsRequired();
         }

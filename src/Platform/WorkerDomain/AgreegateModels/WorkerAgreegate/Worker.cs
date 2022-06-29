@@ -22,8 +22,6 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         public virtual ICollection<Role>? Roles { get; set; }
         public virtual ICollection<Group>? Groups { get; set; }
         public virtual ICollection<Skill>? Skills { get; set; }
-        public virtual ICollection<Shift>? Shifts { get; set; }
-
 
         [JsonIgnore]
         public virtual ICollection<WorkerGroup>? WorkerGroups { get; set; }
@@ -33,9 +31,6 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 
         [JsonIgnore]
         public virtual ICollection<WorkerSkill>? WorkerSkills { get; set; }
-
-        [JsonIgnore]
-        public virtual ICollection<WorkerShift>? WorkerShifts { get; set; }
 
         public static Worker Create(string email, string? code, string? fullName)
         {

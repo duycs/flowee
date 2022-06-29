@@ -19,7 +19,9 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }
 
+        public virtual ICollection<Worker>? Workers { get; set; }
+
         [JsonIgnore]
-        public virtual ICollection<WorkerGroup> WorkerGroups { get; set; }
+        public virtual ICollection<WorkerGroup>? WorkerGroups { get; set; }
     }
 }

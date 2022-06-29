@@ -91,7 +91,6 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                 AddInclude(w => w.Roles);
                 AddInclude(w => w.Groups);
                 AddInclude(w => w.Skills);
-                AddInclude(w => w.Shifts);
             }
 
         }

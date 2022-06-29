@@ -6,10 +6,13 @@ select * from departments;
 select * from shifts;
 select * from skillLevels;
 select * from skills;
-select * from workershifts;
+
 select * from workergroups;
 select * from workers;
 select * from workerskills;
+select * from workershifts;
+
+truncate table workerShifts;
 
 -- worker have skill
 select w.id WorkerId, w.fullname WorkerName, w.code WorkerName, w.email WorkerEmail, 

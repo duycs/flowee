@@ -6,10 +6,8 @@ namespace WorkerDomain.AgreegateModels.TimeKeepingAgreegate
     public class WorkerShift : Entity
     {
         public int WorkerId { get; set; }
-        public Worker Worker { get; set; }
 
         public int ShiftId { get; set; }
-        public Shift Shift { get; set; }
 
         /// <summary>
         /// Statistic by start shift and end shift => not enought working hours or normal full time working

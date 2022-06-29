@@ -68,6 +68,8 @@ namespace WorkerApplication.Commands
             var workerAdded = _repositoryService.Add<Worker>(Worker.Create(request.Email, request.Code, request.FullName, roles, groups, skills));
             var result = _repositoryService.SaveChanges();
 
+            // TODO: add then save change but DateCreated of relations entity is default
+
             // TODO: unitOfWork return false
             //var isCommited = _unitOfWork.Commit() > 0;
 

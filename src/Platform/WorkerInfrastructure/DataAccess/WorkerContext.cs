@@ -22,10 +22,10 @@ namespace WorkerInfrastructure.DataAccess
         public DbSet<Department> Departments { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SkillLevel> SkillLevels { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
         public DbSet<WorkerRole> WorkerRoles { get; set; }
         public DbSet<WorkerGroup> WorkerGroups { get; set; }
         public DbSet<WorkerSkill> WorkerSkills { get; set; }
-        public DbSet<Shift> Shifts { get; set; }
         public DbSet<WorkerShift> WorkerShifts { get; set; }
 
         private readonly IMediator _mediator;
@@ -62,46 +62,73 @@ namespace WorkerInfrastructure.DataAccess
             // SkillLevel
             modelBuilder.ApplyConfiguration(new SkillLevelEntityTypeConfiguration());
 
+            // Custom join entity: https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#join-entity-type-configuration
             // Workers-Roles
-            modelBuilder.Entity<WorkerRole>().Ignore(w => w.Id).HasKey(w => new { w.WorkerId, w.RoleId });
-            modelBuilder.Entity<WorkerRole>()
-                .HasOne(w => w.Worker)
-                .WithMany(w => w.WorkerRoles)
-                .HasForeignKey(w => w.WorkerId);
-            modelBuilder.Entity<WorkerRole>()
-                .HasOne(w => w.Role)
-                .WithMany(w => w.WorkerRoles)
-                .HasForeignKey(w => w.WorkerId);
+            modelBuilder.Entity<Worker>()
+            .HasMany(i => i.Roles)
+            .WithMany(i => i.Workers)
+            .UsingEntity<WorkerRole>(
+                j => j
+                    .HasOne(w => w.Role)
+                    .WithMany(w => w.WorkerRoles)
+                    .HasForeignKey(w => w.RoleId)
+                    .OnDelete(DeleteBehavior.Cascade),
+                j => j
+                    .HasOne(w => w.Worker)
+                    .WithMany(w => w.WorkerRoles)
+                    .HasForeignKey(w => w.WorkerId)
+                    .OnDelete(DeleteBehavior.Cascade),
+                j =>
+                {
+                    j.Ignore(w => w.Id).HasKey(w => new { w.WorkerId, w.RoleId });
+                });
 
             // Workers-Groups
-            modelBuilder.Entity<WorkerGroup>().Ignore(w => w.Id).HasKey(w => new { w.WorkerId, w.GroupId });
-            modelBuilder.Entity<WorkerGroup>()
-                .HasOne(w => w.Worker)
-                .WithMany(w => w.WorkerGroups)
-                .HasForeignKey(w => w.WorkerId);
-            modelBuilder.Entity<WorkerGroup>()
-                .HasOne(w => w.Group)
-                .WithMany(w => w.WorkerGroups)
-                .HasForeignKey(w => w.GroupId);
+            modelBuilder.Entity<Worker>()
+               .HasMany(i => i.Groups)
+               .WithMany(i => i.Workers)
+               .UsingEntity<WorkerGroup>(
+               j => j
+                   .HasOne(w => w.Group)
+                   .WithMany(w => w.WorkerGroups)
+                   .HasForeignKey(w => w.GroupId)
+                   .OnDelete(DeleteBehavior.Cascade),
+               j => j
+                   .HasOne(w => w.Worker)
+                   .WithMany(w => w.WorkerGroups)
+                   .HasForeignKey(w => w.WorkerId)
+                   .OnDelete(DeleteBehavior.Cascade),
+               j =>
+               {
+                   j.Ignore(w => w.Id).HasKey(w => new { w.WorkerId, w.GroupId });
+               });
 
             // Workers-Skills
-            modelBuilder.Entity<WorkerSkill>().Ignore(w => w.Id).HasKey(w => new { w.WorkerId, w.SkillId });
-            modelBuilder.Entity<WorkerSkill>()
-                .HasOne(w => w.Worker)
-                .WithMany(w => w.WorkerSkills)
-                .HasForeignKey(w => w.WorkerId);
-            modelBuilder.Entity<WorkerSkill>()
-                .HasOne(w => w.Skill)
-                .WithMany(w => w.WorkerSkills)
-                .HasForeignKey(w => w.SkillId);
+            modelBuilder.Entity<Worker>()
+             .HasMany(i => i.Skills)
+             .WithMany(i => i.Workers)
+             .UsingEntity<WorkerSkill>(
+             j => j
+                 .HasOne(w => w.Skill)
+                 .WithMany(w => w.WorkerSkills)
+                 .HasForeignKey(w => w.SkillId)
+                 .OnDelete(DeleteBehavior.Cascade),
+             j => j
+                 .HasOne(w => w.Worker)
+                 .WithMany(w => w.WorkerSkills)
+                 .HasForeignKey(w => w.WorkerId)
+                 .OnDelete(DeleteBehavior.Cascade),
+             j =>
+             {
+                 j.Ignore(w => w.Id).HasKey(w => new { w.WorkerId, w.SkillId });
+             });
+
+            // Workers-Shifts
+            modelBuilder.Entity<WorkerShift>().HasKey(w => w.Id);
+            modelBuilder.Entity<WorkerShift>().Property(i => i.WorkerId).IsRequired();
 
             // Groups-Department
             modelBuilder.Entity<Group>().HasOne<Department>(s => s.Department).WithMany(c => c.Groups).HasForeignKey(c => c.DepartmentId);
-
-            // WorkerShifts(TimeKeeping)
-            modelBuilder.Entity<WorkerShift>().HasKey(c => c.Id);
-            modelBuilder.Entity<WorkerShift>().HasOne<Worker>(c => c.Worker).WithMany(c => c.WorkerShifts);
-            modelBuilder.Entity<WorkerShift>().HasOne<Shift>(c => c.Shift).WithMany(c => c.WorkerShifts);
         }
 
         public DbSet<T> GetDbSet<T>() where T : class, IEntityService

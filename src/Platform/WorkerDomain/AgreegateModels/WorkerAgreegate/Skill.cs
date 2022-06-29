@@ -21,7 +21,9 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         [MaxLength(500)]
         public string Description { get; set; }
 
+        public virtual ICollection<Worker>? Workers { get; set; }
+
         [JsonIgnore]
-        public virtual ICollection<WorkerSkill> WorkerSkills { get; set; }
+        public virtual ICollection<WorkerSkill>? WorkerSkills { get; set; }
     }
 }
