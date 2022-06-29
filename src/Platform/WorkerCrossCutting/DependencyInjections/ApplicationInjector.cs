@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json.Serialization;
 
 namespace WorkerCrossCutting.DependencyInjections
 {
@@ -21,7 +22,6 @@ namespace WorkerCrossCutting.DependencyInjections
                 //TODO: https://codewithmukesh.com/blog/pagination-in-aspnet-core-webapi/
                 return new UriService(uri);
             });
-
 
             // application services
         }

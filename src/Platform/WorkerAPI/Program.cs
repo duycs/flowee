@@ -2,6 +2,7 @@ using AppShareServices.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using WorkerAPI.SeedData;
 using WorkerApplication.MappingConfigurations;
 using WorkerCrossCutting.DependencyInjections;
@@ -38,7 +39,10 @@ builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(typeof(AutoMapping));
 
 builder.Services.AddLayersInjector(configuration);
-builder.Services.AddControllers();
+
+// Ignore object depth is larger than the maximum allowed depth of 32: https://gavilan.blog/2021/05/19/fixing-the-error-a-possible-object-cycle-was-detected-in-different-versions-of-asp-net-core/
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
