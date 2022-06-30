@@ -33,6 +33,11 @@ namespace WorkerAPI.Controllers
             _commandDispatcher = commandDispatcher;
         }
 
+        /// <summary>
+        /// Add worker and relation Roles, Groups, Skills
+        /// </summary>
+        /// <param name="createWorkerVM"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateWorkerVM createWorkerVM)
         {
@@ -42,6 +47,11 @@ namespace WorkerAPI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Add more Groups, Roles, Skills if have
+        /// </summary>
+        /// <param name="pathUpdateWorkerVM"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
         public async Task<IActionResult> Update([FromBody] PathUpdateWorkerVM pathUpdateWorkerVM)
         {
@@ -51,6 +61,12 @@ namespace WorkerAPI.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Delete worker and relations
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -67,21 +83,19 @@ namespace WorkerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue)
+        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude)
         {
-            var route = Request.Path.Value;
             int totalRecords;
-            bool isInclude = true;
             var workerSpecification = new WorkerSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
             var pagedData = _repositoryService.Find<Worker>(filter.PageNumber, filter.PageSize, workerSpecification, out totalRecords).ToList();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Worker>(pagedData, filter, totalRecords, _uriService, route);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Worker>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
             return Ok(pagedReponse);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id, bool isInclude)
         {
-            var worker = _repositoryService.Find<Worker>(id);
+            var worker = _repositoryService.Find<Worker>(id, new WorkerSpecification(isInclude));
             return Ok(worker);
         }
 

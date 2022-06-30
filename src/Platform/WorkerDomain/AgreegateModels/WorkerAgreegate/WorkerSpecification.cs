@@ -7,18 +7,14 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
     public class WorkerSpecification : SpecificationBase<Worker>
     {
-        public WorkerSpecification(bool isInclude, string? searchValue, List<ColumnOrder>? columnOrders) : base()
+        public WorkerSpecification(bool isInclude, string? searchValue = "", List<ColumnOrder>? columnOrders = null) : base(isInclude)
         {
-            // set include
-            IsInclude = isInclude;
-
             // filter
             if (!string.IsNullOrEmpty(searchValue))
             {
                 searchValue = searchValue.ToLower().Trim();
-                Expression<Func<Worker, bool>> criteria = c => searchValue.Contains(c.Email.ToLower())
-                 || searchValue.Contains(c.FullName ?? "")
-                 || searchValue.Contains(c.Code.ToLower());
+                Expression<Func<Worker, bool>> criteria = c =>
+                searchValue.Contains(c.Email.ToLower()) || searchValue.Contains(c.FullName ?? "") || searchValue.Contains(c.Code.ToLower());
 
                 AddCriteria(criteria);
             }

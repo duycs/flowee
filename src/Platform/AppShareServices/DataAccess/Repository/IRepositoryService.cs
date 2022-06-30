@@ -24,7 +24,9 @@ namespace AppShareServices.DataAccess.Repository
         /// <returns></returns>
         List<T> Add<T>(params T[] entities) where T : class, IEntityService;
 
-        T Find<T>(int Id) where T : class, IEntityService;
+        T Find<T>(int id) where T : class, IEntityService;
+
+        T Find<T>(int id, SpecificationBase<T> specification) where T : class, IEntityService;
 
         T Find<T>(Expression<Func<T, bool>> where) where T : class, IEntityService;
 
@@ -77,7 +79,7 @@ namespace AppShareServices.DataAccess.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="Id"></param>
         /// <returns></returns>
-        bool Delete<T>(int Id) where T : class, IEntityService;
+        bool Delete<T>(int id) where T : class, IEntityService;
 
         /// <summary>
         /// Reserve to delete any entity match with condition. Call SaveChanges to save any deleting items.

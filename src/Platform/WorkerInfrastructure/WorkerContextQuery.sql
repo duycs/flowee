@@ -6,13 +6,23 @@ select * from departments;
 select * from shifts;
 select * from skillLevels;
 select * from skills;
+select * from workers;
 
 select * from workergroups;
-select * from workers;
+select * from workerRoles;
 select * from workerskills;
-select * from workershifts;
+select * from workerShifts;
 
 truncate table workerShifts;
+
+-- worker have roles, groups, department
+select w.Id as WorkerId, w.Code as WorkerCode, w.FullName as WorkerFullName, w.Email, r.Id as RoleId, r.Name as RoleName, r.Code as RoleCode,
+g.Id as GroupId, g.Name as GroupName, g.Code as GroupCode 
+from Workers w
+join WorkerRoles wr on w.Id = wr.WorkerId
+join Roles r on r.Id = wr.RoleId
+join WorkerGroups wg on w.Id = wg.GroupId
+join workerdb.Groups g on wg.GroupId = g.Id;
 
 -- worker have skill
 select w.id WorkerId, w.fullname WorkerName, w.code WorkerName, w.email WorkerEmail, 

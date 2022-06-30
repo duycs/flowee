@@ -26,9 +26,10 @@ namespace AppShareServices.Queries.Specification
         /// <summary>
         /// Default do not filter
         /// </summary>
-        protected SpecificationBase()
+        protected SpecificationBase(bool isInclude)
         {
             Criteria = c => true;
+            IsInclude = isInclude;
         }
 
         /// <summary>

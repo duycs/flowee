@@ -38,10 +38,27 @@ namespace AppShareServices.DataAccess.Repository
             return entities.ToList();
         }
 
-        public T Find<T>(int Id) where T : class, IEntityService
+        public T Find<T>(int id) where T : class, IEntityService
         {
-            return Database.GetDbSet<T>().FirstOrDefault(x => x.Id.Equals(Id));
+            return Database.GetDbSet<T>().FirstOrDefault(x => x.Id.Equals(id));
         }
+
+        public T Find<T>(int id, SpecificationBase<T> specification) where T : class, IEntityService
+        {
+            var query = Database.GetDbSet<T>().AsQueryable().Where(w => w.Id == id);
+
+            if (specification.IsInclude)
+            {
+                query = AsQueryInClude(specification);
+            }
+            else
+            {
+                query = query.Where(specification.Criteria);
+            }
+
+            return query.FirstOrDefault();
+        }
+
 
         public T Find<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
         {
@@ -162,10 +179,10 @@ namespace AppShareServices.DataAccess.Repository
             return true;
         }
 
-        public bool Delete<T>(int Id) where T : class, IEntityService
+        public bool Delete<T>(int id) where T : class, IEntityService
         {
             var dbset = Database.GetDbSet<T>();
-            var item = dbset.FirstOrDefault(x => x.Id == Id);
+            var item = dbset.FirstOrDefault(x => x.Id == id);
             if (item != null)
             {
                 dbset.Remove(item);
@@ -196,7 +213,18 @@ namespace AppShareServices.DataAccess.Repository
 
         public IEnumerable<T> Find<T>(SpecificationBase<T> specification) where T : class, IEntityService
         {
-            return Database.GetDbSet<T>().AsQueryable().Where(specification.Criteria);
+            var query = Database.GetDbSet<T>().AsQueryable();
+
+            if (specification.IsInclude)
+            {
+                query = AsQueryInClude(specification);
+            }
+            else
+            {
+                query = query.Where(specification.Criteria);
+            }
+
+            return query.AsEnumerable();
         }
 
         public IEnumerable<T> Find<T>(int pageIndex, int pageSize, SpecificationBase<T> specification, out int totalPage) where T : class, IEntityService
