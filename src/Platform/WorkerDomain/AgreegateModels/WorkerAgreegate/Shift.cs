@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
-namespace WorkerDomain.AgreegateModels.TimeKeepingAgreegate
+namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
     /// <summary>
     /// Shif1, Shift2, Shift3 is normal shift, other is abNormal shift

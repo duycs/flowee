@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 using System.Reflection;
-using WorkerDomain.AgreegateModels.TimeKeepingAgreegate;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerInfrastructure.DataAccess.EntityConfigurations;
 

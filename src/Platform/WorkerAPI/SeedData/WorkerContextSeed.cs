@@ -4,7 +4,6 @@ using Polly;
 using Polly.Retry;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
-using WorkerDomain.AgreegateModels.TimeKeepingAgreegate;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 using WorkerInfrastructure.DataAccess;
 using Group = WorkerDomain.AgreegateModels.WorkerAgreegate.Group;

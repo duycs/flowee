@@ -47,6 +47,7 @@ namespace WorkerAPI.Controllers
             return Ok();
         }
 
+
         /// <summary>
         /// Add more Groups, Roles, Skills if have
         /// </summary>
@@ -60,7 +61,6 @@ namespace WorkerAPI.Controllers
 
             return Ok();
         }
-
 
         /// <summary>
         /// Delete worker and relations

@@ -2,7 +2,6 @@
 using AppShareServices.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using WorkerDomain.AgreegateModels.TimeKeepingAgreegate;
 
 namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 {
