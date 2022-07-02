@@ -1,14 +1,13 @@
-using AppShareServices.DataAccess;
+using CustomerAPI.SeedData;
+using CustomerApplication.MappingConfigurations;
+using CustomerCrossCutting.DependencyInjections;
+using CustomerInfrastructure;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using WorkerAPI.SeedData;
-using WorkerApplication.MappingConfigurations;
-using WorkerCrossCutting.DependencyInjections;
-using WorkerInfrastructure.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
+
 IConfiguration configuration;
 
 var configurationBuilder = new ConfigurationBuilder()
@@ -30,38 +29,32 @@ else if (builder.Environment.IsProduction())
     .AddEnvironmentVariables();
 }
 
-// Add services to the container.
-// Cross cutting IoC layers
 configuration = configurationBuilder.Build();
 
-// TODO: move to infrastructure
+// Add services to the container.
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(typeof(AutoMapping));
 
 builder.Services.AddLayersInjector(configuration);
 
-// Ignore object depth is larger than the maximum allowed depth of 32: https://gavilan.blog/2021/05/19/fixing-the-error-a-possible-object-cycle-was-detected-in-different-versions-of-asp-net-core/
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors();
 
 var app = builder.Build();
 
 // Migrate and seed database
 using (var serviceScope = app.Services.CreateScope())
 {
-    var workerContext = serviceScope.ServiceProvider.GetRequiredService<WorkerContext>();
-    var logger = serviceScope.ServiceProvider.GetService<ILogger<WorkerContextSeed>>();
-    var workerContextSeed = new WorkerContextSeed(workerContext, logger, builder.Environment, configuration, builder.Environment.ContentRootPath, "SeedData");
-    workerContextSeed.Created();
-    workerContextSeed.Migrate();
-    workerContextSeed.SeedAsync().Wait();
-
-    var eventContext = serviceScope.ServiceProvider.GetRequiredService<EventContext>();
-    eventContext.Database.EnsureCreated();
-    eventContext.Database.Migrate();
+    var customerContext = serviceScope.ServiceProvider.GetRequiredService<CustomerContext>();
+    var logger = serviceScope.ServiceProvider.GetService<ILogger<CustomerContextSeed>>();
+    var customerContextSeed = new CustomerContextSeed(customerContext, logger, builder.Environment, configuration, builder.Environment.ContentRootPath, "SeedData");
+    customerContextSeed.Created();
+    customerContextSeed.Migrate();
+    customerContextSeed.SeedAsync().Wait();
 }
 
 // Configure the HTTP request pipeline.

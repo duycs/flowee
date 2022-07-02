@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using WorkerApplication.Commands;
 using WorkerApplication.Events;
-using WorkerDomain.Events;
 
 namespace WorkerCrossCutting.DependencyInjections
 {

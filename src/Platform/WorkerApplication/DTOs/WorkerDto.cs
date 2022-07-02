@@ -11,7 +11,6 @@ namespace WorkerApplication.DTOs
     {
         public string FullName { get; set; }
         public string Email { get; set; }
-        public Role Role { get; set; }
-        public Department Department { get; set; }
+        public Role[] Roles { get; set; }
     }
 }

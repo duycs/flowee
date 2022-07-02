@@ -32,13 +32,14 @@ namespace WorkerInfrastructure.DataAccess
 
         public bool HasActiveTransaction => _currentTransaction != null;
 
-        public WorkerContext()
-        {
-        }
 
         public WorkerContext(DbContextOptions<WorkerContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
+        public WorkerContext()
+        {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

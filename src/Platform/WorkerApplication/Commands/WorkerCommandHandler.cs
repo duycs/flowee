@@ -5,7 +5,6 @@ using AppShareServices.Notification;
 using MediatR;
 using WorkerApplication.Events;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
-using WorkerDomain.Events;
 
 namespace WorkerApplication.Commands
 {

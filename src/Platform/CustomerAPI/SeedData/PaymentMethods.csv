@@ -1,0 +1,3 @@
+﻿Alias,CardNumber,SecurityNumber,CardHolderName,CardType
+fakeAlias,12345678,123,fakeCardHolderName,Visa
+fakeAlias2,897654321,222,fakeCardHolderName2,MasterCard

@@ -9,6 +9,7 @@ using WorkerInfrastructure.DataAccess;
 using Group = WorkerDomain.AgreegateModels.WorkerAgreegate.Group;
 using AppShareServices.Extensions;
 using AppShareDomain.Models;
+using AppShareServices.DataAccess;
 
 namespace WorkerAPI.SeedData
 {
@@ -16,37 +17,25 @@ namespace WorkerAPI.SeedData
     /// Seed master data tables: departments, roles, shifts, skills, skillLevels
     /// Seed Relations tables: groups, workers, workerGroups, workerSkills, workerShifts(timeKeepings)
     /// </summary>
-    public class WorkerContextSeed
+    public class WorkerContextSeed : SeedDataBase
     {
         private WorkerContext _context;
         private ILogger<WorkerContextSeed> _logger;
-        private string ContentRootPath;
-        private const string SeedDataFolder = "SeedData";
         private IConfiguration _configuration;
         private IWebHostEnvironment _hostEnvironment;
 
         public WorkerContextSeed(WorkerContext context, ILogger<WorkerContextSeed> logger,
-            IWebHostEnvironment hostEnvironment, IConfiguration configuration)
+            IWebHostEnvironment hostEnvironment, IConfiguration configuration, string contentRootPath, string seedDataFolder)
+            : base(context, contentRootPath, seedDataFolder)
         {
             _context = context;
             _logger = logger;
             _configuration = configuration;
             _hostEnvironment = hostEnvironment;
-            ContentRootPath = hostEnvironment.ContentRootPath;
-        }
-
-        public void Migrate()
-        {
-            _context.Database.Migrate();
-        }
-
-        public void Created()
-        {
-            _context.Database.EnsureCreated();
         }
 
         // Seed to database
-        public async Task SeedAsync()
+        public override async Task SeedAsync()
         {
             var policy = CreatePolicy(_logger, nameof(WorkerContextSeed));
 
@@ -313,7 +302,6 @@ namespace WorkerAPI.SeedData
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
-
         private IEnumerable<WorkerRole> GetWorkerRoleFromFile()
         {
             string csvFile = GetPathToFile("WorkerRoles.csv");
@@ -333,7 +321,6 @@ namespace WorkerAPI.SeedData
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
-
         private IEnumerable<Worker> GetWorkersFromFile()
         {
             string csvFile = GetPathToFile("Workers.csv");
@@ -596,25 +583,6 @@ namespace WorkerAPI.SeedData
 
             return workerRole;
         }
-
-
-        // CSV helper
-        private AsyncRetryPolicy CreatePolicy(ILogger<WorkerContextSeed> _logger, string prefix, int retries = 3)
-        {
-            return Policy.Handle<SqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        _logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
-                    }
-                );
-        }
-
-        private string GetPathToFile(string csvFile)
-        {
-            return Path.Combine(ContentRootPath, SeedDataFolder, csvFile);
-        }
+      
     }
 }
