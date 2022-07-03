@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AgreegateModels\" />
+    <None Remove="AgreegateModels\OrderAgreegate\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AgreegateModels\" />
+    <Folder Include="AgreegateModels\OrderAgreegate\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppShareServices\AppShareServices.csproj" />
+    <ProjectReference Include="..\..\AppShareDomain\AppShareDomain.csproj" />
+  </ItemGroup>
+</Project>

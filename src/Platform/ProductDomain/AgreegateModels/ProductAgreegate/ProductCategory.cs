@@ -3,7 +3,7 @@ using AppShareServices.Models;
 
 namespace ProductDomain.AgreegateModels.ProductAgreegate
 {
-    public class ProductCategories : Entity
+    public class ProductCategory : Entity
     {
         public int ProductId { get; set; }
         public Product Product { get; set; }
