@@ -11,7 +11,6 @@ namespace CustomerApplication.Commands
     public abstract class CustomerCommand : Command
     {
         public int Id { get; set; }
-
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Code { get; set; }
@@ -49,6 +48,34 @@ namespace CustomerApplication.Commands
         {
             RuleFor(i => i.Email).NotEmpty().WithMessage("The email is require");
             RuleFor(i => i.Email).EmailAddress().WithMessage("The email invalid");
+        }
+    }
+
+    public class UpdateCustomerCommand : CustomerCommand
+    {
+        public UpdateCustomerCommand(int id, string? firstName, string? lastName, string? phone, string? description, int? currencyId, int? priorityLevelId, int[]? paymentMethodIds)
+        {
+            Id = Id;
+            FirstName = firstName;
+            LastName = lastName;
+            Phone = phone;
+            Description = description;
+            CurrencyId = currencyId;
+            PriorityLevelId = priorityLevelId;
+            PaymentMethodIds = paymentMethodIds;
+        }
+
+        public override bool IsValid()
+        {
+            return new UpdateCustomerCommandValidator().Validate(this).IsValid;
+        }
+    }
+
+    public class UpdateCustomerCommandValidator : AbstractValidator<UpdateCustomerCommand>
+    {
+        public UpdateCustomerCommandValidator()
+        {
+            RuleFor(i => i.Id).NotEmpty().WithMessage("The id is require");
         }
     }
 }

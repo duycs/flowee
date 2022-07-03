@@ -43,5 +43,45 @@ namespace CustomerDomain.AgreegateModels.CustomerAgreegate
                 PaymentMethods = paymentMethods
             };
         }
+
+        public Customer PathUpdate(string? firstName, string? lastName, string? phone, string? description, Currency? currency, PriorityLevel? priorityLevel, List<PaymentMethod> paymentMethods)
+        {
+            if (!string.IsNullOrEmpty(firstName))
+            {
+                FirstName = firstName;
+            }
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                LastName = lastName;
+            }
+
+            if (!string.IsNullOrEmpty(phone))
+            {
+                Phone = phone;
+            }
+
+            if (!string.IsNullOrEmpty(description))
+            {
+                Description = description;
+            }
+
+            if (currency != null)
+            {
+                Currency = currency;
+            }
+
+            if (priorityLevel != null)
+            {
+                PriorityLevel = priorityLevel;
+            }
+
+            if (paymentMethods != null)
+            {
+                PaymentMethods = paymentMethods;
+            }
+
+            return this;
+        }
     }
 }

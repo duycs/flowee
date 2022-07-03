@@ -36,5 +36,18 @@ namespace CustomerAPI.Controllers
             await _commandDispatcher.Send(createCustomerCommand);
             return Ok();
         }
+
+        /// <summary>
+        /// Path update fields of customer
+        /// </summary>
+        /// <param name="updateCustomerVM"></param>
+        /// <returns></returns>
+        [HttpPatch]
+        public async Task<IActionResult> PathUpdate([FromBody] UpdateCustomerVM updateCustomerVM)
+        {
+            var updateCustomerCommand = _mappingService.Map<UpdateCustomerCommand>(updateCustomerVM);
+            await _commandDispatcher.Send(updateCustomerCommand);
+            return Ok();
+        }
     }
 }
