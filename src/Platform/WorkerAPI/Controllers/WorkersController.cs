@@ -54,7 +54,7 @@ namespace WorkerAPI.Controllers
         /// <param name="pathUpdateWorkerVM"></param>
         /// <returns></returns>
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Update([FromBody] PathUpdateWorkerVM pathUpdateWorkerVM)
+        public async Task<IActionResult> Update(int id, [FromBody] PathUpdateWorkerVM pathUpdateWorkerVM)
         {
             var updateWorkerCommand = _mappingService.Map<UpdateWorkerCommand>(pathUpdateWorkerVM);
             await _commandDispatcher.Send(updateWorkerCommand);
@@ -95,8 +95,13 @@ namespace WorkerAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, bool isInclude)
         {
-            var worker = _repositoryService.Find<Worker>(id, new WorkerSpecification(isInclude));
-            return Ok(worker);
+            var workerExisting = _repositoryService.Find<Worker>(id, new WorkerSpecification(isInclude));
+            if (workerExisting == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(workerExisting);
         }
 
     }
