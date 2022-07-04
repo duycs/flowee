@@ -63,6 +63,8 @@ namespace CustomerInfrastructure
                .WithOne()
                //.HasForeignKey("CustomerId")
                .OnDelete(DeleteBehavior.Cascade);
+
+
         }
 
     }

@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="ViewModels\" />
+    <None Remove="Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
+    <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
+    <ProjectReference Include="..\ProductInfrastructure\ProductInfrastructure.csproj" />
+  </ItemGroup>
 </Project>

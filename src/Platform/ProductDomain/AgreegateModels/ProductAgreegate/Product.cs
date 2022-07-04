@@ -35,6 +35,11 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
         public int? ProductLevelId { get; set; }
         public ProductLevel? ProductLevel { get; set; }
 
+        /// <summary>
+        /// Link to Specification where defiend this product
+        /// </summary>
+        public int SpecificationId { get; set; }
+
         public virtual ICollection<Category>? Categories { get; set; }
 
         [JsonIgnore]

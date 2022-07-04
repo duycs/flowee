@@ -17,4 +17,9 @@
   <ItemGroup>
     <Folder Include="SeedData\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProductApplication\ProductApplication.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
