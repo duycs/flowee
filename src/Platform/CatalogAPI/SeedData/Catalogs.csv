@@ -1,0 +1,7 @@
+﻿Code,Name,Description,PriceStandar,Currency,QuantityAvailable,SpecificationId
+SingleExposure,Single Exposure,Single Exposure,1,USD,1000,1
+HDRPhoto,HDR Photo,HDR Photo,1,USD,1000,2
+FlambientLV1,Flambient LV1,Flambient LV1,1,USD,1000,3
+FlambientLV2,Flambient LV2,Flambient LV2,1.5,USD,1000,4
+FlambientLV5,Flambient LV5,Flambient LV3,1.7,USD,1000,5
+EditorialStyle,Editorial Style, Editorial Style,2,USD,2000,6

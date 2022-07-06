@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using AppShareDomain.Models;
 using AppShareServices.Models;
-using CatalogDomain.AgreegateModels.SpecificationAgreegate;
 
 namespace CatalogDomain.AgreegateModels.CatalogAgreegate
 {
@@ -26,28 +25,30 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         /// <summary>
         /// Quantity available in stock
         /// </summary>
-        public int QuantityAvailable { get; set; }
+        public int? QuantityAvailable { get; set; }
 
         /// <summary>
         /// Price of Product in standar
         /// </summary>
-        public decimal PriceStandar { get; set; }
+        public decimal? PriceStandar { get; set; }
 
         /// <summary>
         /// Total price of Product standar and price of Addons
         /// </summary>
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
+
+        public int? CurrencyId { get; set; }
+        public Currency? Currency { get; set; }
 
         /// <summary>
         /// Specification defiend how to made this Product standar
         /// </summary>
-        public int SpecificationId { get; set; }
+        public int? SpecificationId { get; set; }
 
         /// <summary>
         /// Specification of Product standar and Addons
         /// </summary>
         public ICollection<int>? SpecificationIds { get; set; }
-
 
         /// <summary>
         /// Product standar can have n Addons
@@ -57,13 +58,16 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         [JsonIgnore]
         public virtual ICollection<CatalogAddon>? CatalogAddons { get; set; }
 
-        public static Catalog Create(string name, string? description, decimal priceStandar, int quantityAvailable, List<Addon>? addons)
+        public static Catalog Create(string code, string name, decimal priceStandar, Currency currency, int? secificationId, int? quantityAvailable, string? description, List<Addon>? addons)
         {
             return new Catalog()
             {
+                Code = code,
                 Name = name,
                 Description = description,
                 PriceStandar = priceStandar,
+                Currency = currency,
+                SpecificationId = secificationId,
                 QuantityAvailable = quantityAvailable,
                 Addons = addons
             };
@@ -72,11 +76,16 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         public List<int> GetSpecifications()
         {
             var specifications = new List<int>();
-            var specificationProductStandar = new List<int>() { SpecificationId };
+            if (SpecificationId != null)
+            {
+                var specificationProductStandar = new List<int>() { SpecificationId ?? 0 };
+                specifications.AddRange(specificationProductStandar);
+            }
+
             if (Addons != null && Addons.Any())
             {
-                var specificationAddons = Addons.Select(i => i.SpecificationId).ToList();
-                specificationProductStandar.AddRange(specificationAddons);
+                var specificationAddons = Addons.Where(i => i.SpecificationId != null).Select(i => i.SpecificationId).ToList();
+                specifications.AddRange((IEnumerable<int>)specificationAddons);
             }
 
             return specifications;
@@ -86,11 +95,16 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         {
             if (Addons != null && Addons.Any())
             {
-                decimal totalAddonPrice = Addons.Sum(i => i.Price);
-                return PriceStandar + totalAddonPrice;
+                decimal totalAddonPrice = Addons.Sum(i => i.Price ?? 0);
+                return PriceStandar ?? 0 + totalAddonPrice;
             }
 
-            return PriceStandar;
+            return PriceStandar ?? 0;
+        }
+
+        public string PriceToString()
+        {
+            return string.Format("{0} {1}", CanculatePrice(), Currency?.ToString() ?? "");
         }
 
         public bool IsAvaliableInStock()

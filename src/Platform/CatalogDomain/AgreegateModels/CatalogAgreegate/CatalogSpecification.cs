@@ -53,11 +53,11 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
                         case nameof(Catalog.PriceStandar):
                             if (columnOrder.Order == Order.DESC)
                             {
-                                AddOrderByDescending(w => w.PriceStandar);
+                                AddOrderByDescending(w => w.PriceStandar ?? 0);
                             }
                             else
                             {
-                                AddOrderBy(w => w.PriceStandar);
+                                AddOrderBy(w => w.PriceStandar ?? 0);
                             }
 
                             break;
@@ -65,11 +65,11 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
                         case nameof(Catalog.Price):
                             if (columnOrder.Order == Order.DESC)
                             {
-                                AddOrderByDescending(w => w.Price);
+                                AddOrderByDescending(w => w.Price ?? 0);
                             }
                             else
                             {
-                                AddOrderBy(w => w.Price);
+                                AddOrderBy(w => w.Price ?? 0);
                             }
 
                             break;

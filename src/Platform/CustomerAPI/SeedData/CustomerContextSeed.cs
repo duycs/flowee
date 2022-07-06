@@ -3,9 +3,7 @@ using AppShareServices.DataAccess;
 using AppShareServices.Extensions;
 using CustomerDomain.AgreegateModels.CustomerAgreegate;
 using CustomerInfrastructure;
-using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
-using WorkerInfrastructure.DataAccess;
 
 namespace CustomerAPI.SeedData
 {

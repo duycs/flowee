@@ -1,1 +1,2 @@
-﻿Code,Name,Description,PriceStandar,Price,QuantityAvailable,ProductLevelId,SpecificationId
+﻿Code,Name,Description,CatalogId,CustomerId,CategoryIds
+FIT-MM,PE-LV1,Wall paint is white. Do not add fire. Do not add blue skies.,1,1,"1"

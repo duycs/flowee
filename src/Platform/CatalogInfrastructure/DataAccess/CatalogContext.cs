@@ -9,6 +9,7 @@ namespace CatalogInfrastructure.DataAccess
         public DbSet<Addon> Addons { get; set; }
         public DbSet<Catalog> Catalogs { get; set; }
         public DbSet<CatalogAddon> CatalogAddons { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
 
         DbSet<T> IDatabaseService.GetDbSet<T>()
         {
@@ -61,6 +62,8 @@ namespace CatalogInfrastructure.DataAccess
                    j.Ignore(w => w.Id).HasKey(w => new { w.CatalogId, w.AddonId });
                });
 
+            modelBuilder.Entity<Catalog>().HasOne(c => c.Currency);
+            modelBuilder.Entity<Addon>().HasOne(c => c.Currency);
 
         }
 

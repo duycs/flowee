@@ -12,7 +12,7 @@ namespace AppShareServices.Validations
     {
         public CommandValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required");
+            RuleFor(x => x.Guid).NotEmpty().WithMessage("Id is required");
         }
     }
 }

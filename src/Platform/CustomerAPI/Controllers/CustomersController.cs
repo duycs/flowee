@@ -69,7 +69,7 @@ namespace CustomerAPI.Controllers
             int totalRecords;
             var customerSpecification = new CustomerSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
             var pagedData = _repositoryService.Find<Customer>(filter.PageNumber, filter.PageSize, customerSpecification, out totalRecords).ToList();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Customer>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<Customer>(pagedData, filter, totalRecords, _uriService, Request.Path.Value ?? "");
             return Ok(pagedReponse);
         }
 
@@ -78,7 +78,7 @@ namespace CustomerAPI.Controllers
         {
             var customerExisting = _repositoryService.Find<Customer>(id, new CustomerSpecification(isInclude));
 
-            if(customerExisting == null)
+            if (customerExisting == null)
             {
                 return NotFound();
             }

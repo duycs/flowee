@@ -1,3 +1,13 @@
-﻿Code,Name,Description,Price
-WM,Window Masking,Window Masking,100
-WM,Window Masking,Window Masking,100
+﻿Code,Name,Description,Price,Currency
+WindowMasking,Window Masking,Window Masking,0.5,USD
+IndoorSkypeReplacement,Indoor skype replacements,Indoor skype replacements,0.5,USD
+Resize,Resize,Resize,0.5,USD
+AddLogo,Add logo,Add logo,0.5,USD
+VituralralLight,Vituralral light,Vituralral light,0.5,USD
+AddTVScreen,Add TV Screen(black out),Add TV Screen(black out),0.5,USD
+MakeCelling,Make celling,Make celling-wall-things-ect white,1,USD
+FlashShadowRemoveals,Flash shadow removals,Flash shadow removals,0.5,USD
+LawnPatchingMakeGreenGlass,Lawn patching make green glass,Lawn patching make green glass,0.5,USD
+SmallObjectsRemovals,Small object removals, Small object removals,0.5,USD
+WriesRemoval,Wire Removal-bin-holes-ect,Wire Removal-bin-holes-ect,0.5,USD
+

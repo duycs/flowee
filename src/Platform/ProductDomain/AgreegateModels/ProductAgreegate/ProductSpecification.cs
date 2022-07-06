@@ -15,8 +15,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             {
                 searchValue = searchValue.ToLower().Trim();
                 Expression<Func<Product, bool>> criteria = c =>
-                searchValue.Contains(c.Code.ToLower()) || searchValue.Contains(c.Name.ToLower() ?? "")
-                || searchValue.Contains(c.Description.ToLower() ?? "") || searchValue.Contains(c.ProductLevel.ToString().ToLower() ?? ""));
+                    searchValue.Contains(c.Code.ToLower()) || searchValue.Contains(c.Name.ToLower() ?? "") || searchValue.Contains(c.Description.ToLower() ?? "");
 
                 AddCriteria(criteria);
             }
@@ -52,42 +51,6 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 
                             break;
 
-                        case nameof(Product.ProductLevel):
-                            if (columnOrder.Order == Order.DESC)
-                            {
-                                AddOrderByDescending(w => w.ProductLevel);
-                            }
-                            else
-                            {
-                                AddOrderBy(w => w.ProductLevel);
-                            }
-
-                            break;
-
-                        case nameof(Product.PriceStandar):
-                            if (columnOrder.Order == Order.DESC)
-                            {
-                                AddOrderByDescending(w => w.PriceStandar);
-                            }
-                            else
-                            {
-                                AddOrderBy(w => w.PriceStandar);
-                            }
-
-                            break;
-
-                        case nameof(Product.Price):
-                            if (columnOrder.Order == Order.DESC)
-                            {
-                                AddOrderByDescending(w => w.Price);
-                            }
-                            else
-                            {
-                                AddOrderBy(w => w.Price);
-                            }
-
-                            break;
-
                         case nameof(Product.DateCreated):
                             if (columnOrder.Order == Order.DESC)
                             {
@@ -111,8 +74,6 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             if (IsInclude)
             {
                 AddInclude(w => w.Categories);
-                AddInclude(w => w.Addons);
-                AddInclude(w => w.ProductLevel);
             }
 
         }

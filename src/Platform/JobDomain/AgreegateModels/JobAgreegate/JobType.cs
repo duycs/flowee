@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppShareDomain.Models;
 
 namespace JobDomain.AgreegateModels.JobAgreegate
 {
-    public class JobType
+    public class JobType : Enumeration
     {
-        public string Name { get; set; }
+        public static JobType SingleWorker = new JobType(0, nameof(SingleWorker).ToLowerInvariant());
+        public static JobType MultipleWorker = new JobType(1, nameof(MultipleWorker).ToLowerInvariant());
+        public JobType(int id, string name) : base(id, name)
+        {
+        }
     }
 }

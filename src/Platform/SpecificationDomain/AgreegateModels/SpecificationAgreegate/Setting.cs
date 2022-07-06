@@ -19,7 +19,6 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public int? SpecificationId { get; set; }
         public ICollection<Specification>? Specifications { get; set; }
         public ICollection<SpecificationSetting>? SpecificationSettings { get; set; }
     }

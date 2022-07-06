@@ -11,7 +11,7 @@ namespace AppShareServices.Commands
 {
     public abstract class Command : IRequest
     {
-        public Guid Id { get; set; }
+        public Guid Guid { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the message.

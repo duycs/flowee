@@ -7,11 +7,8 @@ namespace ProductInfrastructure.DataAccess
 {
     public class ProductContext : DbContext, IDatabaseService
     {
-        public DbSet<Addon> Addons { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<ProductLevel> ProductLevels { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductAddon> ProductAddons { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
         DbSet<T> IDatabaseService.GetDbSet<T>()
@@ -45,19 +42,6 @@ namespace ProductInfrastructure.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            // ProductLevel
-            modelBuilder.Entity<ProductLevel>().ToTable("ProductLevels").HasKey(c => c.Id);
-            modelBuilder.Entity<ProductLevel>().Property(c => c.Id)
-                .HasDefaultValue(1)
-                .ValueGeneratedNever()
-                .IsRequired();
-            modelBuilder.Entity<ProductLevel>().Property(c => c.Name)
-               .HasMaxLength(250)
-               .IsRequired();
-
-            // Product-ProductLevel
-            modelBuilder.Entity<Product>().HasOne<ProductLevel>();
-
             // Products-Categories
             modelBuilder.Entity<Product>()
             .HasMany(i => i.Categories)
@@ -77,27 +61,6 @@ namespace ProductInfrastructure.DataAccess
                 {
                     j.Ignore(w => w.Id).HasKey(w => new { w.ProductId, w.CategoryId });
                 });
-
-            // Products-Addons
-            modelBuilder.Entity<Product>()
-           .HasMany(i => i.Addons)
-           .WithMany(i => i.Products)
-           .UsingEntity<ProductAddon>(
-               j => j
-                   .HasOne(w => w.Addon)
-                   .WithMany(w => w.ProductAddons)
-                   .HasForeignKey(w => w.AddonId)
-                   .OnDelete(DeleteBehavior.Cascade),
-               j => j
-                   .HasOne(w => w.Product)
-                   .WithMany(w => w.ProductAddons)
-                   .HasForeignKey(w => w.ProductId)
-                   .OnDelete(DeleteBehavior.Cascade),
-               j =>
-               {
-                   j.Ignore(w => w.Id).HasKey(w => new { w.ProductId, w.AddonId });
-               });
-
 
         }
 

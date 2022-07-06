@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using WorkerApplication.Commands;
 
 namespace CustomerCrossCutting.DependencyInjections
 {
@@ -36,7 +35,7 @@ namespace CustomerCrossCutting.DependencyInjections
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddScoped<IEventDispatcher, EventDispatcher>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
-            services.AddMediatR(typeof(WorkerCommandHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CustomerCommandHandler).GetTypeInfo().Assembly);
             services.AddScoped<IRequestHandler<CreateCustomerCommand>, CustomerCommandHandler>();
 
             // Infra

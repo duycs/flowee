@@ -5,8 +5,8 @@ using System.Text.Json.Serialization;
 
 namespace CatalogDomain.AgreegateModels.CatalogAgreegate
 {
-	public class Addon : Entity
-	{
+    public class Addon : Entity
+    {
         [MaxLength(36)]
         public string Code { get; set; }
         [MaxLength(250)]
@@ -19,7 +19,10 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         /// </summary>
         public int? SpecificationId { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
+
+        public int? CurrencyId { get; set; }
+        public Currency? Currency { get; set; }
 
         public virtual ICollection<Catalog>? Catalogs { get; set; }
 

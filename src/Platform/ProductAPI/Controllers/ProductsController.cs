@@ -4,7 +4,9 @@ using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using Microsoft.AspNetCore.Mvc;
 using ProductApplication.Commands;
+using ProductApplication.DTOs;
 using ProductDomain.AgreegateModels.ProductAgreegate;
+using System.Text.Json;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
 namespace ProductAPI.Controllers
@@ -19,15 +21,18 @@ namespace ProductAPI.Controllers
         private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public ProductsController(ILogger<ProductsController> logger, IRepositoryService repositoryService,
-            IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher)
+            IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher,
+            IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             _repositoryService = repositoryService;
             _mappingService = mappingService;
             _uriService = uriService;
             _commandDispatcher = commandDispatcher;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpPost]
@@ -70,6 +75,12 @@ namespace ProductAPI.Controllers
             return Ok(pagedReponse);
         }
 
+        /// <summary>
+        /// Get all relation data if include is true
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="isInclude"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, bool isInclude)
         {
@@ -80,8 +91,26 @@ namespace ProductAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(productExisting);
-        }
+            var productDto = _mappingService.Map<ProductDto>(productExisting);
 
+            if (isInclude)
+            {
+                var httpClient = _httpClientFactory.CreateClient("Catalog");
+                var httpResponseMessage = await httpClient.GetAsync($"/{productExisting.CatalogId}");
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+                    var catalogDto = await JsonSerializer.DeserializeAsync<CatalogDto>(contentStream);
+                    productDto.Catalog = catalogDto;
+                }
+
+                return Ok(productDto);
+            }
+            else
+            {
+                return Ok(productExisting);
+            }
+        }
     }
 }

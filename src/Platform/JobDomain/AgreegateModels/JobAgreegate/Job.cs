@@ -1,17 +1,17 @@
-﻿using JobDomain.AgreegateModels.ProductAgreegate;
-using JobDomain.AgreegateModels.WorkerAgreegate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppShareDomain.Models;
+using AppShareServices.Models;
 
 namespace JobDomain.AgreegateModels.JobAgreegate
 {
-    public class Job
+    public class Job : Entity, IAggregateRoot
     {
-        public Product Product { get; set; }
-        public List<Worker> Workers { get; set; }
+        /// <summary>
+        /// Product has Specifications for instruction job how to do
+        /// </summary>
+        public int ProductId { get; set; }
+        public int[]? WorkerIds { get; set; }
+        public JobStatus JobStatus { get; set; }
+        public JobType? JobType { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
     }
