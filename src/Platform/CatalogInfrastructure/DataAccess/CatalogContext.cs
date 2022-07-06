@@ -29,7 +29,7 @@ namespace CatalogInfrastructure.DataAccess
             if (!optionsBuilder.IsConfigured)
             {
                 // TODO: Move to out side
-                optionsBuilder.UseMySql("Server=localhost;port=3306;Database=ProductDb;user=root;password=abc@1234;CharSet=utf8;", new MySqlServerVersion(new Version(8, 0, 21)));
+                optionsBuilder.UseMySql("Server=localhost;port=3306;Database=CatalogDb;user=root;password=abc@1234;CharSet=utf8;", new MySqlServerVersion(new Version(8, 0, 21)));
             }
         }
 

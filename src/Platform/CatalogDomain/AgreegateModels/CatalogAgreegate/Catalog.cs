@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using AppShareDomain.Models;
 using AppShareServices.Models;
+using CatalogDomain.AgreegateModels.SpecificationAgreegate;
 
 namespace CatalogDomain.AgreegateModels.CatalogAgreegate
 {
@@ -22,23 +23,36 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         [MaxLength(2000)]
         public string? Description { get; set; }
 
-        public decimal PriceStandar { get; set; }
-        public decimal Price { get; set; }
-
         /// <summary>
         /// Quantity available in stock
         /// </summary>
         public int QuantityAvailable { get; set; }
 
         /// <summary>
+        /// Price of Product in standar
+        /// </summary>
+        public decimal PriceStandar { get; set; }
+
+        /// <summary>
+        /// Total price of Product standar and price of Addons
+        /// </summary>
+        public decimal Price { get; set; }
+
+        /// <summary>
+        /// Specification defiend how to made this Product standar
+        /// </summary>
+        public int SpecificationId { get; set; }
+
+        /// <summary>
+        /// Specification of Product standar and Addons
+        /// </summary>
+        public ICollection<int>? SpecificationIds { get; set; }
+
+
+        /// <summary>
         /// Product standar can have n Addons
         /// </summary>
         public virtual ICollection<Addon>? Addons { get; set; }
-
-        /// <summary>
-        /// Link to Specification where defiend this product
-        /// </summary>
-        public int SpecificationId { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<CatalogAddon>? CatalogAddons { get; set; }
@@ -53,6 +67,19 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
                 QuantityAvailable = quantityAvailable,
                 Addons = addons
             };
+        }
+
+        public List<int> GetSpecifications()
+        {
+            var specifications = new List<int>();
+            var specificationProductStandar = new List<int>() { SpecificationId };
+            if (Addons != null && Addons.Any())
+            {
+                var specificationAddons = Addons.Select(i => i.SpecificationId).ToList();
+                specificationProductStandar.AddRange(specificationAddons);
+            }
+
+            return specifications;
         }
 
         public decimal CanculatePrice()

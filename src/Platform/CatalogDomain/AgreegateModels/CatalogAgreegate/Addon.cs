@@ -9,10 +9,16 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
 	{
         [MaxLength(36)]
         public string Code { get; set; }
-        [MaxLength(2250)]
-        public string Name { get; set; }
+        [MaxLength(250)]
+        public string? Name { get; set; }
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
+
+        /// <summary>
+        /// Specification defiend how to made this Addon
+        /// </summary>
+        public int? SpecificationId { get; set; }
+
         public decimal Price { get; set; }
 
         public virtual ICollection<Catalog>? Catalogs { get; set; }

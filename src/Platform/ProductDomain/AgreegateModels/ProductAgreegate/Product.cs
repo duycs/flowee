@@ -38,7 +38,7 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
         /// <summary>
         /// Link to Specification where defiend this product
         /// </summary>
-        public int SpecificationId { get; set; }
+        public int? SpecificationId { get; set; }
 
         public virtual ICollection<Category>? Categories { get; set; }
 
@@ -53,7 +53,8 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
         /// </summary>
         public virtual ICollection<Addon>? Addons { get; set; }
 
-        public static Product Create(string name, string? description, decimal priceStandar, int quantityAvailable, List<Category>? categories, List<Addon>? addons)
+        public static Product Create(string name, string? description, decimal priceStandar, int quantityAvailable,
+            List<Category>? categories, List<Addon>? addons, int? specificationId)
         {
             return new Product()
             {
@@ -62,7 +63,8 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
                 PriceStandar = priceStandar,
                 QuantityAvailable = quantityAvailable,
                 Categories = categories,
-                Addons = addons
+                Addons = addons,
+                SpecificationId = specificationId
             };
         }
 

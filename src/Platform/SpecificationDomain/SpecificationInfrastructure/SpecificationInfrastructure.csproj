@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppShareDomain\AppShareDomain.csproj" />
+    <ProjectReference Include="..\..\AppShareServices\AppShareServices.csproj" />
+    <ProjectReference Include="..\SpecificationDomain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="DataAccess\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataAccess\" />
+  </ItemGroup>
+</Project>
