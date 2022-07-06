@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CatalogInfrastructure.DataAccess
 {
-    public class ProductContext : DbContext, IDatabaseService
+    public class CatalogContext : DbContext, IDatabaseService
     {
         public DbSet<Addon> Addons { get; set; }
         public DbSet<Catalog> Catalogs { get; set; }
@@ -20,7 +20,7 @@ namespace CatalogInfrastructure.DataAccess
             return Task.FromResult(base.SaveChanges());
         }
 
-        public ProductContext()
+        public CatalogContext()
         {
         }
 

@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
+    <ProjectReference Include="..\CatalogDomain\CatalogDomain.csproj" />
+  </ItemGroup>
+
 </Project>
