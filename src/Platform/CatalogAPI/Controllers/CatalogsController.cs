@@ -3,11 +3,9 @@ using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using CatalogApplication.Commands;
-using CatalogApplication.DTOs;
 using CatalogApplication.Services;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 namespace CatalogAPI.Controllers
 {
@@ -76,7 +74,7 @@ namespace CatalogAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, bool isInclude)
         {
-            var catalogDto = _catalogService.Get(id, isInclude);
+            var catalogDto = _catalogService.Find(id, isInclude);
             if (catalogDto == null)
             {
                 return NotFound();

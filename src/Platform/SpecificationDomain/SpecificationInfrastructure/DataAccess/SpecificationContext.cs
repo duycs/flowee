@@ -7,6 +7,8 @@ namespace SpecificationInfrastructure.DataAccess;
 
 public class SpecificationContext : DbContext, IDatabaseService
 {
+    public SpecificationContext() { }
+
     DbSet<T> IDatabaseService.GetDbSet<T>()
     {
         return Set<T>();

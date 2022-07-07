@@ -73,6 +73,10 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
             };
         }
 
+        /// <summary>
+        /// List Specifications of product standar and addons
+        /// </summary>
+        /// <returns></returns>
         public List<int> GetSpecifications()
         {
             var specifications = new List<int>();
@@ -91,6 +95,10 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
             return specifications;
         }
 
+        /// <summary>
+        /// Sum total price of product standar and addons
+        /// </summary>
+        /// <returns></returns>
         public decimal CanculatePrice()
         {
             if (Addons != null && Addons.Any())

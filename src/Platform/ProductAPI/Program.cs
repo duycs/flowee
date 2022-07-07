@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.Net.Http.Headers;
 using ProductAPI.SeedData;
 using ProductApplication.MappingConfigurations;
 using ProductCrossCutting.DependencyInjections;

@@ -19,7 +19,7 @@ namespace CatalogApplication.Services
             _specificationClientService = specificationClientService;
         }
 
-        public async Task<CatalogDto> Get(int id, bool isInclude)
+        public async Task<CatalogDto> Find(int id, bool isInclude)
         {
             var catalogExisting = _repositoryService.Find<Catalog>(id);
             var catalogDto = _mappingService.Map<CatalogDto>(catalogExisting);
@@ -52,6 +52,11 @@ namespace CatalogApplication.Services
             }
 
             return catalogDto;
+        }
+
+        public Task<IEnumerable<CatalogDto>> Find(int[] ids, bool isInclude)
+        {
+            throw new NotImplementedException();
         }
     }
 }

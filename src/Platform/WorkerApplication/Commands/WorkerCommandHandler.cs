@@ -39,7 +39,7 @@ namespace WorkerApplication.Commands
                 roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
                 if (invalidRoleIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"roleId {string.Join(",", invalidRoleIds)} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"RoleId {string.Join(",", invalidRoleIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
             }
@@ -49,7 +49,7 @@ namespace WorkerApplication.Commands
                 groups = _repositoryService.List<Group>(request.GroupIds, out int[] invalidGroupIds);
                 if (invalidGroupIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"groupId {string.Join(",", invalidGroupIds)} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"GroupId {string.Join(",", invalidGroupIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
             }
@@ -59,7 +59,7 @@ namespace WorkerApplication.Commands
                 skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
                 if (invalidSkillIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"skillId {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"SkillId {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
             }
@@ -74,7 +74,7 @@ namespace WorkerApplication.Commands
 
             if (!result)
             {
-                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"new worker could not insert"));
+                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"New Worker could not insert"));
                 return Unit.Value;
             }
 
@@ -95,7 +95,7 @@ namespace WorkerApplication.Commands
                 roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
                 if (invalidRoleIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"roleId {string.Join(",", invalidRoleIds)} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"RoleIds {string.Join(",", invalidRoleIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
             }
@@ -105,7 +105,7 @@ namespace WorkerApplication.Commands
                 groups = _repositoryService.List<Group>(request.GroupIds, out int[] invalidGroupIds);
                 if (invalidGroupIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"groupId {string.Join(",", invalidGroupIds)} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"GroupId {string.Join(",", invalidGroupIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
             }
@@ -115,7 +115,7 @@ namespace WorkerApplication.Commands
                 skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
                 if (invalidSkillIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"skillId {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"SkillIds {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
                     return Unit.Value;
                 }
             }
@@ -123,7 +123,7 @@ namespace WorkerApplication.Commands
             var workerExsiting = _repositoryService.Find<Worker>(request.Id);
             if (workerExsiting == null)
             {
-                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"worker does not existing"));
+                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Worker does not existing"));
                 return Unit.Value;
             }
 
@@ -133,7 +133,7 @@ namespace WorkerApplication.Commands
 
             if (!result)
             {
-                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"worker could not update"));
+                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Worker could not update"));
                 return Unit.Value;
             }
 
