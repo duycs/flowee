@@ -10,10 +10,15 @@
   <ItemGroup>
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
     <ProjectReference Include="..\CatalogDomain\CatalogDomain.csproj" />
+    <ProjectReference Include="..\ProductApplication\ProductApplication.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="6.3.2" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,9 @@ using AppShareServices.Mappings;
 using AppShareServices.Notification;
 using AppShareServices.Pagging;
 using AutoMapper;
+using CatalogApplication.ClientServices;
 using CatalogApplication.Commands;
+using CatalogApplication.Services;
 using CatalogInfrastructure.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -31,29 +33,36 @@ namespace CatalogCrossCutting.DependencyInjections
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
                 return new UriService(uri);
             });
+            services.AddTransient<ICatalogService, CatalogService>();
 
-            // Domain
+            // Domain Services
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddScoped<IEventDispatcher, EventDispatcher>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
             services.AddMediatR(typeof(CatalogCommandHandler).GetTypeInfo().Assembly);
             services.AddScoped<IRequestHandler<CreateCatalogCommand>, CatalogCommandHandler>();
 
-            // Infra
+            // Infrastructure
             services.AddDbContext<CatalogContext>(options => options.UseMySql(configuration.GetConnectionString("CatalogDb"), new MySqlServerVersion(new Version(8, 0, 21))));
             services.AddTransient<IDatabaseService, CatalogContext>();
             services.AddScoped<IRepositoryService, RepositoryService>();
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDomainEventRepository, DomainEventRepository>();
             services.AddScoped<IMappingService, MappingService>();
 
-            // Ousite Domain Services
+            // Ousite Domain Services, ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0
             services.AddHttpClient("Specification", httpClient =>
             {
-                httpClient.BaseAddress = new Uri("http://specifications//");
-                httpClient.DefaultRequestHeaders.Add(
-                    HeaderNames.Accept, "application/json");
+                httpClient.BaseAddress = new Uri($"http://api.v1/specifications/");
+                httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
+            // Or register client service
+            services.AddHttpClient<ISpecificationClientService>(_httpClient =>
+            {
+                _httpClient.BaseAddress = new Uri($"http://api.v1/specifications/");
+                _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            });
+            services.AddTransient<ISpecificationClientService, SpecificationClientService>();
+
         }
     }
 }
