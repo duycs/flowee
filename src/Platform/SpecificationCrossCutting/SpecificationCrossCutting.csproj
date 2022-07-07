@@ -14,6 +14,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
 		<ProjectReference Include="..\SpecificationApplication\SpecificationApplication.csproj" />
+		<ProjectReference Include="..\SpecificationInfrastructure\SpecificationInfrastructure.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

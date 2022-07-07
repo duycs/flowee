@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
     <ProjectReference Include="..\SpecificationDomain\SpecificationDomain.csproj" />
-    <ProjectReference Include="..\SpecificationInfrastructure\SpecificationInfrastructure.csproj" />
   </ItemGroup>
 
 </Project>

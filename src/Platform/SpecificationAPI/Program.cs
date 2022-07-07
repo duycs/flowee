@@ -1,5 +1,8 @@
 using MediatR;
+using SpecificationAPI.SeedData;
+using SpecificationApplication.MappingConfigurations;
 using SpecificationCrossCutting.DependencyInjections;
+using SpecificationInfrastructure.DataAccess;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -45,9 +48,9 @@ var app = builder.Build();
 // Migrate and seed database
 using (var serviceScope = app.Services.CreateScope())
 {
-    var productContext = serviceScope.ServiceProvider.GetRequiredService<ProductContext>();
-    var logger = serviceScope.ServiceProvider.GetService<ILogger<ProductContextSeed>>();
-    var productContextSeed = new ProductContextSeed(productContext, builder.Environment.ContentRootPath, "SeedData");
+    var specificationContext = serviceScope.ServiceProvider.GetRequiredService<SpecificationContext>();
+    var logger = serviceScope.ServiceProvider.GetService<ILogger<SpecificationContextSeed>>();
+    var productContextSeed = new SpecificationContextSeed(specificationContext, builder.Environment.ContentRootPath, "SeedData");
     productContextSeed.Created();
     productContextSeed.Migrate();
     productContextSeed.SeedAsync().Wait();

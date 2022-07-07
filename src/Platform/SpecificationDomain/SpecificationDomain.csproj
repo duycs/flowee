@@ -7,13 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="AgreegateModels\" />
-    <None Remove="AgreegateModels\SpecificationAgreegate\" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="AgreegateModels\" />
     <Folder Include="AgreegateModels\SpecificationAgreegate\" />
   </ItemGroup>
+	
   <ItemGroup>
     <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
