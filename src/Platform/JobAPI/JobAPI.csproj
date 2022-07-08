@@ -14,7 +14,9 @@
 	<ItemGroup>
 	  <None Remove="SeedData\" />
 	</ItemGroup>
+
 	<ItemGroup>
-	  <Folder Include="SeedData\" />
+	  <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
+	  <ProjectReference Include="..\JobInfrastructure\JobInfrastructure.csproj" />
 	</ItemGroup>
 </Project>

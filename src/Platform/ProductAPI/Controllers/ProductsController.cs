@@ -15,7 +15,6 @@ namespace ProductAPI.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-
         private readonly ILogger<ProductsController> _logger;
         private readonly IRepositoryService _repositoryService;
         private readonly IMappingService _mappingService;

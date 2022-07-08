@@ -50,7 +50,7 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var productContext = serviceScope.ServiceProvider.GetRequiredService<ProductContext>();
     var logger = serviceScope.ServiceProvider.GetService<ILogger<ProductContextSeed>>();
-    var productContextSeed = new ProductContextSeed(productContext, builder.Environment.ContentRootPath, "SeedData");
+    var productContextSeed = new ProductContextSeed(productContext, builder.Environment.ContentRootPath, "SeedData", logger);
     productContextSeed.Created();
     productContextSeed.Migrate();
     productContextSeed.SeedAsync().Wait();
