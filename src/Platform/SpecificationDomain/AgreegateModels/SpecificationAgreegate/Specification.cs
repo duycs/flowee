@@ -1,48 +1,72 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+using AppShareDomain.Models;
 using AppShareServices.Models;
 
 namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 {
-    public class Specification : Entity
+    public class Specification : Entity, IAggregateRoot
     {
         [MaxLength(250)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [MaxLength(36)]
         public string Code { get; set; }
 
-        public string Description { get; set; }
+        public string? Instruction { get; set; }
 
-        public virtual ICollection<Setting>? Settings { get; set; }
-        public virtual ICollection<SpecificationSetting>? SpecificationSettings { get; set; }
+        public virtual ICollection<Rule>? Rules { get; set; }
+        public virtual ICollection<SpecificationRule>? SpecificationRules { get; set; }
 
-        public static Specification Create(string code, string? name, string? description, List<Setting>? settings)
+
+        public Specification SetInstruction()
+        {
+            Instruction = Build();
+            return this;
+        }
+
+        /// <summary>
+        /// Build specification from Settings
+        /// Ex: 
+        /// [Is Not] [And] [[12-Retouch] [Retouch:Retouch manual 100%]]
+        /// [And] [[13-Shadow] [Shadow:Shadow 50%]]
+        /// </summary>
+        public string Build()
+        {
+            var instructionBuilder = new StringBuilder();
+
+            if (Rules != null)
+            {
+                foreach (var rule in Rules)
+                {
+                    instructionBuilder.AppendLine(rule.Buid());
+                }
+            }
+
+            return instructionBuilder.ToString();
+        }
+
+        public static Specification Create(string code, string? name, List<Rule>? rules)
         {
             return new Specification()
             {
                 Code = code,
                 Name = name ?? "",
-                Description = description ?? "",
-                Settings = settings
+                Rules = rules
             };
         }
 
-        public Specification PathUpdate(string? name, string? description, List<Setting>? settings)
+        public Specification PathUpdate(string? name, List<Rule>? rules)
         {
             if (!string.IsNullOrEmpty(name))
             {
                 Name = name;
             }
 
-            if (!string.IsNullOrEmpty(description))
+            if (rules != null)
             {
-                Description = description;
-            }
-
-            if (settings != null)
-            {
-                Settings = settings;
+                Rules = rules;
             }
 
             return this;

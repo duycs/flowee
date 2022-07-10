@@ -1,0 +1,3 @@
+﻿IsNot,Condition,SettingId,Operator,Value
+true,And,1,Equal,Value1
+false,Or,2,Equal,Value2

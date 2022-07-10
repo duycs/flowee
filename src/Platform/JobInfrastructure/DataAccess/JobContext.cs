@@ -13,9 +13,10 @@ namespace JobInfrastructure.DataAccess
     public class JobContext : DbContext, IDatabaseService
     {
         public DbSet<JobStatus> JobStatus { get; set; }
-        public DbSet<JobStepStatus> JobStepStatus { get; set; }
-        public DbSet<JobType> JobTypes { get; set; }
-        public DbSet<JobStep> JobSteps { get; set; }
+        public DbSet<StepStatus> StepStatus { get; set; }
+        public DbSet<StructType> StepTypes { get; set; }
+        public DbSet<Step> Steps { get; set; }
+        public DbSet<Operation> Scenarios { get; set; }
         public DbSet<Job> Jobs { get; set; }
 
         public JobContext() { }
@@ -52,14 +53,18 @@ namespace JobInfrastructure.DataAccess
                 .HasDefaultValue(1)
                 .ValueGeneratedNever()
                 .IsRequired();
+            modelBuilder.Entity<JobStatus>().Property(c => c.Name)
+               .HasMaxLength(250)
+               .IsRequired();
 
-            modelBuilder.Entity<JobType>().ToTable("JobTypes").HasKey(c => c.Id);
-            modelBuilder.Entity<JobType>().Property(c => c.Id)
-                .HasDefaultValue(1)
+            modelBuilder.Entity<StepStatus>().ToTable("JobStepStatus").HasKey(c => c.Id);
+            modelBuilder.Entity<StepStatus>().Property(c => c.Id)
+                .HasDefaultValue(0)
                 .ValueGeneratedNever()
                 .IsRequired();
-
-            modelBuilder.Entity<Job>().HasMany(c => c.JobSteps).WithOne(c => c.Job);
+            modelBuilder.Entity<StepStatus>().Property(c => c.Name)
+               .HasMaxLength(250)
+               .IsRequired();
         }
     }
 }

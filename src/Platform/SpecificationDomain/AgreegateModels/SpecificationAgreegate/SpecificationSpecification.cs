@@ -14,7 +14,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
             {
                 searchValue = searchValue.ToLower().Trim();
                 Expression<Func<Specification, bool>> criteria = c =>
-                    searchValue.Contains(c.Code.ToLower()) || searchValue.Contains(c.Name.ToLower() ?? "") || searchValue.Contains(c.Description.ToLower() ?? "");
+                    searchValue.Contains(c.Code.ToLower()) || searchValue.Contains(c.Name.ToLower() ?? "") || searchValue.Contains(c.Instruction.ToLower() ?? "");
 
                 AddCriteria(criteria);
             }
@@ -72,7 +72,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
             // include related entity
             if (IsInclude)
             {
-                AddInclude(w => w.Settings);
+                AddInclude(w => w.Rules);
             }
 
         }

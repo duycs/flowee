@@ -40,5 +40,15 @@ namespace AppShareServices.Extensions
         {
             return Path.Combine(contentRootPath, seedDataFolder, csvFile);
         }
+
+        public static string GetColumnValue(string[] columns, string[] headers, string columnName)
+        {
+            return columns[Array.IndexOf(headers, columnName.ToLower())].Trim('"').Trim();
+        }
+
+        public static string GetColumnValueIgnoreCase(string[] columns, string[] headers, string columnName)
+        {
+            return columns[Array.IndexOf(headers, columnName.ToLower())].Trim('"').Trim().ToLower();
+        }
     }
 }

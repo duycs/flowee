@@ -11,20 +11,29 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
         [MaxLength(36)]
         public string Key { get; set; }
-        public string? Value { get; set; }
+
+        public int? Number { get; set; }
 
         [MaxLength(250)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public int Number { get; set; }
+        public string? Value { get; set; }
 
-        [MaxLength(500)]
-        public string Description { get; set; }
 
-        public ICollection<Specification>? Specifications { get; set; }
-        public ICollection<SpecificationSetting>? SpecificationSettings { get; set; }
+        public ICollection<Rule>? Rules { get; set; }
 
-        public Setting Create(SettingType settingType, string key, string? value, string? name, string? description)
+        public ICollection<RuleSetting>? RuleSettings { get; set; }
+
+        /// <summary>
+        /// Ex: [12-Retouch] [Retouch:Retouch manual 100%]
+        /// </summary>
+        /// <returns></returns>
+        public string GetInstruction()
+        {
+            return $"[{Number}-{Key}] [{Name}:{Value}]";
+        }
+
+        public Setting Create(SettingType settingType, string key, string? value, string? name)
         {
             return new Setting()
             {
@@ -32,11 +41,10 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
                 Key = key,
                 Value = value,
                 Name = name ?? "",
-                Description = description ?? ""
             };
         }
 
-        public Setting PathUpdate(SettingType? settingType, string? value, string? name, string? description)
+        public Setting PathUpdate(SettingType? settingType, string? value, string? name)
         {
             if (settingType != null)
             {
@@ -53,13 +61,10 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
                 Name = name;
             }
 
-            if (!string.IsNullOrEmpty(description))
-            {
-                Description = description;
-            }
-
             return this;
         }
+
+
     }
 }
 

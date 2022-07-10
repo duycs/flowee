@@ -50,10 +50,10 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var specificationContext = serviceScope.ServiceProvider.GetRequiredService<SpecificationContext>();
     var logger = serviceScope.ServiceProvider.GetService<ILogger<SpecificationContextSeed>>();
-    var productContextSeed = new SpecificationContextSeed(specificationContext, builder.Environment.ContentRootPath, "SeedData");
-    productContextSeed.Created();
-    productContextSeed.Migrate();
-    productContextSeed.SeedAsync().Wait();
+    var specificationContextSeed = new SpecificationContextSeed(specificationContext, builder.Environment.ContentRootPath, "SeedData", logger);
+    specificationContextSeed.Created();
+    specificationContextSeed.Migrate();
+    specificationContextSeed.SeedAsync().Wait();
 }
 
 // Configure the HTTP request pipeline.

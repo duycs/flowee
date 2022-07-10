@@ -34,26 +34,6 @@ namespace JobAPI.SeedData
                     }
                 }
 
-                if (!_dbContext.JobStepStatus.Any())
-                {
-                    var jobStepStatus = GetJobStepStatusFromFile();
-                    if (jobStepStatus.Any())
-                    {
-                        await _dbContext.JobStepStatus.AddRangeAsync(jobStepStatus);
-                        _dbContext.SaveChanges();
-                    }
-                }
-
-                if (!_dbContext.JobTypes.Any())
-                {
-                    var jobTypes = GetJobTypeFromFile();
-                    if (jobTypes.Any())
-                    {
-                        await _dbContext.JobTypes.AddRangeAsync(jobTypes);
-                        _dbContext.SaveChanges();
-                    }
-                }
-
                 if (!_dbContext.Jobs.Any())
                 {
                     var jobs = GetJobFromFile();
@@ -64,12 +44,12 @@ namespace JobAPI.SeedData
                     }
                 }
 
-                if (!_dbContext.Jobs.Any())
+                if (!_dbContext.Steps.Any())
                 {
-                    var jobSteps = GetJobStepFromFile();
-                    if (jobSteps.Any())
+                    var steps = GetStepFromFile();
+                    if (steps.Any())
                     {
-                        await _dbContext.JobSteps.AddRangeAsync(jobSteps);
+                        await _dbContext.Steps.AddRangeAsync(steps);
                         _dbContext.SaveChanges();
                     }
                 }
@@ -103,12 +83,12 @@ namespace JobAPI.SeedData
         }
 
 
-        private IEnumerable<JobStepStatus> GetJobStepStatusFromFile()
+        private IEnumerable<StepStatus> GetJobStepStatusFromFile()
         {
             string csvFile = GetPathToFile("JobStepStatus.csv");
             if (!File.Exists(csvFile))
             {
-                return Enumeration.GetAll<JobStepStatus>();
+                return Enumeration.GetAll<StepStatus>();
             }
 
             int id = 1;
@@ -118,39 +98,14 @@ namespace JobAPI.SeedData
                                         .Where(x => x != null);
         }
 
-        private JobStepStatus CreateJobStepStatus(string value, ref int id)
+        private StepStatus CreateJobStepStatus(string value, ref int id)
         {
             if (String.IsNullOrEmpty(value))
             {
                 throw new Exception("JobStepStatus is null or empty");
             }
 
-            return new JobStepStatus(id++, value.Trim('"').Trim().ToLowerInvariant());
-        }
-
-        private IEnumerable<JobType> GetJobTypeFromFile()
-        {
-            string csvFile = GetPathToFile("JobType.csv");
-            if (!File.Exists(csvFile))
-            {
-                return Enumeration.GetAll<JobType>();
-            }
-
-            int id = 1;
-            return File.ReadAllLines(csvFile)
-                                        .SelectTry(x => CreateJobType(x, ref id))
-                                        .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
-        }
-
-        private JobType CreateJobType(string value, ref int id)
-        {
-            if (String.IsNullOrEmpty(value))
-            {
-                throw new Exception("JobType is null or empty");
-            }
-
-            return new JobType(id++, value.Trim('"').Trim().ToLowerInvariant());
+            return new StepStatus(id++, value.Trim('"').Trim().ToLowerInvariant());
         }
 
         private IEnumerable<Job> GetJobFromFile()
@@ -186,13 +141,13 @@ namespace JobAPI.SeedData
         }
 
 
-        private IEnumerable<JobStep> GetJobStepFromFile()
+        private IEnumerable<Step> GetStepFromFile()
         {
-            string csvFile = GetPathToFile("JobSteps.csv");
+            string csvFile = GetPathToFile("Steps.csv");
 
             if (!File.Exists(csvFile))
             {
-                return new List<JobStep>();
+                return new List<Step>();
             }
 
             string[] requiredHeaders = { "WorkerId", "SkillId", "ProductId", "JobStepStatus", "JobId" };
@@ -201,25 +156,22 @@ namespace JobAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .Skip(1) // skip header row
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                                        .SelectTry(column => CreateJobStep(column, headers))
+                                        .SelectTry(column => CreateStep(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x != null);
         }
 
 
-        private JobStep CreateJobStep(string[] column, string[] headers)
+        private Step CreateStep(string[] column, string[] headers)
         {
-            var jobStep = new JobStep()
+            var step = new Step()
             {
                 WorkerId = int.Parse(column[Array.IndexOf(headers, "WorkerId".ToLower())].Trim('"').Trim()),
                 SkillId = int.Parse(column[Array.IndexOf(headers, "SkillId".ToLower())].Trim('"').Trim()),
-                ProductId = int.Parse(column[Array.IndexOf(headers, "ProductId".ToLower())].Trim('"').Trim()),
-                JobStepStatus = JobStepStatus.FromDisplayName<JobStepStatus>(column[Array.IndexOf(headers, "JobStepStatus".ToLower())].Trim('"').Trim()),
-                JobId = int.Parse(column[Array.IndexOf(headers, "JobId".ToLower())].Trim('"').Trim()),
                 DateCreated = DateTime.UtcNow,
             };
 
-            return jobStep;
+            return step;
         }
 
     }

@@ -1,2 +1,4 @@
-﻿SettingType,Code,Name,Key,Value,Description,Number
-Text,XTY-15-Instruction,Instruction,Instruction,Wall paint is white. Do not add fire. Do not add blue skies.,Wall paint is white. Do not add fire. Do not add blue skies.,1
+﻿SettingType,Key,Number,Name,Value
+Text,Retouch,12,Retouch manual,Retouch manual 100%
+text,Shadow,13,Shadow,Shadow 90%
+Object,3D Mask,14,3D Mask,3D Mask 100%

@@ -9,17 +9,16 @@ namespace SpecificationApplication.Commands
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int[] SettingIds { get; set; }
+        public int[] RuleIds { get; set; }
     }
 
     public class CreateSpecificationCommand : SpecificationCommand
     {
-        public CreateSpecificationCommand(string code, string? name, string? description, int[]? settingIds)
+        public CreateSpecificationCommand(string code, string? name, int[]? ruleIds)
         {
             Code = code;
             Name = name;
-            Description = description;
-            SettingIds = settingIds;
+            RuleIds = ruleIds;
         }
 
         public override bool IsValid()
@@ -38,12 +37,11 @@ namespace SpecificationApplication.Commands
 
     public class UpdateSpecificationCommand : SpecificationCommand
     {
-        public UpdateSpecificationCommand(int id, string? name, string? description, int[]? settingIds)
+        public UpdateSpecificationCommand(int id, string? name, string? description, int[]? ruleIds)
         {
             Id = id;
             Name = name;
-            Description = description;
-            SettingIds = settingIds;
+            RuleIds = ruleIds;
         }
 
         public override bool IsValid()

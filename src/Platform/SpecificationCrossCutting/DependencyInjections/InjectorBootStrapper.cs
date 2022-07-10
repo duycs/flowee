@@ -1,4 +1,5 @@
 ﻿using AppShareServices.Commands;
+using AppShareServices.DataAccess;
 using AppShareServices.DataAccess.Persistences;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Events;
@@ -40,6 +41,7 @@ namespace SpecificationCrossCutting.DependencyInjections
 
             // Infrastructure
             services.AddDbContext<SpecificationContext>(options => options.UseMySql(configuration.GetConnectionString("SpecificationDb"), new MySqlServerVersion(new Version(8, 0, 21))));
+            services.AddDbContext<EventContext>(options => options.UseMySql(configuration.GetConnectionString("EventDb"), new MySqlServerVersion(new Version(8, 0, 21))));
             services.AddTransient<IDatabaseService, SpecificationContext>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IDomainEventRepository, DomainEventRepository>();

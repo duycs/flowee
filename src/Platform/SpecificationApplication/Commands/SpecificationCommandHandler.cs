@@ -25,19 +25,19 @@ namespace SpecificationApplication.Commands
                 return Unit.Value;
             }
 
-            List<Setting>? settings = null;
+            List<Rule>? rules = null;
 
-            if (request.SettingIds != null)
+            if (request.RuleIds != null)
             {
-                settings = _repositoryService.List<Setting>(request.SettingIds, out int[] invalidSettingIds);
+                rules = _repositoryService.List<Rule>(request.RuleIds, out int[] invalidSettingIds);
                 if (invalidSettingIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"Invalid SettingIds {string.Join(",", request.SettingIds)} does not exist, new customer could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"Invalid RuleIds {string.Join(",", request.RuleIds)} does not exist, new customer could not insert"));
                     return Unit.Value;
                 }
             }
 
-            _repositoryService.Add<Specification>(Specification.Create(request.Code, request.Name, request.Description, settings));
+            _repositoryService.Add<Specification>(Specification.Create(request.Code, request.Name, rules));
             var result = _repositoryService.SaveChanges();
 
             if (!result)
@@ -57,14 +57,14 @@ namespace SpecificationApplication.Commands
                 return Unit.Value;
             }
 
-            List<Setting>? settings = null;
+            List<Rule>? rules = null;
 
-            if (request.SettingIds != null)
+            if (request.RuleIds != null)
             {
-                settings = _repositoryService.List<Setting>(request.SettingIds, out int[] invalidSettingIds);
-                if (invalidSettingIds.Any())
+                rules = _repositoryService.List<Rule>(request.RuleIds, out int[] invalidRuleIds);
+                if (invalidRuleIds.Any())
                 {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"Invalid SettingIds {string.Join(",", request.SettingIds)} does not exist, new customer could not insert"));
+                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"Invalid RuleIds {string.Join(",", request.RuleIds)} does not exist, new customer could not insert"));
                     return Unit.Value;
                 }
             }
@@ -76,7 +76,7 @@ namespace SpecificationApplication.Commands
                 return Unit.Value;
             }
 
-            _repositoryService.Add<Specification>(Specification.Create(request.Code, request.Name, request.Description, settings));
+            _repositoryService.Add<Specification>(Specification.Create(request.Code, request.Name, rules));
             var result = _repositoryService.SaveChanges();
 
             if (!result)
