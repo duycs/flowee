@@ -2,19 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpecificationInfrastructure.DataAccess;
 
 #nullable disable
 
-namespace SpecificationInfrastructure.DataAccess.Migrations
+namespace SpecificationInfrastructure.DataAccess
 {
     [DbContext(typeof(SpecificationContext))]
-    [Migration("20220710163140_AddSpecificationContext")]
-    partial class AddSpecificationContext
+    partial class SpecificationContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,30 +91,6 @@ namespace SpecificationInfrastructure.DataAccess.Migrations
                     b.HasIndex("SettingId");
 
                     b.ToTable("Rules");
-                });
-
-            modelBuilder.Entity("SpecificationDomain.AgreegateModels.SpecificationAgreegate.RuleSetting", b =>
-                {
-                    b.Property<int>("RuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SettingId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("DateDeleted")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("RuleId", "SettingId");
-
-                    b.HasIndex("SettingId");
-
-                    b.ToTable("RuleSettings");
                 });
 
             modelBuilder.Entity("SpecificationDomain.AgreegateModels.SpecificationAgreegate.Setting", b =>
@@ -242,7 +216,7 @@ namespace SpecificationInfrastructure.DataAccess.Migrations
                         .HasForeignKey("OperatorId");
 
                     b.HasOne("SpecificationDomain.AgreegateModels.SpecificationAgreegate.Setting", "Setting")
-                        .WithMany()
+                        .WithMany("Rules")
                         .HasForeignKey("SettingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -250,25 +224,6 @@ namespace SpecificationInfrastructure.DataAccess.Migrations
                     b.Navigation("Condition");
 
                     b.Navigation("Operator");
-
-                    b.Navigation("Setting");
-                });
-
-            modelBuilder.Entity("SpecificationDomain.AgreegateModels.SpecificationAgreegate.RuleSetting", b =>
-                {
-                    b.HasOne("SpecificationDomain.AgreegateModels.SpecificationAgreegate.Rule", "Rule")
-                        .WithMany("RuleSettings")
-                        .HasForeignKey("RuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SpecificationDomain.AgreegateModels.SpecificationAgreegate.Setting", "Setting")
-                        .WithMany("RuleSettings")
-                        .HasForeignKey("SettingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Rule");
 
                     b.Navigation("Setting");
                 });
@@ -305,14 +260,12 @@ namespace SpecificationInfrastructure.DataAccess.Migrations
 
             modelBuilder.Entity("SpecificationDomain.AgreegateModels.SpecificationAgreegate.Rule", b =>
                 {
-                    b.Navigation("RuleSettings");
-
                     b.Navigation("SpecificationRules");
                 });
 
             modelBuilder.Entity("SpecificationDomain.AgreegateModels.SpecificationAgreegate.Setting", b =>
                 {
-                    b.Navigation("RuleSettings");
+                    b.Navigation("Rules");
                 });
 
             modelBuilder.Entity("SpecificationDomain.AgreegateModels.SpecificationAgreegate.Specification", b =>

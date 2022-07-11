@@ -4,6 +4,7 @@ using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using Microsoft.AspNetCore.Mvc;
 using SpecificationApplication.Commands;
+using SpecificationApplication.ViewModels;
 using SpecificationDomain.AgreegateModels.SpecificationAgreegate;
 
 namespace SpecificationAPI.Controllers
@@ -29,17 +30,38 @@ namespace SpecificationAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateSpecificationCommand createSpecificationCommand)
+        public async Task<IActionResult> Add([FromBody] CreateSpecificationCommand createSpecificationVM)
         {
+            var createSpecificationCommand = _mappingService.Map<CreateSpecificationCommand>(createSpecificationVM);
             await _commandDispatcher.Send(createSpecificationCommand);
             return Ok();
         }
 
-
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PathUpdate(int id, [FromBody] UpdateSpecificationCommand updateSpecificationCommand)
+        public async Task<IActionResult> PathUpdate(int id, [FromBody] UpdateSpecificationVM updateSpecificationVM)
         {
+            var updateSpecificationCommand = _mappingService.Map<UpdateSpecificationCommand>(updateSpecificationVM);
             await _commandDispatcher.Send(updateSpecificationCommand);
+            return Ok();
+        }
+
+        [HttpPost("/{id}/build-instruction")]
+        public async Task<IActionResult> BuildInstruction(int id)
+        {
+            var specificationExisting = _repositoryService.Find<Specification>(id, new SpecificationSpecification(true));
+            if (specificationExisting == null)
+            {
+                return BadRequest("The Specification not found");
+            }
+
+            _repositoryService.Update(specificationExisting.BuildInstruction());
+            var result = _repositoryService.SaveChanges();
+
+            if (!result)
+            {
+                return StatusCode(500, "The Specification could not update build");
+            }
+
             return Ok();
         }
 
@@ -50,7 +72,7 @@ namespace SpecificationAPI.Controllers
 
             if (specificationExisting == null)
             {
-                return BadRequest("Specification not found");
+                return BadRequest("The Specification not found");
             }
 
             _repositoryService.Delete<Specification>(specificationExisting);

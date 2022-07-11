@@ -6,15 +6,14 @@ namespace SpecificationApplication.Commands
     public abstract class SpecificationCommand : Command
     {
         public int Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int[] RuleIds { get; set; }
+        public string? Code { get; set; }
+        public string? Name { get; set; }
+        public int[]? RuleIds { get; set; }
     }
 
     public class CreateSpecificationCommand : SpecificationCommand
     {
-        public CreateSpecificationCommand(string code, string? name, int[]? ruleIds)
+        public CreateSpecificationCommand(string? code, string? name, int[]? ruleIds)
         {
             Code = code;
             Name = name;
@@ -37,7 +36,7 @@ namespace SpecificationApplication.Commands
 
     public class UpdateSpecificationCommand : SpecificationCommand
     {
-        public UpdateSpecificationCommand(int id, string? name, string? description, int[]? ruleIds)
+        public UpdateSpecificationCommand(int id, string? name, int[]? ruleIds)
         {
             Id = id;
             Name = name;

@@ -72,7 +72,9 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
             // include related entity
             if (IsInclude)
             {
-                AddInclude(w => w.Rules);
+                AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Condition)}");
+                AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Setting)}");
+                AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Operator)}");
             }
 
         }

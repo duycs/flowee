@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Json.Serialization;
 using AppShareServices.Models;
 
 namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
@@ -19,18 +21,28 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
         public string? Value { get; set; }
 
-
+        [JsonIgnore]
         public ICollection<Rule>? Rules { get; set; }
 
-        public ICollection<RuleSetting>? RuleSettings { get; set; }
 
         /// <summary>
-        /// Ex: [12-Retouch] [Retouch:Retouch manual 100%]
+        /// Ex: [12-Retouch] [TypeName] [Retouch:Retouch manual 100%]
         /// </summary>
         /// <returns></returns>
-        public string GetInstruction()
+        public string BuildInstruction()
         {
-            return $"[{Number}-{Key}] [{Name}:{Value}]";
+            var instructionBuild = new StringBuilder();
+
+            instructionBuild.Append($"[{Number}-{Key}]");
+
+            if (SettingType != null)
+            {
+                instructionBuild.Append($"[{SettingType.Name}]");
+            }
+
+            instructionBuild.Append($"[{Name}:{Value}]");
+
+            return instructionBuild.ToString();
         }
 
         public Setting Create(SettingType settingType, string key, string? value, string? name)

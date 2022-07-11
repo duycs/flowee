@@ -11,6 +11,7 @@ namespace AppShareServices.Commands
 {
     public abstract class Command : IRequest
     {
+        [JsonIgnore]
         public Guid Guid { get; set; }
 
         /// <summary>

@@ -10,7 +10,6 @@ public class SpecificationContext : DbContext, IDatabaseService
     public DbSet<Condition> Conditions { get; set; }
     public DbSet<Operator> Operators { get; set; }
     public DbSet<Rule> Rules { get; set; }
-    public DbSet<RuleSetting> RuleSettings { get; set; }
     public DbSet<Setting> Settings { get; set; }
     public DbSet<SettingType> SettingTypes { get; set; }
     public DbSet<Specification> Specifications { get; set; }
@@ -81,28 +80,8 @@ public class SpecificationContext : DbContext, IDatabaseService
 
         // Rule
         modelBuilder.Entity<Rule>().HasOne(c => c.Condition);
-        modelBuilder.Entity<Rule>().HasOne(c => c.Setting);
+        modelBuilder.Entity<Rule>().HasOne(c => c.Setting).WithMany(c => c.Rules);
         modelBuilder.Entity<Rule>().HasOne(c => c.Operator);
-
-        // Settings - Rules
-        modelBuilder.Entity<Setting>()
-        .HasMany(i => i.Rules)
-        .WithMany(i => i.Settings)
-        .UsingEntity<RuleSetting>(
-            j => j
-                .HasOne(w => w.Rule)
-                .WithMany(w => w.RuleSettings)
-                .HasForeignKey(w => w.RuleId)
-                .OnDelete(DeleteBehavior.Cascade),
-            j => j
-                .HasOne(w => w.Setting)
-                .WithMany(w => w.RuleSettings)
-                .HasForeignKey(w => w.SettingId)
-                .OnDelete(DeleteBehavior.Cascade),
-            j =>
-            {
-                j.Ignore(w => w.Id).HasKey(w => new { w.RuleId, w.SettingId });
-            });
 
         // Specifications - Rules
         modelBuilder.Entity<Specification>()

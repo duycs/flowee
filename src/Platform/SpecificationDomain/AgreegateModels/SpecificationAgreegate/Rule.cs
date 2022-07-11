@@ -1,4 +1,6 @@
 ﻿using AppShareServices.Models;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 {
@@ -17,10 +19,10 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
         public string Value { get; set; }
 
-        public virtual ICollection<Setting>? Settings { get; set; }
-        public virtual ICollection<RuleSetting>? RuleSettings { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<Specification>? Specifications { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<SpecificationRule>? SpecificationRules { get; set; }
 
 
@@ -28,10 +30,29 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         /// Ex: [Is Not] [And] [[12-Retouch] [Retouch:Retouch manual 100%]]
         /// </summary>
         /// <returns></returns>
-        public string Buid()
+        public string Buid(bool isfirstLine = false)
         {
-            var isNot = IsNot ? "Is Not" : "";
-            return $"[{isNot}] [{Condition.Name}] [{Setting.GetInstruction()}]";
+            var ruleAsText = new StringBuilder();
+            if (IsNot)
+            {
+                ruleAsText.Append($" [{"Is Not"}]");
+            }
+
+            // Ignore condition first line
+            if (!isfirstLine)
+            {
+                if (Condition != null)
+                {
+                    ruleAsText.Append($" [{Condition.Name}]");
+                }
+            }
+
+            if (Setting != null)
+            {
+                ruleAsText.Append($" [{Setting.BuildInstruction()}]");
+            }
+
+            return ruleAsText.ToString();
         }
 
         /// <summary>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SpecificationInfrastructure.DataAccess.Migrations
+namespace SpecificationInfrastructure.DataAccess
 {
     public partial class AddSpecificationContext : Migration
     {
@@ -146,34 +146,6 @@ namespace SpecificationInfrastructure.DataAccess.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "RuleSettings",
-                columns: table => new
-                {
-                    SettingId = table.Column<int>(type: "int", nullable: false),
-                    RuleId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateDeleted = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RuleSettings", x => new { x.RuleId, x.SettingId });
-                    table.ForeignKey(
-                        name: "FK_RuleSettings_Rules_RuleId",
-                        column: x => x.RuleId,
-                        principalTable: "Rules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RuleSettings_Settings_SettingId",
-                        column: x => x.SettingId,
-                        principalTable: "Settings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "SpecificationRules",
                 columns: table => new
                 {
@@ -217,11 +189,6 @@ namespace SpecificationInfrastructure.DataAccess.Migrations
                 column: "SettingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RuleSettings_SettingId",
-                table: "RuleSettings",
-                column: "SettingId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Settings_SettingTypeId",
                 table: "Settings",
                 column: "SettingTypeId");
@@ -234,9 +201,6 @@ namespace SpecificationInfrastructure.DataAccess.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "RuleSettings");
-
             migrationBuilder.DropTable(
                 name: "SpecificationRules");
 

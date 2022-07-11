@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Text.Json.Serialization;
 using AppShareDomain.Models;
 using AppShareServices.Models;
 
@@ -17,14 +18,10 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public string? Instruction { get; set; }
 
         public virtual ICollection<Rule>? Rules { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<SpecificationRule>? SpecificationRules { get; set; }
 
-
-        public Specification SetInstruction()
-        {
-            Instruction = Build();
-            return this;
-        }
 
         /// <summary>
         /// Build specification from Settings
@@ -32,19 +29,29 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         /// [Is Not] [And] [[12-Retouch] [Retouch:Retouch manual 100%]]
         /// [And] [[13-Shadow] [Shadow:Shadow 50%]]
         /// </summary>
-        public string Build()
+        public Specification BuildInstruction()
         {
             var instructionBuilder = new StringBuilder();
 
             if (Rules != null)
             {
-                foreach (var rule in Rules)
+                // Ignore Condition of first rule
+                for (int i = 0; i < Rules.Count; ++i)
                 {
-                    instructionBuilder.AppendLine(rule.Buid());
+                    var rule = Rules.ElementAt(i);
+                    if (i > 0)
+                    {
+                        instructionBuilder.AppendLine(rule.Buid());
+                    }
+                    else
+                    {
+                        instructionBuilder.AppendLine(rule.Buid(true));
+                    }
                 }
             }
 
-            return instructionBuilder.ToString();
+            Instruction = instructionBuilder.ToString();
+            return this;
         }
 
         public static Specification Create(string code, string? name, List<Rule>? rules)

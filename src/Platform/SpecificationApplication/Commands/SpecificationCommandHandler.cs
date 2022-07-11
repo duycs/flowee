@@ -76,12 +76,12 @@ namespace SpecificationApplication.Commands
                 return Unit.Value;
             }
 
-            _repositoryService.Add<Specification>(Specification.Create(request.Code, request.Name, rules));
+            _repositoryService.Update<Specification>(specificationExisting.PathUpdate(request.Name, rules));
             var result = _repositoryService.SaveChanges();
 
             if (!result)
             {
-                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"New Specification could not insert"));
+                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Specification could not update"));
                 return Unit.Value;
             }
 
