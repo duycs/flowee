@@ -6,14 +6,19 @@ namespace JobInfrastructure.DataAccess
 {
     public class JobContext : DbContext, IDatabaseService
     {
-        public DbSet<JobStatus> JobStatus { get; set; }
-        public DbSet<StepStatus> StepStatus { get; set; }
-        public DbSet<StructType> StepTypes { get; set; }
-        public DbSet<Step> Steps { get; set; }
-        public DbSet<Operation> Scenarios { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<JobStatus> JobStatus { get; set; }
+        public DbSet<Operation> Operations { get; set; }
+        public DbSet<Step> Steps { get; set; }
+        public DbSet<StepStatus> StepStatus { get; set; }
+        public DbSet<StructType> StructTypes { get; set; }
 
+        /// <summary>
+        /// Must concreate first for ef migrations
+        /// </summary>
         public JobContext() { }
+
+        public JobContext(DbContextOptions<JobContext> options) : base(options) { }
 
         DbSet<T> IDatabaseService.GetDbSet<T>()
         {
@@ -51,14 +56,28 @@ namespace JobInfrastructure.DataAccess
                .HasMaxLength(250)
                .IsRequired();
 
-            modelBuilder.Entity<StepStatus>().ToTable("JobStepStatus").HasKey(c => c.Id);
+            modelBuilder.Entity<StructType>().ToTable("StructTypes").HasKey(c => c.Id);
+            modelBuilder.Entity<StructType>().Property(c => c.Id)
+                .HasDefaultValue(1)
+                .ValueGeneratedNever()
+                .IsRequired();
+            modelBuilder.Entity<StructType>().Property(c => c.Name)
+               .HasMaxLength(250)
+               .IsRequired();
+
+            modelBuilder.Entity<StepStatus>().ToTable("StepStatus").HasKey(c => c.Id);
             modelBuilder.Entity<StepStatus>().Property(c => c.Id)
-                .HasDefaultValue(0)
+                .HasDefaultValue(1)
                 .ValueGeneratedNever()
                 .IsRequired();
             modelBuilder.Entity<StepStatus>().Property(c => c.Name)
                .HasMaxLength(250)
                .IsRequired();
+
+            modelBuilder.Entity<Job>().HasOne(c => c.JobStatus);
+            modelBuilder.Entity<Job>().HasMany(c => c.Operations).WithOne(c => c.Job);
+
+            modelBuilder.Entity<Step>().HasOne(c => c.StepStatus);
         }
     }
 }

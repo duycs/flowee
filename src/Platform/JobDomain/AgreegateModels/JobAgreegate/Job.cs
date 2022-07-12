@@ -10,8 +10,7 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// Product has Specifications for instruction job how to do
         /// </summary>
         public int ProductId { get; set; }
-
-        private List<int> WorkerIds { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Have 4 steps and 4 workers need to do in a Job, the parallel scenario example:
@@ -27,13 +26,33 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
-        public static Job Create(int productId)
+
+        /// <summary>
+        /// Statistic
+        /// </summary>
+        private List<int>? WorkerIds { get; set; }
+
+
+        public static Job Create(int productId, string? description)
         {
             return new Job()
             {
                 ProductId = productId,
+                Description = description,
                 JobStatus = JobStatus.None,
             };
+        }
+
+        /// <summary>
+        /// Group steps in operation by OrderOperationNumber
+        /// </summary>
+        public void GroupStepsOperation()
+        {
+        }
+
+        public List<int> GetWorkers()
+        {
+            return Operations.SelectMany(o => o.Steps.Select(s => s.Id)).ToList();
         }
 
         /// <summary>

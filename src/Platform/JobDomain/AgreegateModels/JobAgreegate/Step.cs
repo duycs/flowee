@@ -1,9 +1,4 @@
 ﻿using AppShareServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JobDomain.AgreegateModels.JobAgreegate
 {
@@ -32,8 +27,12 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// </summary>
         public string? Output { get; set; }
 
-        public int OrderNumber { get; set; }
+        public int? OrderNumber { get; set; }
+        public int? OrderOperationNumber { get; set; }
+
+        public int StepStatusId { get; set; }
         public StepStatus StepStatus { get; set; }
+
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 

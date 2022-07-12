@@ -17,11 +17,14 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
         public bool IsAsync { get; set; }
         public int OrderNumber { get; set; }
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
         public string? Input { get; set; }
         public string? Output { get; set; }
+
+        public int JobId { get; set; }
+        public Job Job { get; set; }
 
         public List<Step> SortSteps()
         {
