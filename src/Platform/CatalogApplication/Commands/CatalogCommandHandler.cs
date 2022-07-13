@@ -13,13 +13,11 @@ namespace CatalogApplication.Commands
     {
         private readonly IRepositoryService _repositoryService;
         private readonly IEventDispatcher _eventDispatcher;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CatalogCommandHandler(IRepositoryService repositoryService, IEventDispatcher eventDispatcher, IUnitOfWork unitOfWork)
+        public CatalogCommandHandler(IRepositoryService repositoryService, IEventDispatcher eventDispatcher)
         {
             _repositoryService = repositoryService;
             _eventDispatcher = eventDispatcher;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(CreateCatalogCommand request, CancellationToken cancellationToken)

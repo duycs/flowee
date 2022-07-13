@@ -25,6 +25,8 @@ namespace CatalogInfrastructure.DataAccess
         {
         }
 
+        public CatalogContext(DbContextOptions<CatalogContext> options) : base(options) { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -42,7 +44,17 @@ namespace CatalogInfrastructure.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            // Products-Addons
+            // Currency
+            modelBuilder.Entity<Currency>().ToTable("Currencies").HasKey(c => c.Id);
+            modelBuilder.Entity<Currency>().Property(c => c.Id)
+                .HasDefaultValue(1)
+                .ValueGeneratedNever()
+                .IsRequired();
+            modelBuilder.Entity<Currency>().Property(c => c.Name)
+               .HasMaxLength(250)
+               .IsRequired();
+
+            // Catalogs-Addons
             modelBuilder.Entity<Catalog>()
            .HasMany(i => i.Addons)
            .WithMany(i => i.Catalogs)

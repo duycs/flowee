@@ -93,6 +93,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobCrossCutting", "JobCross
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplication", "JobApplication\JobApplication.csproj", "{DD44742A-2781-432D-A361-18BBAC8C657F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogTests", "CatalogTests\CatalogTests.csproj", "{5870E272-BBD8-464E-A64A-AF1E917B7F77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -243,6 +245,10 @@ Global
 		{DD44742A-2781-432D-A361-18BBAC8C657F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD44742A-2781-432D-A361-18BBAC8C657F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD44742A-2781-432D-A361-18BBAC8C657F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5870E272-BBD8-464E-A64A-AF1E917B7F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5870E272-BBD8-464E-A64A-AF1E917B7F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5870E272-BBD8-464E-A64A-AF1E917B7F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5870E272-BBD8-464E-A64A-AF1E917B7F77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -282,6 +288,7 @@ Global
 		{309D4601-5493-4A9D-AD0E-0CC0ED53E241} = {BF09BAB2-94C6-4417-8296-AECCC1ECA400}
 		{B4EC99CB-8D62-4FE2-8EAB-15E30578C168} = {647F5ED4-1511-43A5-AC55-E2A7FA909FFD}
 		{DD44742A-2781-432D-A361-18BBAC8C657F} = {647F5ED4-1511-43A5-AC55-E2A7FA909FFD}
+		{5870E272-BBD8-464E-A64A-AF1E917B7F77} = {30BE9FC0-982C-42F9-BFCB-CBAFC9C1D523}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7835FFFA-FB98-4C93-AE3B-F3DDEA4576E0}

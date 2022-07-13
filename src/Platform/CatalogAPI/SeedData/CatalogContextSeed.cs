@@ -70,7 +70,7 @@ namespace CatalogAPI.SeedData
 				return new List<Catalog>();
 			}
 
-			string[] requiredHeaders = { "Code", "Name", "Description", "PriceStandar", "QuantityAvailable", "SpecificationId" };
+			string[] requiredHeaders = { "Code", "Name", "Description", "PriceStandar", "Currency", "QuantityAvailable", "SpecificationId" };
 			string[] headers = csvFile.GetHeaders(requiredHeaders);
 
 			return File.ReadAllLines(csvFile)
@@ -90,7 +90,7 @@ namespace CatalogAPI.SeedData
 				return new List<Addon>();
 			}
 
-			string[] requiredHeaders = { "Code", "Name", "Description", "Price" };
+			string[] requiredHeaders = { "Code", "Name", "Description", "Price", "Currency" };
 			string[] headers = csvFile.GetHeaders(requiredHeaders);
 
 			return File.ReadAllLines(csvFile)
@@ -123,9 +123,9 @@ namespace CatalogAPI.SeedData
 				Name = column[Array.IndexOf(headers, "Name".ToLower())].Trim('"').Trim(),
 				Description = column[Array.IndexOf(headers, "Description".ToLower())].Trim('"').Trim(),
 				QuantityAvailable = int.Parse(column[Array.IndexOf(headers, "QuantityAvailable".ToLower())].Trim('"').Trim()),
+				Currency = Enumeration.FromDisplayName<Currency>(CsvExtensions.GetColumnValueIgnoreCase(column, headers, "Currency")),
 				SpecificationId = int.Parse(column[Array.IndexOf(headers, "SpecificationId".ToLower())].Trim('"').Trim()),
 				PriceStandar = decimal.Parse(column[Array.IndexOf(headers, "PriceStandar".ToLower())].Trim('"').Trim()),
-				Currency = Enumeration.FromDisplayName<Currency>(column[Array.IndexOf(headers, "Currency".ToLower())].Trim('"').Trim()),
 				DateCreated = DateTime.UtcNow,
 			};
 
@@ -141,7 +141,7 @@ namespace CatalogAPI.SeedData
 				Description = column[Array.IndexOf(headers, "Description".ToLower())].Trim('"').Trim(),
 				SpecificationId = int.Parse(column[Array.IndexOf(headers, "SpecificationId".ToLower())].Trim('"').Trim()),
 				Price = decimal.Parse(column[Array.IndexOf(headers, "Price".ToLower())].Trim('"').Trim()),
-				Currency = Enumeration.FromDisplayName<Currency>(column[Array.IndexOf(headers, "Currency".ToLower())].Trim('"').Trim()),
+				Currency = Enumeration.FromDisplayName<Currency>(CsvExtensions.GetColumnValueIgnoreCase(column, headers, "Currency")),
 				DateCreated = DateTime.UtcNow,
 			};
 

@@ -28,14 +28,14 @@ namespace CatalogApplication.Services
             {
                 if (catalogExisting.SpecificationId != null)
                 {
-                    catalogDto.Specification = await _specificationClientService.Get((int)catalogExisting.SpecificationId);
+                    catalogDto.Specification = await _specificationClientService.Get((int)catalogExisting.SpecificationId, isInclude);
                 }
 
                 // Find list specifications of addon
                 if (catalogExisting.Addons != null && catalogExisting.Addons.Any())
                 {
                     var addonSpecificationIds = catalogExisting.Addons.Where(x => x.SpecificationId.HasValue && x.SpecificationId > 0).Select(x => x.SpecificationId).ToArray();
-                    var specificationDtos = await _specificationClientService.Get(addonSpecificationIds);
+                    var specificationDtos = await _specificationClientService.Get(addonSpecificationIds, isInclude);
 
                     if (specificationDtos != null && specificationDtos.Any())
                     {

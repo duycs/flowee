@@ -70,6 +70,22 @@ namespace AppShareServices.DataAccess.Repository
             return Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id)).ToList();
         }
 
+        public List<T> List<T>(int[] Ids, SpecificationBase<T> specification) where T : class, IEntityService
+        {
+            var query = Database.GetDbSet<T>().AsQueryable().Where(w => Ids.Contains(w.Id));
+
+            if (specification.IsInclude)
+            {
+                query = AsQueryInClude(specification);
+            }
+            else
+            {
+                query = query.Where(specification.Criteria);
+            }
+
+            return query.ToList();
+        }
+
         public List<T> List<T>(int[] Ids, out int[] invalidIds) where T : class, IEntityService
         {
             var result = Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id)).ToList();

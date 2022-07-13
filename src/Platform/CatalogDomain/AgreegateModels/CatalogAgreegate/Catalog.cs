@@ -48,7 +48,7 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         /// <summary>
         /// Specification of Product standar and Addons
         /// </summary>
-        public ICollection<int>? SpecificationIds { get; set; }
+        private ICollection<int>? SpecificationIds { get; set; }
 
         /// <summary>
         /// Product standar can have n Addons

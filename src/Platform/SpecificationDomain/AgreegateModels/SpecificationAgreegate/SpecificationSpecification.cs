@@ -7,8 +7,14 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 {
     public class SpecificationSpecification : SpecificationBase<Specification>
     {
-        public SpecificationSpecification(bool isInclude, string? searchValue = "", List<ColumnOrder>? columnOrders = null) : base(isInclude)
+        public SpecificationSpecification(bool isInclude, string? searchValue = "", int[]? ids = null, List<ColumnOrder>? columnOrders = null) : base(isInclude)
         {
+            // find by ids
+            if (ids != null && ids.Any())
+            {
+                AddCriteria(c => ids.Contains(c.Id));
+            }
+
             // filter
             if (!string.IsNullOrEmpty(searchValue))
             {

@@ -32,6 +32,7 @@ namespace AppShareServices.DataAccess.Repository
 
         List<T> List<T>(int[] Ids) where T : class, IEntityService;
         List<T> List<T>(int[] Ids, out int[] invalidIds) where T : class, IEntityService;
+        List<T> List<T>(int[] Ids, SpecificationBase<T> specification) where T : class, IEntityService;
 
         List<T> List<T>(Expression<Func<T, bool>> where) where T : class, IEntityService;
 

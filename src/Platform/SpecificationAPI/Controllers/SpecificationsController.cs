@@ -45,7 +45,7 @@ namespace SpecificationAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("/{id}/build-instruction")]
+        [HttpPost("{id}/build-instruction")]
         public async Task<IActionResult> BuildInstruction(int id)
         {
             var specificationExisting = _repositoryService.Find<Specification>(id, new SpecificationSpecification(true));
@@ -82,10 +82,10 @@ namespace SpecificationAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude)
+        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, [FromQuery] int[]? ids, string? searchValue, bool isInclude)
         {
             int totalRecords;
-            var specificationSpecification = new SpecificationSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
+            var specificationSpecification = new SpecificationSpecification(isInclude, searchValue, ids, filter.ColumnOrders.ToColumnOrders());
             var pagedData = _repositoryService.Find<Specification>(filter.PageNumber, filter.PageSize, specificationSpecification, out totalRecords).ToList();
             var pagedReponse = PaginationHelper.CreatePagedReponse<Specification>(pagedData, filter, totalRecords, _uriService, Request.Path.Value ?? "");
             return Ok(pagedReponse);

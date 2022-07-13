@@ -1,4 +1,5 @@
 ﻿using AppShareServices.Commands;
+using AppShareServices.DataAccess;
 using AppShareServices.DataAccess.Persistences;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Events;
@@ -44,6 +45,7 @@ namespace CatalogCrossCutting.DependencyInjections
 
             // Infrastructure
             services.AddDbContext<CatalogContext>(options => options.UseMySql(configuration.GetConnectionString("CatalogDb"), new MySqlServerVersion(new Version(8, 0, 21))));
+            services.AddDbContext<EventContext>(options => options.UseMySql(configuration.GetConnectionString("EventDb"), new MySqlServerVersion(new Version(8, 0, 21))));
             services.AddTransient<IDatabaseService, CatalogContext>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IDomainEventRepository, DomainEventRepository>();
@@ -52,13 +54,13 @@ namespace CatalogCrossCutting.DependencyInjections
             // Ousite Domain Services, ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0
             services.AddHttpClient("Specification", httpClient =>
             {
-                httpClient.BaseAddress = new Uri($"http://api.v1/specifications/");
+                httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
                 httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
             // Or register client service
             services.AddHttpClient<ISpecificationClientService>(_httpClient =>
             {
-                _httpClient.BaseAddress = new Uri($"http://api.v1/specifications/");
+                _httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
                 _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             });
             services.AddTransient<ISpecificationClientService, SpecificationClientService>();

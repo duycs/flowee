@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CatalogApplication.DTOs;
+using CatalogDomain.AgreegateModels.CatalogAgreegate;
 
 namespace CatalogApplication.MappingConfigurations
 {
@@ -9,6 +11,7 @@ namespace CatalogApplication.MappingConfigurations
         /// </summary>
         public MappingEntityToDtoProfile()
         {
+            CreateMap<Catalog, CatalogDto>().ConvertUsing(c => new CatalogDto());
         }
     }
 }

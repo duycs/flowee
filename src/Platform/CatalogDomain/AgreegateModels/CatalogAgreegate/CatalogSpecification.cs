@@ -97,6 +97,8 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
             if (IsInclude)
             {
                 AddInclude(w => w.Addons);
+                AddInclude(w => w.Price);
+                AddInclude(w => w.Currency);
             }
 
         }
