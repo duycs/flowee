@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobInfrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(JobContext))]
-    [Migration("20220712152753_AddJobDataContext")]
-    partial class AddJobDataContext
+    [Migration("20220713161116_AddJobDbContext")]
+    partial class AddJobDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

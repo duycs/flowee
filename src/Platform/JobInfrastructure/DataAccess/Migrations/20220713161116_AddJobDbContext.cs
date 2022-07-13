@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace JobInfrastructure.DataAccess.Migrations
 {
-    public partial class AddJobDataContext : Migration
+    public partial class AddJobDbContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -55,6 +55,8 @@ namespace JobAPI.SeedData
                 }
 
                 // Job -> Steps -> Operations
+                // Issue: Duplicate id because before inserted
+
                 if (!_dbContext.Jobs.Any())
                 {
                     var jobs = GetJobFromFile();
@@ -243,7 +245,7 @@ namespace JobAPI.SeedData
                 return new List<Operation>();
             }
 
-            string[] requiredHeaders = { "StructTypeId", "IsAsync", "OrderNumber", "JobId" };
+            string[] requiredHeaders = { "StructTypeId", "IsAsync", "OrderNumber", "JobId", "StepIds" };
             string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
@@ -257,12 +259,16 @@ namespace JobAPI.SeedData
 
         private Operation CreateOperation(string[] column, string[] headers)
         {
+            var stepIds = column[Array.IndexOf(headers, "StepIds".ToLower())].Trim('"').Trim().Split(",").Select(int.Parse).ToList();
+            var steps = _dbContext.Steps.Where(s => stepIds.Contains(s.Id)).ToList();
+
             var operation = new Operation()
             {
                 StructTypeId = int.Parse(column[Array.IndexOf(headers, "StructTypeId".ToLower())].Trim('"').Trim()),
                 IsAsync = bool.Parse(column[Array.IndexOf(headers, "IsAsync".ToLower())].Trim('"').Trim()),
                 OrderNumber = int.Parse(column[Array.IndexOf(headers, "OrderNumber".ToLower())].Trim('"').Trim()),
                 JobId = int.Parse(column[Array.IndexOf(headers, "JobId".ToLower())].Trim('"').Trim()),
+                Steps = steps,
                 DateCreated = DateTime.UtcNow,
             };
 

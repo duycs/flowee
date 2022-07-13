@@ -1,4 +1,5 @@
 ﻿using AppShareServices.Models;
+using System.Text.Json.Serialization;
 
 namespace JobDomain.AgreegateModels.JobAgreegate
 {
@@ -24,6 +25,8 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public string? Output { get; set; }
 
         public int JobId { get; set; }
+
+        [JsonIgnore]
         public Job Job { get; set; }
 
         public List<Step> SortSteps()

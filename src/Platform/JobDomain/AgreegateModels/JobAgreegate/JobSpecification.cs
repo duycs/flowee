@@ -74,6 +74,17 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
                             break;
 
+                        case nameof(Job.Operations):
+                            if (columnOrder.Order == Order.DESC)
+                            {
+                                AddOrderByDescending(w => w.Operations.OrderByDescending(o => o.OrderNumber));
+                            }
+                            else
+                            {
+                                AddOrderBy(w => w.Operations.OrderBy(o => o.OrderNumber));
+                            }
+                            break;
+
                         default:
                             AddOrderByDescending(w => w.DateCreated);
                             break;
@@ -84,7 +95,9 @@ namespace JobDomain.AgreegateModels.JobAgreegate
             // include related entity
             if (IsInclude)
             {
-                AddInclude($"{nameof(Job.Operations)}.{nameof(Operation.Steps)}");
+                AddInclude(j => j.JobStatus);
+                AddInclude($"{nameof(Job.Operations)}.{nameof(Operation.Steps)}.{nameof(Step.StepStatus)}");
+                AddInclude($"{nameof(Job.Operations)}.{nameof(Operation.StructType)}");
             }
 
         }
