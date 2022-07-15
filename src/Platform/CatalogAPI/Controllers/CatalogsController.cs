@@ -3,9 +3,12 @@ using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using CatalogApplication.Commands;
+using CatalogApplication.DTOs;
 using CatalogApplication.Services;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
+using System.Text.Json;
 
 namespace CatalogAPI.Controllers
 {
@@ -19,9 +22,11 @@ namespace CatalogAPI.Controllers
         private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public CatalogsController(ILogger<CatalogsController> logger, ICatalogService catalogService,
-            IRepositoryService repositoryService, IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher)
+            IRepositoryService repositoryService, IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher,
+            IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             _repositoryService = repositoryService;
@@ -29,6 +34,7 @@ namespace CatalogAPI.Controllers
             _mappingService = mappingService;
             _uriService = uriService;
             _commandDispatcher = commandDispatcher;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpPost]
@@ -74,7 +80,7 @@ namespace CatalogAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, bool isInclude)
         {
-            var catalogDto = _catalogService.Find(id, isInclude);
+            var catalogDto = await _catalogService.Find(id, isInclude);
             if (catalogDto == null)
             {
                 return NotFound();

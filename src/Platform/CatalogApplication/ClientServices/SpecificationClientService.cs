@@ -11,11 +11,13 @@ namespace CatalogApplication.ClientServices
         public SpecificationClientService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
+            _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
         }
 
         public async Task<SpecificationDto> Get(int id, bool isInclude)
         {
-            return await _httpClient.GetFromJsonAsync<SpecificationDto>($"/{id}?isInclude={isInclude}");
+            return await _httpClient.GetFromJsonAsync<SpecificationDto>($"{id}?isInclude={isInclude}");
         }
 
         public async Task<IEnumerable<SpecificationDto>> Get(int?[]? ids, bool isInclude)

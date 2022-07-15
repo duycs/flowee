@@ -6,7 +6,7 @@ namespace CatalogApplication.DTOs
     {
         public string Name { get; set; }
         public string Code { get; set; }
-        public string Description { get; set; }
-        public virtual ICollection<SettingDto>? Settings { get; set; }
+        public string Instruction { get; set; }
+        public List<RuleDto> Rules { get; set; }
     }
 }

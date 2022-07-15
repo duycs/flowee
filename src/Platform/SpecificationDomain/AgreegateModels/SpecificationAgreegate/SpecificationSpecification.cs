@@ -79,7 +79,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
             if (IsInclude)
             {
                 AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Condition)}");
-                AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Setting)}");
+                AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Setting)}.{nameof(Setting.SettingType)}");
                 AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Operator)}");
             }
 

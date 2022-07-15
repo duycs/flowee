@@ -21,37 +21,44 @@ namespace CatalogApplication.Services
 
         public async Task<CatalogDto> Find(int id, bool isInclude)
         {
-            var catalogExisting = _repositoryService.Find<Catalog>(id);
-            var catalogDto = _mappingService.Map<CatalogDto>(catalogExisting);
-
-            if (isInclude)
+            try
             {
-                if (catalogExisting.SpecificationId != null)
-                {
-                    catalogDto.Specification = await _specificationClientService.Get((int)catalogExisting.SpecificationId, isInclude);
-                }
+                var catalogExisting = _repositoryService.Find<Catalog>(id);
+                var catalogDto = _mappingService.Map<CatalogDto>(catalogExisting);
 
-                // Find list specifications of addon
-                if (catalogExisting.Addons != null && catalogExisting.Addons.Any())
+                if (isInclude)
                 {
-                    var addonSpecificationIds = catalogExisting.Addons.Where(x => x.SpecificationId.HasValue && x.SpecificationId > 0).Select(x => x.SpecificationId).ToArray();
-                    var specificationDtos = await _specificationClientService.Get(addonSpecificationIds, isInclude);
-
-                    if (specificationDtos != null && specificationDtos.Any())
+                    if (catalogExisting.SpecificationId != null)
                     {
-                        foreach (var addon in catalogDto.Addons)
+                        catalogDto.Specification = await _specificationClientService.Get((int)catalogExisting.SpecificationId, isInclude);
+                    }
+
+                    // Find list specifications of addon
+                    if (catalogExisting.Addons != null && catalogExisting.Addons.Any())
+                    {
+                        var addonSpecificationIds = catalogExisting.Addons.Where(x => x.SpecificationId.HasValue && x.SpecificationId > 0).Select(x => x.SpecificationId).ToArray();
+                        var specificationDtos = await _specificationClientService.Get(addonSpecificationIds, isInclude);
+
+                        if (specificationDtos != null && specificationDtos.Any())
                         {
-                            var specificationDto = specificationDtos.FirstOrDefault(c => c.Id == addon.Specification.Id);
-                            if (specificationDto != null)
+                            foreach (var addon in catalogDto.Addons)
                             {
-                                addon.Specification = specificationDto;
+                                var specificationDto = specificationDtos.FirstOrDefault(c => c.Id == addon.Specification.Id);
+                                if (specificationDto != null)
+                                {
+                                    addon.Specification = specificationDto;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            return catalogDto;
+                return catalogDto;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public Task<IEnumerable<CatalogDto>> Find(int[] ids, bool isInclude)
