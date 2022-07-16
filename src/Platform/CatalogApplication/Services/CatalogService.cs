@@ -1,8 +1,8 @@
-﻿using AppShareServices.DataAccess.Repository;
+﻿using AppShareDomain.DTOs.Catalog;
+using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using CatalogApplication.ClientServices;
-using CatalogApplication.DTOs;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 using System.Text;
 

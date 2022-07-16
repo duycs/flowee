@@ -1,12 +1,6 @@
-﻿using AppShareDomain.DTOs;
-using AppShareServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppShareDomain.DTOs.Specification;
 
-namespace CatalogApplication.DTOs
+namespace AppShareDomain.DTOs.Catalog
 {
     public class CatalogDto : DtoBase
     {

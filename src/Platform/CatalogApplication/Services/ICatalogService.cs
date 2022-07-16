@@ -1,4 +1,4 @@
-﻿using CatalogApplication.DTOs;
+﻿using AppShareDomain.DTOs.Catalog;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 
 namespace CatalogApplication.Services

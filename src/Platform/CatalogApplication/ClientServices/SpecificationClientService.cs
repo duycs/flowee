@@ -1,5 +1,5 @@
-﻿using AppShareServices.Pagging;
-using CatalogApplication.DTOs;
+﻿using AppShareDomain.DTOs.Specification;
+using AppShareServices.Pagging;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Json;
 

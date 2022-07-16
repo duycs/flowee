@@ -1,4 +1,4 @@
-﻿namespace AppShareServices.Models
+﻿namespace AppShareDomain.DTOs
 {
     public class DtoBase
     {

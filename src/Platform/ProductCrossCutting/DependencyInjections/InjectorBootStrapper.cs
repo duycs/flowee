@@ -1,4 +1,5 @@
 ﻿using AppShareServices.Commands;
+using AppShareServices.DataAccess;
 using AppShareServices.DataAccess.Persistences;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Events;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using ProductApplication.Commands;
+using ProductApplication.Services;
 using ProductInfrastructure.DataAccess;
 using System.Reflection;
 
@@ -41,6 +43,7 @@ namespace ProductCrossCutting.DependencyInjections
 
             // Infra
             services.AddDbContext<ProductContext>(options => options.UseMySql(configuration.GetConnectionString("ProductDb"), new MySqlServerVersion(new Version(8, 0, 21))));
+            services.AddDbContext<EventContext>(options => options.UseMySql(configuration.GetConnectionString("EventDb"), new MySqlServerVersion(new Version(8, 0, 21))));
             services.AddTransient<IDatabaseService, ProductContext>();
             services.AddScoped<IRepositoryService, RepositoryService>();
             //services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -48,12 +51,8 @@ namespace ProductCrossCutting.DependencyInjections
             services.AddScoped<IMappingService, MappingService>();
 
             // Ousite Domain Services
-            services.AddHttpClient("Catalog", httpClient =>
-            {
-                httpClient.BaseAddress = new Uri("https://catalog//");
-                httpClient.DefaultRequestHeaders.Add(
-                    HeaderNames.Accept, "application/json");
-            });
+            services.AddHttpClient<ICatalogClientService>();
+            services.AddTransient<ICatalogClientService, CatalogClientService>();
         }
     }
 }

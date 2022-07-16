@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatalogApplication.DTOs
+namespace AppShareDomain.DTOs.Catalog
 {
     public class RuleDto
     {

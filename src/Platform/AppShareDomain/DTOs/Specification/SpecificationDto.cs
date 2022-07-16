@@ -1,6 +1,6 @@
-﻿using AppShareServices.Models;
+﻿using AppShareDomain.DTOs.Catalog;
 
-namespace CatalogApplication.DTOs
+namespace AppShareDomain.DTOs.Specification
 {
     public class SpecificationDto : DtoBase
     {

@@ -1,6 +1,6 @@
 ﻿using AppShareDomain.DTOs;
+using AppShareDomain.DTOs.Catalog;
 using AutoMapper;
-using CatalogApplication.DTOs;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 
 namespace CatalogApplication.MappingConfigurations

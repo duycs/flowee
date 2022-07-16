@@ -1,9 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using AppShareServices.Models;
-
-namespace ProductApplication.DTOs
+﻿namespace AppShareDomain.DTOs.Product
 {
     public class CategoryDto : DtoBase
     {

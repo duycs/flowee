@@ -1,4 +1,4 @@
-﻿using CatalogApplication.DTOs;
+﻿using AppShareDomain.DTOs.Specification;
 using Refit;
 
 namespace CatalogApplication.ClientServices

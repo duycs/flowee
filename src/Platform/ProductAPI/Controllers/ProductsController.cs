@@ -1,10 +1,13 @@
+using AppShareDomain.DTOs.Catalog;
+using AppShareDomain.DTOs.Product;
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using Microsoft.AspNetCore.Mvc;
 using ProductApplication.Commands;
-using ProductApplication.DTOs;
+using ProductApplication.Services;
+using ProductApplication.ViewModels;
 using ProductDomain.AgreegateModels.ProductAgreegate;
 using System.Text.Json;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
@@ -20,31 +23,40 @@ namespace ProductAPI.Controllers
         private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
         private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IProductService _productService;
 
         public ProductsController(ILogger<ProductsController> logger, IRepositoryService repositoryService,
             IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher,
-            IHttpClientFactory httpClientFactory)
+            IProductService productService)
         {
             _logger = logger;
             _repositoryService = repositoryService;
             _mappingService = mappingService;
             _uriService = uriService;
             _commandDispatcher = commandDispatcher;
-            _httpClientFactory = httpClientFactory;
+            _productService = productService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateProductCommand createProductCommand)
+        public async Task<IActionResult> Add([FromBody] CreateProductVM createProductVM)
         {
+            var createProductCommand = _mappingService.Map<CreateProductCommand>(createProductVM);
             await _commandDispatcher.Send(createProductCommand);
             return Ok();
         }
 
         [HttpPatch]
-        public async Task<IActionResult> PatchUpdate([FromBody] UpdateProductCommand updateProductCommand)
+        public async Task<IActionResult> PatchUpdate([FromBody] UpdateProductVM updateProductVM)
         {
+            var updateProductCommand = _mappingService.Map<UpdateProductCommand>(updateProductVM);
             await _commandDispatcher.Send(updateProductCommand);
+            return Ok();
+        }
+
+        [HttpPost("{id}/build-instruction")]
+        public async Task<IActionResult> BuildInstruction(int id)
+        {
+            await _productService.BuildInstruction(id);
             return Ok();
         }
 
@@ -67,10 +79,8 @@ namespace ProductAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude)
         {
-            int totalRecords;
-            var productSpecification = new ProductSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
-            var pagedData = _repositoryService.Find<Product>(filter.PageNumber, filter.PageSize, productSpecification, out totalRecords).ToList();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Product>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
+            var pagedData = _productService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, searchValue, isInclude, out int totalRecords);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<ProductDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
             return Ok(pagedReponse);
         }
 
@@ -83,33 +93,8 @@ namespace ProductAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, bool isInclude)
         {
-            var productExisting = _repositoryService.Find<Product>(id, new ProductSpecification(isInclude));
-
-            if (productExisting is null)
-            {
-                return NotFound();
-            }
-
-            var productDto = _mappingService.Map<ProductDto>(productExisting);
-
-            if (isInclude)
-            {
-                var httpClient = _httpClientFactory.CreateClient("Catalog");
-                var httpResponseMessage = await httpClient.GetAsync($"/{productExisting.CatalogId}");
-
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-                    var catalogDto = await JsonSerializer.DeserializeAsync<CatalogDto>(contentStream);
-                    productDto.Catalog = catalogDto;
-                }
-
-                return Ok(productDto);
-            }
-            else
-            {
-                return Ok(productExisting);
-            }
+            var productDto = await _productService.Find(id, isInclude);
+            return Ok(productDto);
         }
     }
 }

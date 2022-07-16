@@ -1,7 +1,4 @@
-﻿using AppShareDomain.DTOs;
-using AppShareServices.Models;
-
-namespace CatalogApplication.DTOs
+﻿namespace AppShareDomain.DTOs.Catalog
 {
     public class SettingDto : DtoBase
     {

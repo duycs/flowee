@@ -11,7 +11,7 @@
     <None Remove="Commands\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="ClientServices\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>

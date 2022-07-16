@@ -1,11 +1,6 @@
-﻿using AppShareServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppShareDomain.DTOs.Catalog;
 
-namespace ProductApplication.DTOs
+namespace AppShareDomain.DTOs.Product
 {
     public class ProductDto : DtoBase
     {

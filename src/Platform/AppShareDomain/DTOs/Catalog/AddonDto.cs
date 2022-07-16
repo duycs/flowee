@@ -1,7 +1,6 @@
-﻿using AppShareServices.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using AppShareDomain.DTOs.Specification;
 
-namespace ProductApplication.DTOs
+namespace AppShareDomain.DTOs.Catalog
 {
     public class AddonDto : DtoBase
     {
@@ -9,15 +8,16 @@ namespace ProductApplication.DTOs
         public string? Name { get; set; }
         public string? Description { get; set; }
 
+        public int? SpecificationId { get; set; }
+
         /// <summary>
         /// Specification defiend how to made this Addon
         /// </summary>
-        public int? SpecificationId { get; set; }
+        public SpecificationDto Specification { get; set; }
 
         public decimal? Price { get; set; }
 
-        public int? CurrencyId { get; set; }
-        public string Currency { get; set; }
+        public EnumerationDto Currency { get; set; }
     }
 }
 

@@ -1,15 +1,13 @@
+using AppShareDomain.DTOs.Catalog;
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using CatalogApplication.Commands;
-using CatalogApplication.DTOs;
 using CatalogApplication.Services;
 using CatalogApplication.ViewModels;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
-using System.Text.Json;
 
 namespace CatalogAPI.Controllers
 {
