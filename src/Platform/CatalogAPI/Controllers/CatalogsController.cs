@@ -5,6 +5,7 @@ using AppShareServices.Pagging;
 using CatalogApplication.Commands;
 using CatalogApplication.DTOs;
 using CatalogApplication.Services;
+using CatalogApplication.ViewModels;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -38,15 +39,24 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateCatalogCommand createCatalogCommand)
+        public async Task<IActionResult> Add([FromBody] CreateCatalogVM createCatalogVM)
         {
+            var createCatalogCommand = _mappingService.Map<CreateCatalogCommand>(createCatalogVM);
             await _commandDispatcher.Send(createCatalogCommand);
             return Ok();
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> PatchUpdate([FromBody] UpdateCatalogCommand updateCatalogCommand)
+        [HttpPost("{id}/build-description")]
+        public async Task<IActionResult> BuildCatalogDescription(int id)
         {
+            await _catalogService.BuildCatalogDescription(id);
+            return Ok();
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> PatchUpdate([FromBody] UpdateCatalogVM updateCatalogVM)
+        {
+            var updateCatalogCommand = _mappingService.Map<UpdateCatalogCommand>(updateCatalogVM);
             await _commandDispatcher.Send(updateCatalogCommand);
             return Ok();
         }
@@ -56,7 +66,7 @@ namespace CatalogAPI.Controllers
         {
             var catalogExisting = _repositoryService.Find<Catalog>(id);
 
-            if (catalogExisting == null)
+            if (catalogExisting is null)
             {
                 return BadRequest("Catalog not found");
             }
@@ -68,20 +78,18 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude)
+        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude = true)
         {
-            int totalRecords;
-            var catalogSpecification = new CatalogSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
-            var pagedData = _repositoryService.Find<Catalog>(filter.PageNumber, filter.PageSize, catalogSpecification, out totalRecords).ToList();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Catalog>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
+            var pagedData = _catalogService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, searchValue, isInclude, out int totalRecords);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<CatalogDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
             return Ok(pagedReponse);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id, bool isInclude)
+        public async Task<IActionResult> Get(int id, bool isInclude = true)
         {
             var catalogDto = await _catalogService.Find(id, isInclude);
-            if (catalogDto == null)
+            if (catalogDto is null)
             {
                 return NotFound();
             }

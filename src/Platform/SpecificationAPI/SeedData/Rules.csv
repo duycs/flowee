@@ -1,3 +1,20 @@
 ﻿IsNot,Condition,SettingId,Operator,Value
-true,And,1,Equal,Value1
-false,Or,2,Equal,Value2
+false,And,1,Equal,need to reach over 90% quality
+false,And,2,Equal,need to reach over 90% quality
+false,And,3,Equal,need to reach over 90% quality
+false,And,4,Equal,need to reach over 90% quality
+false,And,5,Equal,need to reach over 90% quality
+false,And,6,GreaterThan,90% quality
+false,And,7,GreaterThan,90% quality
+false,And,8,GreaterThan,90% quality
+false,And,9,GreaterThan,90% quality
+false,And,10,GreaterThan,90% quality
+false,And,11,GreaterThan,90% quality
+false,And,12,GreaterThan,90% quality
+false,And,13,GreaterThan,90% quality
+false,And,14,GreaterThan,90% quality
+false,And,15,GreaterThan,90% quality
+false,And,16,GreaterThan,90% quality
+false,And,17,GreaterThan,90% quality
+false,And,18,GreaterThan,90% quality
+false,And,19,GreaterThan,90% quality

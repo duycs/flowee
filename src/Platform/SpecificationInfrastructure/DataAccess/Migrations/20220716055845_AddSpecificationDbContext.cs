@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SpecificationInfrastructure.DataAccess
+namespace SpecificationInfrastructure.DataAccess.Migrations
 {
-    public partial class AddSpecificationContext : Migration
+    public partial class AddSpecificationDbContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

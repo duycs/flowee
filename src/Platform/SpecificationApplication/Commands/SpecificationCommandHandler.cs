@@ -27,7 +27,7 @@ namespace SpecificationApplication.Commands
 
             List<Rule>? rules = null;
 
-            if (request.RuleIds != null)
+            if (request.RuleIds is not null)
             {
                 rules = _repositoryService.List<Rule>(request.RuleIds, out int[] invalidSettingIds);
                 if (invalidSettingIds.Any())
@@ -59,7 +59,7 @@ namespace SpecificationApplication.Commands
 
             List<Rule>? rules = null;
 
-            if (request.RuleIds != null)
+            if (request.RuleIds is not null)
             {
                 rules = _repositoryService.List<Rule>(request.RuleIds, out int[] invalidRuleIds);
                 if (invalidRuleIds.Any())
@@ -70,7 +70,7 @@ namespace SpecificationApplication.Commands
             }
 
             var specificationExisting = _repositoryService.Find<Specification>(request.Id);
-            if (specificationExisting == null)
+            if (specificationExisting is null)
             {
                 await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"Specification does not existing"));
                 return Unit.Value;

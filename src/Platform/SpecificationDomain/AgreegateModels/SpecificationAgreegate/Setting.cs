@@ -35,7 +35,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
             instructionBuild.Append($"[{Number}-{Key}]");
 
-            if (SettingType != null)
+            if (SettingType is not null)
             {
                 instructionBuild.Append($"[{SettingType.Name}]");
             }
@@ -58,7 +58,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
         public Setting PathUpdate(SettingType? settingType, string? value, string? name)
         {
-            if (settingType != null)
+            if (settingType is not null)
             {
                 SettingType = settingType;
             }

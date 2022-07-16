@@ -34,7 +34,7 @@ namespace WorkerApplication.Commands
             List<Role>? roles = null;
             List<Group>? groups = null;
             List<Skill>? skills = null;
-            if (request.RoleIds != null)
+            if (request.RoleIds is not null)
             {
                 roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
                 if (invalidRoleIds.Any())
@@ -44,7 +44,7 @@ namespace WorkerApplication.Commands
                 }
             }
 
-            if (request.GroupIds != null)
+            if (request.GroupIds is not null)
             {
                 groups = _repositoryService.List<Group>(request.GroupIds, out int[] invalidGroupIds);
                 if (invalidGroupIds.Any())
@@ -54,7 +54,7 @@ namespace WorkerApplication.Commands
                 }
             }
 
-            if (request.SkillIds != null)
+            if (request.SkillIds is not null)
             {
                 skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
                 if (invalidSkillIds.Any())
@@ -90,7 +90,7 @@ namespace WorkerApplication.Commands
             List<Role>? roles = null;
             List<Group>? groups = null;
             List<Skill>? skills = null;
-            if (request.RoleIds != null)
+            if (request.RoleIds is not null)
             {
                 roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
                 if (invalidRoleIds.Any())
@@ -100,7 +100,7 @@ namespace WorkerApplication.Commands
                 }
             }
 
-            if (request.GroupIds != null)
+            if (request.GroupIds is not null)
             {
                 groups = _repositoryService.List<Group>(request.GroupIds, out int[] invalidGroupIds);
                 if (invalidGroupIds.Any())
@@ -110,7 +110,7 @@ namespace WorkerApplication.Commands
                 }
             }
 
-            if (request.SkillIds != null)
+            if (request.SkillIds is not null)
             {
                 skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
                 if (invalidSkillIds.Any())
@@ -121,7 +121,7 @@ namespace WorkerApplication.Commands
             }
 
             var workerExsiting = _repositoryService.Find<Worker>(request.Id);
-            if (workerExsiting == null)
+            if (workerExsiting is null)
             {
                 await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Worker does not existing"));
                 return Unit.Value;

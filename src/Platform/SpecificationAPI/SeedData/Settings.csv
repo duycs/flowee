@@ -1,4 +1,20 @@
 ﻿SettingType,Key,Number,Name,Value
-Text,Retouch,12,Retouch manual,Retouch manual 100%
-text,Shadow,13,Shadow,Shadow 90%
-Object,3D Mask,14,3D Mask,3D Mask 100%
+Text,HDRPhoto,1,HDRPhoto Style,Make HDR photo and input data
+object,FlambientLV1,2,FlambientLV1 Style,input data
+object,FlambientLV2,3,FlambientLV2 Style,input data
+object,FlambientLV5,4,FlambientLV5 Style,input data
+text,Editorial,5,Editorial Style,Edit many faces and input data
+object,WindowMasking,6,WindowMasking Addon,input data
+object,IndoorSkypeReplacement,7,IndoorSkypeReplacement Addon,input data
+object,Resize,8,Resize Addon,input data
+object,AddLogo,9,AddLogo Addon,input data
+object,VituralralLight,10,VituralralLight Addon,input data
+object,AddTVScreen,11,AddTVScreen Addon,input data
+object,MakeCelling,12,MakeCelling Addon,input data
+object,FlashShadowRemoveals,13,FlashShadowRemoveals Addon,input data
+object,LawnPatchingMakeGreenGlass,14,LawnPatchingMakeGreenGlass Addon,input data
+object,SmallObjectsRemovals,15,SmallObjectsRemovals Addon,input data
+object,WriesRemoval,16,WriesRemoval Addon,input data
+object,RemoveBackground,17,RemoveBackground Addon,input data
+object,HDRPhoto2,18,HDR Photo Setting 2,HDR Photo Setting 2 and input data
+object,HDRPhoto3,19,HDR Photo Setting 3,HDR Photo Setting 3 and input data

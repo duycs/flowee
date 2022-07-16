@@ -43,14 +43,14 @@ namespace WorkerAPI.Controllers
         public async Task<IActionResult> WorkerStartShift([FromBody] WorkerStartShiftVM workerStartShiftVM)
         {
             var worker = _repositoryService.Find<Worker>(workerStartShiftVM.WorkerId);
-            if (worker == null)
+            if (worker is null)
             {
                 return BadRequest(@"Worker not found");
             }
 
             var shift = _repositoryService.Find<Shift>(workerStartShiftVM.ShiftId);
 
-            if (shift == null)
+            if (shift is null)
             {
                 return BadRequest(@"Shift not found");
             }
@@ -59,7 +59,7 @@ namespace WorkerAPI.Controllers
             Expression<Func<WorkerShift, bool>> @where = w => w.WorkerId == worker.Id && w.ShiftId == shift.Id && w.DateStarted.Date == workerStartShiftVM.DateStarted.Date;
             var workerShiftExisting = _repositoryService.Find(@where);
 
-            if (workerShiftExisting == null)
+            if (workerShiftExisting is not null)
             {
                 var workerShift = WorkerShift.CreateStartShift(worker.Id, shift.Id, workerStartShiftVM.DateStarted);
                 _repositoryService.Add<WorkerShift>(workerShift);
@@ -78,14 +78,14 @@ namespace WorkerAPI.Controllers
         public async Task<IActionResult> WorkerEndShift([FromBody] WorkerEndShiftVM workerEndShiftVM)
         {
             var worker = _repositoryService.Find<Worker>(workerEndShiftVM.WorkerId);
-            if (worker == null)
+            if (worker is null)
             {
                 return BadRequest(@"Worker not found");
             }
 
             var shift = _repositoryService.Find<Shift>(workerEndShiftVM.ShiftId);
 
-            if (shift == null)
+            if (shift is null)
             {
                 return BadRequest(@"Shift not found");
             }
@@ -94,7 +94,7 @@ namespace WorkerAPI.Controllers
             Expression<Func<WorkerShift, bool>> @where = w => w.WorkerId == worker.Id && w.ShiftId == shift.Id && w.DateStarted.Date == workerEndShiftVM.DateEnded.Date;
             var workerShiftExisting = _repositoryService.Find(@where);
 
-            if (workerShiftExisting == null)
+            if (workerShiftExisting is null)
             {
                 return BadRequest("Worker have not started working in this shift");
             }

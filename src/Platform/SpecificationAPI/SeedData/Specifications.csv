@@ -1,2 +1,18 @@
-﻿Name,Code
-Specification1,Specification1
+﻿Name,Code,RuleIds
+Specification HDRPhoto,SpecificationHDRPhoto,"1,18,19"
+Specification Flambient LV1,SpecificationFlambientLV1,"2"
+Specification Flambient LV2,SpecificationFlambientLV2,"3"
+Specification Flambient LV5,SpecificationFlambientLV5,"4"
+Specification Editorial,SpecificationEditorialStyle,"5"
+Specification Window Masking,WindowMasking,"6"
+Specification Indoor Skype Replacement,IndoorSkypeReplacement,"7"
+Specification Resize,Resize,"8"
+Specification Add Logo,AddLogo,"9"
+Specification Vituralral Light,VituralralLight,"10"
+Specification Add TV Screen,AddTVScreen,"11"
+Specification Make Celling,MakeCelling,"12"
+Specification Flash Shadow Removeals,FlashShadowRemoveals,"13"
+Specification Lawn Patching MakeGreen Glass,LawnPatchingMakeGreenGlass,"14"
+Specification Small Objects Removals,SmallObjectsRemovals,"15"
+Specification Wries Removal,WriesRemoval,"16"
+Specification Remove Background,RemoveBackground,"17"

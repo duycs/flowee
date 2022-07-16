@@ -8,12 +8,12 @@ namespace CatalogApplication.Commands
         public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Quantity available in stock
         /// </summary>
-        public int? QuantityAvailable { get; set; }
+        public int QuantityAvailable { get; set; }
 
         /// <summary>
         /// Price of Product in standar
@@ -36,13 +36,13 @@ namespace CatalogApplication.Commands
     public class CreateCatalogCommand : CatalogCommand
     {
         public CreateCatalogCommand(string code, string name, string? description, int? quantityAvailable,
-            decimal priceStandar, int? currencyId, int? specificationId, int[]? addonIds)
+            decimal? priceStandar, int? currencyId, int? specificationId, int[]? addonIds)
         {
             Code = code;
-            Name = name;
-            Description = description;
-            QuantityAvailable = quantityAvailable;
-            PriceStandar = priceStandar;
+            Name = name ?? "";
+            Description = description ?? "";
+            QuantityAvailable = quantityAvailable ?? 0;
+            PriceStandar = priceStandar ?? 0;
             CurrencyId = currencyId;
             SpecificationId = specificationId;
             AddonIds = addonIds;
@@ -57,14 +57,14 @@ namespace CatalogApplication.Commands
     public class UpdateCatalogCommand : CatalogCommand
     {
         public UpdateCatalogCommand(int id, string code, string name, string? description, int? quantityAvailable,
-            decimal priceStandar, int? currencyId, int? specificationId, int[]? addonIds)
+            decimal? priceStandar, int? currencyId, int? specificationId, int[]? addonIds)
         {
             Id = id;
             Code = code;
-            Name = name;
-            Description = description;
-            QuantityAvailable = quantityAvailable;
-            PriceStandar = priceStandar;
+            Name = name ?? "";
+            Description = description ?? "";
+            QuantityAvailable = quantityAvailable ?? 0;
+            PriceStandar = priceStandar ?? 0;
             CurrencyId = currencyId;
             SpecificationId = specificationId;
             AddonIds = addonIds;

@@ -68,7 +68,7 @@ namespace AppShareDomain.Models
         {
             var matchingItem = GetAll<T>().FirstOrDefault(predicate);
 
-            if (matchingItem == null)
+            if (matchingItem is null)
                 throw new InvalidOperationException($"'{value}' is not a valid {description} in {typeof(T)}");
 
             return matchingItem;

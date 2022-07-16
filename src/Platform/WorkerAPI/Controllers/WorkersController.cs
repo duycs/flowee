@@ -71,7 +71,7 @@ namespace WorkerAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var workerExisting = _repositoryService.Find<Worker>(id);
-            if (workerExisting == null)
+            if (workerExisting is null)
             {
                 return NotFound();
             }
@@ -96,7 +96,7 @@ namespace WorkerAPI.Controllers
         public async Task<IActionResult> Get(int id, bool isInclude)
         {
             var workerExisting = _repositoryService.Find<Worker>(id, new WorkerSpecification(isInclude));
-            if (workerExisting == null)
+            if (workerExisting is null)
             {
                 return NotFound();
             }

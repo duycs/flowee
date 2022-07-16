@@ -47,7 +47,7 @@ namespace AppShareDomain.Models
         /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != GetType())
+            if (obj is null || obj.GetType() != GetType())
             {
                 return false;
             }
@@ -60,7 +60,7 @@ namespace AppShareDomain.Models
                 {
                     return false;
                 }
-                if (thisValues.Current != null && !thisValues.Current.Equals(otherValues.Current))
+                if (thisValues.Current is null && !thisValues.Current.Equals(otherValues.Current))
                 {
                     return false;
                 }

@@ -17,7 +17,7 @@ namespace AppShareServices.Extensions
                 throw new Exception($"requiredHeader count '{requiredHeaders.Count()}' is bigger then csv header count '{csvheaders.Count()}' ");
             }
 
-            if (optionalHeaders != null)
+            if (optionalHeaders is not null)
             {
                 if (csvheaders.Count() > (requiredHeaders.Count() + optionalHeaders.Count()))
                 {

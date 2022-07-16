@@ -99,7 +99,7 @@ namespace CustomerAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => createEntityFunction(x, id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private IEnumerable<Customer> GetCustomersFromFile()
@@ -119,7 +119,7 @@ namespace CustomerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateCustomer(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private IEnumerable<PaymentMethod> GetPaymentMethodsFromFile()
@@ -139,7 +139,7 @@ namespace CustomerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreatePaymentMethod(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private Customer CreateCustomer(string[] column, string[] headers)
@@ -208,7 +208,7 @@ namespace CustomerAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => CreateCardType(x, ref id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private IEnumerable<Currency> GetCurrenciesFromFile()
@@ -223,7 +223,7 @@ namespace CustomerAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => CreateCurrency(x, ref id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private IEnumerable<PriorityLevel> GetPriorityLevelsFromFile()
@@ -238,7 +238,7 @@ namespace CustomerAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => CreatePriorityLevels(x, ref id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
 

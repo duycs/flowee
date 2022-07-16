@@ -46,5 +46,33 @@ namespace AppShareServices.Pagging
 
             return columnOrders;
         }
+
+        public static string ToIdsQueries(this int[] ids, bool isInclude)
+        {
+            var queryIds = "";
+            if (ids is not null && ids.Any())
+            {
+                foreach (var id in ids)
+                {
+                    queryIds += $"ids={id}&";
+                }
+            }
+
+            return queryIds += $"isInclude={isInclude}";
+        }
+
+        public static string ToQueries(this Dictionary<string, string> keyValueParams, bool isInclude)
+        {
+            var queries = "";
+            if (keyValueParams is not null && keyValueParams.Any())
+            {
+                foreach (var keyValue in keyValueParams)
+                {
+                    queries += $"{keyValue.Key}={keyValue.Value}&";
+                }
+            }
+
+            return queries += $"isInclude={isInclude}";
+        }
     }
 }

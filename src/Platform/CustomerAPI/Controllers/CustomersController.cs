@@ -52,7 +52,7 @@ namespace CustomerAPI.Controllers
         {
             var customerExisting = _repositoryService.Find<Customer>(id);
 
-            if (customerExisting == null)
+            if (customerExisting is null)
             {
                 return BadRequest("Customer not found");
             }
@@ -78,7 +78,7 @@ namespace CustomerAPI.Controllers
         {
             var customerExisting = _repositoryService.Find<Customer>(id, new CustomerSpecification(isInclude));
 
-            if (customerExisting == null)
+            if (customerExisting is null)
             {
                 return NotFound();
             }

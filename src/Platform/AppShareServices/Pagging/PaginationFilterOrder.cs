@@ -20,10 +20,10 @@ namespace AppShareServices.Pagging
             ColumnOrders = "";
         }
 
-        public PaginationFilterOrder(int pageNumber, int pageSize, string? columnOrders = "")
+        public PaginationFilterOrder(int pageNumber, int pageSize, string columnOrders = "")
         {
             PageNumber = pageNumber < 1 ? 1 : pageNumber;
-            PageSize = pageSize > 10 ? 10 : pageSize;
+            PageSize = (pageSize < 1 || pageSize > 10) ? 10 : pageSize;
             ColumnOrders = columnOrders ?? "";
         }
     }

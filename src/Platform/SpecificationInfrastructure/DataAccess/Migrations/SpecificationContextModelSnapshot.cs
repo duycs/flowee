@@ -7,7 +7,7 @@ using SpecificationInfrastructure.DataAccess;
 
 #nullable disable
 
-namespace SpecificationInfrastructure.DataAccess
+namespace SpecificationInfrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(SpecificationContext))]
     partial class SpecificationContextModelSnapshot : ModelSnapshot

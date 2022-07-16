@@ -41,13 +41,13 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
             // Ignore condition first line
             if (!isfirstLine)
             {
-                if (Condition != null)
+                if (Condition is not null)
                 {
                     ruleAsText.Append($" [{Condition.Name}]");
                 }
             }
 
-            if (Setting != null)
+            if (Setting is not null)
             {
                 ruleAsText.Append($" [{Setting.BuildInstruction()}]");
             }

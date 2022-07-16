@@ -20,6 +20,6 @@ namespace CatalogApplication.ClientServices
         /// <param name="isInclude"></param>
         /// <returns></returns>
         [Get("/specifications")]
-        public Task<IEnumerable<SpecificationDto>> Get(int?[]? ids, bool isInclude);
+        public Task<IEnumerable<SpecificationDto>> Get(int[] ids, bool isInclude);
     }
 }

@@ -53,7 +53,7 @@ namespace ProductAPI.Controllers
         {
             var productExisting = _repositoryService.Find<Product>(id);
 
-            if (productExisting == null)
+            if (productExisting is null)
             {
                 return BadRequest("Product not found");
             }
@@ -85,7 +85,7 @@ namespace ProductAPI.Controllers
         {
             var productExisting = _repositoryService.Find<Product>(id, new ProductSpecification(isInclude));
 
-            if (productExisting == null)
+            if (productExisting is null)
             {
                 return NotFound();
             }

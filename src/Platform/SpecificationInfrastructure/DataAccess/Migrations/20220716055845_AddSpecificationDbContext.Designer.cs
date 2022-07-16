@@ -8,11 +8,11 @@ using SpecificationInfrastructure.DataAccess;
 
 #nullable disable
 
-namespace SpecificationInfrastructure.DataAccess
+namespace SpecificationInfrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(SpecificationContext))]
-    [Migration("20220711162250_AddSpecificationContext")]
-    partial class AddSpecificationContext
+    [Migration("20220716055845_AddSpecificationDbContext")]
+    partial class AddSpecificationDbContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AppShareDomain.DTOs;
+using AutoMapper;
 using CatalogApplication.DTOs;
 using CatalogDomain.AgreegateModels.CatalogAgreegate;
 
@@ -12,6 +13,8 @@ namespace CatalogApplication.MappingConfigurations
         public MappingEntityToDtoProfile()
         {
             CreateMap<Catalog, CatalogDto>();
+            CreateMap<Addon, AddonDto>();
+            CreateMap<Currency, EnumerationDto>();
         }
     }
 }

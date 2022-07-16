@@ -69,17 +69,17 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                 FullName = fullName;
             }
 
-            if (roles != null)
+            if (roles is not null)
             {
                 Roles = roles;
             }
 
-            if (groups != null)
+            if (groups is not null)
             {
                 Groups = groups;
             }
 
-            if (skills != null)
+            if (skills is not null)
             {
                 Skills = skills;
             }

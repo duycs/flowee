@@ -63,7 +63,7 @@ namespace ProductAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateCategory(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private IEnumerable<Product> GetProductFromFile()
@@ -83,7 +83,7 @@ namespace ProductAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateProduct(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private Category CreateCategory(string[] column, string[] headers)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AppShareDomain.DTOs;
+using AppShareServices.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CatalogApplication.DTOs
 {
-    public class CatalogDto
+    public class CatalogDto : DtoBase
     {
         public string Code { get; set; }
         public string Name { get; set; }
@@ -27,8 +29,9 @@ namespace CatalogApplication.DTOs
         /// </summary>
         public decimal Price { get; set; }
 
-        public int CurrencyId { get; set; }
-        public string Currency { get; set; }
+        public EnumerationDto Currency { get; set; }
+
+        public int SpecificationId { get; set; }
 
         /// <summary>
         /// Specification of Product standar and Addons
@@ -39,10 +42,5 @@ namespace CatalogApplication.DTOs
         /// Product standar can have n Addons
         /// </summary>
         public List<AddonDto> Addons { get; set; }
-
-        /// <summary>
-        /// Specification standar and specifications of addons
-        /// </summary>
-        public List<SpecificationDto> SpecificationDtos { get; set; }
     }
 }

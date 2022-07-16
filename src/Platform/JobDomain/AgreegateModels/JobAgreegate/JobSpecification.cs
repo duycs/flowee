@@ -20,7 +20,7 @@ namespace JobDomain.AgreegateModels.JobAgreegate
             }
 
             // order by columns
-            if (columnOrders != null && columnOrders.Any())
+            if (columnOrders is not null && columnOrders.Any())
             {
                 foreach (var columnOrder in columnOrders)
                 {

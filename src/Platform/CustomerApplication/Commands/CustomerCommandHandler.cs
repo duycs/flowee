@@ -33,7 +33,7 @@ namespace CustomerApplication.Commands
             Currency? currency = null;
             PriorityLevel? priorityLevel = null;
 
-            if (request.PaymentMethodIds != null)
+            if (request.PaymentMethodIds is not null)
             {
                 paymentMethods = _repositoryService.List<PaymentMethod>(request.PaymentMethodIds, out int[] invalidPaymentMethods);
                 if (invalidPaymentMethods.Any())
@@ -43,12 +43,12 @@ namespace CustomerApplication.Commands
                 }
             }
 
-            if (request.CurrencyId != null)
+            if (request.CurrencyId is not null)
             {
                 currency = Enumeration.FromValue<Currency>((int)request.CurrencyId);
             }
 
-            if (request.PriorityLevelId != null)
+            if (request.PriorityLevelId is not null)
             {
                 priorityLevel = Enumeration.FromValue<PriorityLevel>((int)request.PriorityLevelId);
             }
@@ -71,7 +71,7 @@ namespace CustomerApplication.Commands
             Currency? currency = null;
             PriorityLevel? priorityLevel = null;
 
-            if (request.PaymentMethodIds != null)
+            if (request.PaymentMethodIds is not null)
             {
                 paymentMethods = _repositoryService.List<PaymentMethod>(request.PaymentMethodIds, out int[] invalidPaymentMethods);
                 if (invalidPaymentMethods.Any())
@@ -81,19 +81,19 @@ namespace CustomerApplication.Commands
                 }
             }
 
-            if (request.CurrencyId != null)
+            if (request.CurrencyId is not null)
             {
                 currency = Enumeration.FromValue<Currency>((int)request.CurrencyId);
             }
 
-            if (request.PriorityLevelId != null)
+            if (request.PriorityLevelId is not null)
             {
                 priorityLevel = Enumeration.FromValue<PriorityLevel>((int)request.PriorityLevelId);
             }
 
             var customerExisting = _repositoryService.Find<Customer>(request.Id);
 
-            if(customerExisting == null)
+            if(customerExisting is not null)
             {
                 await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"customerId {request.Id} does not exist, could not update"));
                 return Unit.Value;

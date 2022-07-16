@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppShareDomain.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace CatalogApplication.DTOs
     {
         public bool IsNot { get; set; }
 
-        public ConditionDto Condition { get; set; }
+        public EnumerationDto Condition { get; set; }
 
         public SettingDto Setting { get; set; }
 

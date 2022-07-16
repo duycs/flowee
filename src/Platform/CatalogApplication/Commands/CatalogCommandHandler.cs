@@ -31,7 +31,7 @@ namespace CatalogApplication.Commands
             List<Addon>? addons = null;
             Currency? currency = null;
 
-            if (request.AddonIds != null)
+            if (request.AddonIds is not null)
             {
                 addons = _repositoryService.List<Addon>(request.AddonIds, out int[] invalidAddons);
                 if (invalidAddons.Any())
@@ -41,7 +41,7 @@ namespace CatalogApplication.Commands
                 }
             }
 
-            if (request.CurrencyId != null)
+            if (request.CurrencyId is not null)
             {
                 currency = Enumeration.FromValue<Currency>((int)request.CurrencyId);
             }

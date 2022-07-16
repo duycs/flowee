@@ -52,17 +52,13 @@ namespace CatalogCrossCutting.DependencyInjections
             services.AddScoped<IMappingService, MappingService>();
 
             // Ousite Domain Services, ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0
-            services.AddHttpClient("Specification", httpClient =>
-            {
-                httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
-                httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
-            // Or register client service
-            services.AddHttpClient<ISpecificationClientService>(_httpClient =>
-            {
-                _httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
-                _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            services.AddHttpClient<ISpecificationClientService>();
+            // TODO: can not register base address at here?
+            //services.AddHttpClient<ISpecificationClientService>(_httpClient =>
+            //{
+            //    _httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
+            //    _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            //});
             services.AddTransient<ISpecificationClientService, SpecificationClientService>();
 
         }

@@ -1,4 +1,5 @@
-﻿using CatalogApplication.DTOs;
+﻿using AppShareServices.Pagging;
+using CatalogApplication.DTOs;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -20,18 +21,9 @@ namespace CatalogApplication.ClientServices
             return await _httpClient.GetFromJsonAsync<SpecificationDto>($"{id}?isInclude={isInclude}");
         }
 
-        public async Task<IEnumerable<SpecificationDto>> Get(int?[]? ids, bool isInclude)
+        public async Task<IEnumerable<SpecificationDto>> Get(int[] ids, bool isInclude)
         {
-            var queryIds = "";
-            if (ids != null && ids.Any())
-            {
-                foreach (var id in ids)
-                {
-                    queryIds.Concat($"ids={id}");
-                }
-            }
-
-            return await _httpClient.GetFromJsonAsync<IEnumerable<SpecificationDto>>($"?{queryIds}&isInclude={isInclude}");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<SpecificationDto>>($"?{ids.ToIdsQueries(isInclude)}");
         }
     }
 }

@@ -172,7 +172,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateDepartment(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<Group> GetGroupFromFile()
         {
@@ -191,7 +191,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateGroup(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<Role> GetRolesFromFile()
         {
@@ -210,7 +210,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateRole(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<Shift> GetShiftFromFile()
         {
@@ -229,7 +229,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateShift(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<SkillLevel> GetSkillLevelFromFile()
         {
@@ -243,7 +243,7 @@ namespace WorkerAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => CreateSkillLevel(x, ref id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<Skill> GetSkillFromFile()
         {
@@ -262,7 +262,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateSkill(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<WorkerShift> GetWorkerShiftFromFile()
         {
@@ -281,7 +281,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateWorkerShift(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<WorkerGroup> GetWorkerGroupFromFile()
         {
@@ -300,7 +300,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateWorkerGroup(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<WorkerRole> GetWorkerRoleFromFile()
         {
@@ -319,7 +319,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateWorkerRole(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<Worker> GetWorkersFromFile()
         {
@@ -338,7 +338,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateWorker(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private IEnumerable<WorkerSkill> GetWorkerSkillFromFile()
         {
@@ -357,7 +357,7 @@ namespace WorkerAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateWorkerSkill(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         // Create entity
@@ -378,7 +378,7 @@ namespace WorkerAPI.SeedData
         {
             var departmentCode = column[Array.IndexOf(headers, "DepartmentCode".ToLower())].Trim('"').Trim();
             var department = _context.Departments.FirstOrDefault(i => i.Code.ToLower() == departmentCode);
-            if (department == null)
+            if (department is null)
             {
                 throw new Exception($"Department {departmentCode} not found");
             }
@@ -466,12 +466,12 @@ namespace WorkerAPI.SeedData
             var shiftCode = column[Array.IndexOf(headers, "ShiftCode".ToLower())].Trim('"').Trim();
             var shift = _context.Shifts.FirstOrDefault(i => i.Code.ToLower() == shiftCode);
 
-            if (worker == null)
+            if (worker is null)
             {
                 throw new Exception($"Worker {workerCode} not found");
             }
 
-            if (shift == null)
+            if (shift is null)
             {
                 throw new Exception($"Shift {shiftCode} not found");
             }
@@ -498,12 +498,12 @@ namespace WorkerAPI.SeedData
             var groupCode = column[Array.IndexOf(headers, "GroupCode".ToLower())].Trim('"').Trim();
             var group = _context.Groups.FirstOrDefault(i => i.Code.ToLower() == groupCode);
 
-            if (worker == null)
+            if (worker is null)
             {
                 throw new Exception($"Worker {workerCode} not found");
             }
 
-            if (group == null)
+            if (group is null)
             {
                 throw new Exception($"Group {groupCode} not found");
             }
@@ -528,17 +528,17 @@ namespace WorkerAPI.SeedData
             var skillLevelName = column[Array.IndexOf(headers, "SkillLevelName".ToLower())].Trim('"').Trim();
             var skillLevel = _context.SkillLevels.FirstOrDefault(i => i.Name.ToLower() == skillLevelName);
 
-            if (worker == null)
+            if (worker is null)
             {
                 throw new Exception($"Worker {workerCode} not found");
             }
 
-            if (skill == null)
+            if (skill is null)
             {
                 throw new Exception($"Skill {skillCode} not found");
             }
 
-            if (skillLevel == null)
+            if (skillLevel is null)
             {
                 throw new Exception($"SkillLevel {skillLevel} not found");
             }
@@ -563,12 +563,12 @@ namespace WorkerAPI.SeedData
             var roleCode = column[Array.IndexOf(headers, "RoleCode".ToLower())].Trim('"').Trim();
             var role = _context.Roles.FirstOrDefault(i => i.Code.ToLower() == roleCode);
 
-            if (worker == null)
+            if (worker is null)
             {
                 throw new Exception($"Worker {workerCode} not found");
             }
 
-            if (role == null)
+            if (role is null)
             {
                 throw new Exception($"Role {roleCode} not found");
             }

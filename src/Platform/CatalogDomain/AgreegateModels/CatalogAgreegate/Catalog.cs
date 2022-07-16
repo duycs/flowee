@@ -74,25 +74,35 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         }
 
         /// <summary>
+        /// Description from instruction of Specifications
+        /// </summary>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        public Catalog SetDescription(string description)
+        {
+            Description = description;
+            return this;
+        }
+
+        /// <summary>
         /// List Specifications of product standar and addons
         /// </summary>
         /// <returns></returns>
-        public List<int> GetSpecifications()
+        public int[] GetSpecificationIds()
         {
             var specifications = new List<int>();
-            if (SpecificationId != null)
+            if (SpecificationId is not null && SpecificationId > 0)
             {
-                var specificationProductStandar = new List<int>() { SpecificationId ?? 0 };
-                specifications.AddRange(specificationProductStandar);
+                specifications.Add(SpecificationId ?? 0);
             }
 
-            if (Addons != null && Addons.Any())
+            if (Addons is not null && Addons.Any())
             {
-                var specificationAddons = Addons.Where(i => i.SpecificationId != null).Select(i => i.SpecificationId).ToList();
-                specifications.AddRange((IEnumerable<int>)specificationAddons);
+                var specificationAddons = Addons.Where(i => i.SpecificationId.HasValue && i.SpecificationId > 0).Select(i => i.SpecificationId).Cast<int>().ToList();
+                specifications.AddRange(specificationAddons);
             }
 
-            return specifications;
+            return specifications.ToArray();
         }
 
         /// <summary>
@@ -101,7 +111,7 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         /// <returns></returns>
         public decimal CanculatePrice()
         {
-            if (Addons != null && Addons.Any())
+            if (Addons is not null && Addons.Any())
             {
                 decimal totalAddonPrice = Addons.Sum(i => i.Price ?? 0);
                 return PriceStandar ?? 0 + totalAddonPrice;
@@ -119,6 +129,8 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
         {
             return QuantityAvailable > 0;
         }
+
+
     }
 }
 

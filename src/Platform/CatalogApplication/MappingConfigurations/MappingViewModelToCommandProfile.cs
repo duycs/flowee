@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CatalogApplication.Commands;
+using CatalogApplication.ViewModels;
 
 namespace CatalogApplication.MappingConfigurations
 {
@@ -10,6 +11,10 @@ namespace CatalogApplication.MappingConfigurations
         /// </summary>
         public MappingViewModelToCommandProfile()
         {
+            CreateMap<CreateCatalogVM, CreateCatalogCommand>().ConvertUsing(c => new CreateCatalogCommand(c.Code, c.Name, c.Description, c.QuantityAvailable, 
+                c.PriceStandar, c.CurrencyId, c.SpecificationId, c.AddonIds));
+            CreateMap<UpdateCatalogVM, UpdateCatalogCommand>().ConvertUsing(c => new UpdateCatalogCommand(c.Id, c.Code, c.Name, c.Description, c.QuantityAvailable,
+            c.PriceStandar, c.CurrencyId, c.SpecificationId, c.AddonIds));
         }
     }
 }

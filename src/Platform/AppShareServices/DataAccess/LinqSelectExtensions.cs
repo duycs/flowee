@@ -22,12 +22,12 @@
 
         public static IEnumerable<TResult> OnCaughtException<TSource, TResult>(this IEnumerable<SelectTryResult<TSource, TResult>> enumerable, Func<Exception, TResult> exceptionHandler)
         {
-            return enumerable.Select(x => x.CaughtException == null ? x.Result : exceptionHandler(x.CaughtException));
+            return enumerable.Select(x => x.CaughtException is null ? x.Result : exceptionHandler(x.CaughtException));
         }
 
         public static IEnumerable<TResult> OnCaughtException<TSource, TResult>(this IEnumerable<SelectTryResult<TSource, TResult>> enumerable, Func<TSource, Exception, TResult> exceptionHandler)
         {
-            return enumerable.Select(x => x.CaughtException == null ? x.Result : exceptionHandler(x.Source, x.CaughtException));
+            return enumerable.Select(x => x.CaughtException is null ? x.Result : exceptionHandler(x.Source, x.CaughtException));
         }
 
         public class SelectTryResult<TSource, TResult>

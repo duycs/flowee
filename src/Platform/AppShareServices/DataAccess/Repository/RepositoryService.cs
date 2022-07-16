@@ -45,7 +45,7 @@ namespace AppShareServices.DataAccess.Repository
 
         public T Find<T>(int id, SpecificationBase<T> specification) where T : class, IEntityService
         {
-            var query = Database.GetDbSet<T>().AsQueryable().Where(w => w.Id == id);
+            var query = Database.GetDbSet<T>().AsQueryable();
 
             if (specification.IsInclude)
             {
@@ -56,7 +56,7 @@ namespace AppShareServices.DataAccess.Repository
                 query = query.Where(specification.Criteria);
             }
 
-            return query.FirstOrDefault();
+            return query.FirstOrDefault(w => w.Id.Equals(id));
         }
 
 
@@ -72,7 +72,7 @@ namespace AppShareServices.DataAccess.Repository
 
         public List<T> List<T>(int[] Ids, SpecificationBase<T> specification) where T : class, IEntityService
         {
-            var query = Database.GetDbSet<T>().AsQueryable().Where(w => Ids.Contains(w.Id));
+            var query = Database.GetDbSet<T>().AsQueryable();
 
             if (specification.IsInclude)
             {
@@ -83,7 +83,7 @@ namespace AppShareServices.DataAccess.Repository
                 query = query.Where(specification.Criteria);
             }
 
-            return query.ToList();
+            return query.Where(w => Ids.Contains(w.Id)).ToList();
         }
 
         public List<T> List<T>(int[] Ids, out int[] invalidIds) where T : class, IEntityService
@@ -102,7 +102,7 @@ namespace AppShareServices.DataAccess.Repository
         public IQueryable<T> ListAsQueryable<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
         {
             var dbset = Database.GetDbSet<T>();
-            if (@where == null)
+            if (@where is null)
                 return dbset;
 
             return dbset.Where(@where);
@@ -144,7 +144,7 @@ namespace AppShareServices.DataAccess.Repository
         //    foreach (var entity in entities)
         //    {
         //        var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
-        //        if (item != null)
+        //        if (item is not null)
         //        {
 
         //            item.DateModified = DateTime.Now.ToUniversalTime();
@@ -178,7 +178,7 @@ namespace AppShareServices.DataAccess.Repository
         {
             var dbset = Database.GetDbSet<T>();
             var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
-            if (item != null)
+            if (item is not null)
             {
                 dbset.Remove(item);
             }
@@ -199,7 +199,7 @@ namespace AppShareServices.DataAccess.Repository
         {
             var dbset = Database.GetDbSet<T>();
             var item = dbset.FirstOrDefault(x => x.Id == id);
-            if (item != null)
+            if (item is not null)
             {
                 dbset.Remove(item);
             }
@@ -210,7 +210,7 @@ namespace AppShareServices.DataAccess.Repository
         {
             var dbset = Database.GetDbSet<T>();
             var items = dbset.Where(@where);
-            if (items != null && items.Count() > 0)
+            if (items is not null && items.Count() > 0)
             {
                 dbset.RemoveRange(items);
             }

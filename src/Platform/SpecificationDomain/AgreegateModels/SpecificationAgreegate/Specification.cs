@@ -33,7 +33,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         {
             var instructionBuilder = new StringBuilder();
 
-            if (Rules != null)
+            if (Rules is not null)
             {
                 // Ignore Condition of first rule
                 for (int i = 0; i < Rules.Count; ++i)
@@ -71,7 +71,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
                 Name = name;
             }
 
-            if (rules != null)
+            if (rules is not null)
             {
                 Rules = rules;
             }

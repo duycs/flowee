@@ -102,7 +102,7 @@ namespace JobAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => CreateJobStatus(x, ref id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private JobStatus CreateJobStatus(string value, ref int id)
@@ -128,7 +128,7 @@ namespace JobAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => CreateStepStatus(x, ref id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private StepStatus CreateStepStatus(string value, ref int id)
@@ -153,7 +153,7 @@ namespace JobAPI.SeedData
             return File.ReadAllLines(csvFile)
                                         .SelectTry(x => CreateStructType(x, ref id))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private StructType CreateStructType(string value, ref int id)
@@ -183,7 +183,7 @@ namespace JobAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateJob(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
 
@@ -217,7 +217,7 @@ namespace JobAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateStep(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
 
@@ -253,7 +253,7 @@ namespace JobAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateOperation(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
 

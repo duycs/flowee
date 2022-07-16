@@ -46,7 +46,7 @@ namespace JobAPI.Controllers
         {
             var jobExisting = _repositoryService.Find<Job>(id);
 
-            if (jobExisting == null)
+            if (jobExisting is null)
             {
                 return BadRequest("The Job not found");
             }
@@ -72,7 +72,7 @@ namespace JobAPI.Controllers
         {
             var jobExisting = _repositoryService.Find<Job>(id, new JobSpecification(isInclude));
 
-            if (jobExisting == null)
+            if (jobExisting is null)
             {
                 return NotFound();
             }

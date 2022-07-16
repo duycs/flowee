@@ -66,17 +66,17 @@ namespace CustomerDomain.AgreegateModels.CustomerAgreegate
                 Description = description;
             }
 
-            if (currency != null)
+            if (currency is not null)
             {
                 Currency = currency;
             }
 
-            if (priorityLevel != null)
+            if (priorityLevel is not null)
             {
                 PriorityLevel = priorityLevel;
             }
 
-            if (paymentMethods != null)
+            if (paymentMethods is not null)
             {
                 PaymentMethods = paymentMethods;
             }

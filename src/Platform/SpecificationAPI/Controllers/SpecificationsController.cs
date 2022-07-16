@@ -30,7 +30,7 @@ namespace SpecificationAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateSpecificationCommand createSpecificationVM)
+        public async Task<IActionResult> Add([FromBody] CreateSpecificationVM createSpecificationVM)
         {
             var createSpecificationCommand = _mappingService.Map<CreateSpecificationCommand>(createSpecificationVM);
             await _commandDispatcher.Send(createSpecificationCommand);
@@ -49,7 +49,7 @@ namespace SpecificationAPI.Controllers
         public async Task<IActionResult> BuildInstruction(int id)
         {
             var specificationExisting = _repositoryService.Find<Specification>(id, new SpecificationSpecification(true));
-            if (specificationExisting == null)
+            if (specificationExisting is null)
             {
                 return BadRequest("The Specification not found");
             }
@@ -70,7 +70,7 @@ namespace SpecificationAPI.Controllers
         {
             var specificationExisting = _repositoryService.Find<Specification>(id);
 
-            if (specificationExisting == null)
+            if (specificationExisting is null)
             {
                 return BadRequest("The Specification not found");
             }
@@ -82,21 +82,29 @@ namespace SpecificationAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, [FromQuery] int[]? ids, string? searchValue, bool isInclude)
+        public async Task<IActionResult> Get(bool isInclude = true, [FromQuery] int pageNumber = -1, [FromQuery] int pageSize = 0, [FromQuery] string? columnOrders = "", [FromQuery] int[]? ids = null, string? searchValue = "")
         {
-            int totalRecords;
-            var specificationSpecification = new SpecificationSpecification(isInclude, searchValue, ids, filter.ColumnOrders.ToColumnOrders());
-            var pagedData = _repositoryService.Find<Specification>(filter.PageNumber, filter.PageSize, specificationSpecification, out totalRecords).ToList();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Specification>(pagedData, filter, totalRecords, _uriService, Request.Path.Value ?? "");
-            return Ok(pagedReponse);
+            if (pageNumber == -1)
+            {
+                var specifications = _repositoryService.List<Specification>(ids, new SpecificationSpecification(isInclude)).ToList();
+                return Ok(specifications);
+            }
+            else
+            {
+                var filter = new PaginationFilterOrder(pageNumber, pageSize, columnOrders);
+                var specificationSpecification = new SpecificationSpecification(isInclude, searchValue, ids, filter.ColumnOrders.ToColumnOrders());
+                var pagedData = _repositoryService.Find<Specification>(filter.PageNumber, filter.PageSize, specificationSpecification, out int totalRecords).ToList();
+                var pagedReponse = PaginationHelper.CreatePagedReponse<Specification>(pagedData, filter, totalRecords, _uriService, Request.Path.Value ?? "");
+                return Ok(pagedReponse);
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id, bool isInclude)
+        public async Task<IActionResult> Get(int id, bool isInclude = true)
         {
             var specificationExisting = _repositoryService.Find<Specification>(id, new SpecificationSpecification(isInclude));
 
-            if (specificationExisting == null)
+            if (specificationExisting is null)
             {
                 return NotFound();
             }

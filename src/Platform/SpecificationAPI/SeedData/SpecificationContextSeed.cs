@@ -83,7 +83,6 @@ namespace SpecificationAPI.SeedData
                         _dbContext.SaveChanges();
                     }
                 }
-
             });
         }
 
@@ -119,7 +118,7 @@ namespace SpecificationAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateSetting(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private Setting CreateSetting(string[] column, string[] headers)
@@ -154,13 +153,13 @@ namespace SpecificationAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateRule(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
 
         private Rule CreateRule(string[] column, string[] headers)
         {
             var setting = _dbContext.Settings.Find(int.Parse(column[Array.IndexOf(headers, "SettingId".ToLower())].Trim('"').Trim()));
-            if (setting == null)
+            if (setting is null)
             {
                 throw new Exception("Setting is null or empty");
             }
@@ -187,7 +186,7 @@ namespace SpecificationAPI.SeedData
                 return new List<Specification>();
             }
 
-            string[] requiredHeaders = { "Name", "Code" };
+            string[] requiredHeaders = { "Name", "Code", "RuleIds" };
             string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
@@ -195,18 +194,22 @@ namespace SpecificationAPI.SeedData
                                         .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                                         .SelectTry(column => CreateSpecification(column, headers))
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x != null);
+                                        .Where(x => x is not null);
         }
         private Specification CreateSpecification(string[] column, string[] headers)
         {
+            var ruleIds = column[Array.IndexOf(headers, "RuleIds".ToLower())].Trim('"').Trim().Split(",").Select(int.Parse).ToList();
+            var rules = _dbContext.Rules.Where(c => ruleIds.Contains(c.Id)).ToList();
             var specification = new Specification()
             {
                 Code = column[Array.IndexOf(headers, "Code".ToLower())].Trim('"').Trim(),
                 Name = column[Array.IndexOf(headers, "Name".ToLower())].Trim('"').Trim(),
+                Rules = rules,
                 DateCreated = DateTime.UtcNow,
             };
 
             return specification;
         }
+
     }
 }

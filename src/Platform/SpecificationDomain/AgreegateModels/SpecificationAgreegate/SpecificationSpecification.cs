@@ -10,7 +10,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public SpecificationSpecification(bool isInclude, string? searchValue = "", int[]? ids = null, List<ColumnOrder>? columnOrders = null) : base(isInclude)
         {
             // find by ids
-            if (ids != null && ids.Any())
+            if (ids is not null && ids.Any())
             {
                 AddCriteria(c => ids.Contains(c.Id));
             }
@@ -26,7 +26,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
             }
 
             // order by columns
-            if (columnOrders != null && columnOrders.Any())
+            if (columnOrders is not null && columnOrders.Any())
             {
                 foreach (var columnOrder in columnOrders)
                 {

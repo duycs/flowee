@@ -1,5 +1,5 @@
-﻿using AppShareServices.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using AppShareDomain.DTOs;
+using AppShareServices.Models;
 
 namespace CatalogApplication.DTOs
 {
@@ -9,6 +9,8 @@ namespace CatalogApplication.DTOs
         public string? Name { get; set; }
         public string? Description { get; set; }
 
+        public int? SpecificationId { get; set; }
+
         /// <summary>
         /// Specification defiend how to made this Addon
         /// </summary>
@@ -16,8 +18,7 @@ namespace CatalogApplication.DTOs
 
         public decimal? Price { get; set; }
 
-        public int? CurrencyId { get; set; }
-        public string Currency { get; set; }
+        public EnumerationDto Currency { get; set; }
     }
 }
 

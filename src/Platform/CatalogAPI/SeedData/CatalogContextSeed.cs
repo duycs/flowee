@@ -78,7 +78,7 @@ namespace CatalogAPI.SeedData
 										.Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
 										.SelectTry(column => CreateCatalog(column, headers))
 										.OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-										.Where(x => x != null);
+										.Where(x => x is not null);
 		}
 
 		private IEnumerable<Addon> GetAddonsFromFile()
@@ -98,7 +98,7 @@ namespace CatalogAPI.SeedData
 										.Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
 										.SelectTry(column => CreateAddon(column, headers))
 										.OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-										.Where(x => x != null);
+										.Where(x => x is not null);
 		}
 
 		private IEnumerable<Currency> GetCurrenciesFromFile()
@@ -113,7 +113,7 @@ namespace CatalogAPI.SeedData
 			return File.ReadAllLines(csvFile)
 										.SelectTry(x => CreateCurrency(x, ref id))
 										.OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-										.Where(x => x != null);
+										.Where(x => x is not null);
 		}
 		private Catalog CreateCatalog(string[] column, string[] headers)
 		{

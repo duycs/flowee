@@ -20,7 +20,7 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
             }
 
             // order by columns
-            if (columnOrders != null && columnOrders.Any())
+            if (columnOrders is not null && columnOrders.Any())
             {
                 foreach (var columnOrder in columnOrders)
                 {
@@ -97,7 +97,6 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
             if (IsInclude)
             {
                 AddInclude(w => w.Addons);
-                AddInclude(w => w.Price);
                 AddInclude(w => w.Currency);
             }
 

@@ -1,5 +1,4 @@
 ﻿using AppShareDomain.DTOs;
-using AppShareDomain.Models;
 using AppShareServices.Models;
 
 namespace CatalogApplication.DTOs
