@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
+    <ProjectReference Include="..\CatalogDomain\CatalogDomain.csproj" />
+    <ProjectReference Include="..\CustomerDomain\CustomerDomain.csproj" />
+    <ProjectReference Include="..\JobDomain\JobDomain.csproj" />
+    <ProjectReference Include="..\OrderDomain\OrderDomain.csproj" />
+    <ProjectReference Include="..\ProductDomain\ProductDomain.csproj" />
+    <ProjectReference Include="..\SpecificationDomain\SpecificationDomain.csproj" />
+    <ProjectReference Include="..\WorkerDomain\WorkerDomain.csproj" />
+  </ItemGroup>
+
+</Project>

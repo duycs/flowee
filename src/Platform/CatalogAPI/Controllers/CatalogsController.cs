@@ -21,11 +21,10 @@ namespace CatalogAPI.Controllers
         private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
         private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IHttpClientFactory _httpClientFactory;
 
         public CatalogsController(ILogger<CatalogsController> logger, ICatalogService catalogService,
-            IRepositoryService repositoryService, IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher,
-            IHttpClientFactory httpClientFactory)
+            IRepositoryService repositoryService, IMappingService mappingService,
+            IUriService uriService, ICommandDispatcher commandDispatcher)
         {
             _logger = logger;
             _repositoryService = repositoryService;
@@ -33,7 +32,6 @@ namespace CatalogAPI.Controllers
             _mappingService = mappingService;
             _uriService = uriService;
             _commandDispatcher = commandDispatcher;
-            _httpClientFactory = httpClientFactory;
         }
 
         [HttpPost]

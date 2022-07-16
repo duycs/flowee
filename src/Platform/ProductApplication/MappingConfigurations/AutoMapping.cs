@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AppShareApplication.MappingConfigurations;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;

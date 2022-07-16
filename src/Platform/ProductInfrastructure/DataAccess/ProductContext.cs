@@ -21,9 +21,9 @@ namespace ProductInfrastructure.DataAccess
             return Task.FromResult(base.SaveChanges());
         }
 
-        public ProductContext()
-        {
-        }
+        public ProductContext() { }
+
+        public ProductContext(DbContextOptions<ProductContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

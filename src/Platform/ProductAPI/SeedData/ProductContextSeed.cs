@@ -66,26 +66,6 @@ namespace ProductAPI.SeedData
                                         .Where(x => x is not null);
         }
 
-        private IEnumerable<Product> GetProductFromFile()
-        {
-            string csvFile = GetPathToFile("Products.csv");
-
-            if (!File.Exists(csvFile))
-            {
-                return new List<Product>();
-            }
-
-            string[] requiredHeaders = { "Code", "Name", "Description", "CatalogId", "CustomerId", "CategoryIds" };
-            string[] headers = csvFile.GetHeaders(requiredHeaders);
-
-            return File.ReadAllLines(csvFile)
-                                        .Skip(1) // skip header row
-                                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                                        .SelectTry(column => CreateProduct(column, headers))
-                                        .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x is not null);
-        }
-
         private Category CreateCategory(string[] column, string[] headers)
         {
             var category = new Category()
@@ -99,14 +79,40 @@ namespace ProductAPI.SeedData
             return category;
         }
 
+
+        private IEnumerable<Product> GetProductFromFile()
+        {
+            string csvFile = GetPathToFile("Products.csv");
+
+            if (!File.Exists(csvFile))
+            {
+                return new List<Product>();
+            }
+
+            string[] requiredHeaders = { "Code", "Name", "Description", "CatalogId", "CategoryIds" };
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
+
+            return File.ReadAllLines(csvFile)
+                                        .Skip(1) // skip header row
+                                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                                        .SelectTry(column => CreateProduct(column, headers))
+                                        .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                                        .Where(x => x is not null);
+        }
+
+
         private Product CreateProduct(string[] column, string[] headers)
         {
+            var categoryIds = column[Array.IndexOf(headers, "CatalogId".ToLower())].Trim('"').Trim().Split(",").Select(int.Parse).ToList();
+            var categories = _dbContext.Categories.Where(c => categoryIds.Contains(c.Id)).ToList();
+
             var product = new Product()
             {
                 Code = column[Array.IndexOf(headers, "Code".ToLower())].Trim('"').Trim(),
                 Name = column[Array.IndexOf(headers, "Name".ToLower())].Trim('"').Trim(),
                 Description = column[Array.IndexOf(headers, "Description".ToLower())].Trim('"').Trim(),
                 CatalogId = int.Parse(column[Array.IndexOf(headers, "CatalogId".ToLower())].Trim('"').Trim()),
+                Categories = categories,
                 DateCreated = DateTime.UtcNow,
             };
 

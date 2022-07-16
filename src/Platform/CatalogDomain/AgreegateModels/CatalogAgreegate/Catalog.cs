@@ -73,6 +73,51 @@ namespace CatalogDomain.AgreegateModels.CatalogAgreegate
             };
         }
 
+        public Catalog PathUpdate(string? code, string? name, decimal? priceStandar, Currency? currency, int? secificationId, int? quantityAvailable, string? description, List<Addon>? addons)
+        {
+            if (code is not null)
+            {
+                Code = code;
+            }
+
+            if (name is not null)
+            {
+                Name = name;
+            }
+
+            if (description is not null)
+            {
+                Description = description;
+            }
+
+            if (priceStandar is not null)
+            {
+                PriceStandar = priceStandar;
+            }
+
+            if (currency is not null)
+            {
+                Currency = currency;
+            }
+
+            if (SpecificationId is not null)
+            {
+                SpecificationId = secificationId;
+            }
+
+            if (quantityAvailable is not null)
+            {
+                QuantityAvailable = quantityAvailable;
+            }
+
+            if (addons is not null)
+            {
+                Addons = addons;
+            }
+
+            return this;
+        }
+
         /// <summary>
         /// Description from instruction of Specifications
         /// </summary>

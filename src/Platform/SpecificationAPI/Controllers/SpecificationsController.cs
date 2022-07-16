@@ -1,3 +1,4 @@
+using AppShareDomain.DTOs.Specification;
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
@@ -87,14 +88,17 @@ namespace SpecificationAPI.Controllers
             if (pageNumber == -1)
             {
                 var specifications = _repositoryService.List<Specification>(ids, new SpecificationSpecification(isInclude)).ToList();
-                return Ok(specifications);
+                var specificationDtos = _mappingService.Map<List<SpecificationDto>>(specifications);
+
+                return Ok(specificationDtos);
             }
             else
             {
                 var filter = new PaginationFilterOrder(pageNumber, pageSize, columnOrders);
                 var specificationSpecification = new SpecificationSpecification(isInclude, searchValue, ids, filter.ColumnOrders.ToColumnOrders());
-                var pagedData = _repositoryService.Find<Specification>(filter.PageNumber, filter.PageSize, specificationSpecification, out int totalRecords).ToList();
-                var pagedReponse = PaginationHelper.CreatePagedReponse<Specification>(pagedData, filter, totalRecords, _uriService, Request.Path.Value ?? "");
+                var pagedSpecifications = _repositoryService.Find<Specification>(filter.PageNumber, filter.PageSize, specificationSpecification, out int totalRecords).ToList();
+                var specificationDtos = _mappingService.Map<List<SpecificationDto>>(pagedSpecifications);
+                var pagedReponse = PaginationHelper.CreatePagedReponse<SpecificationDto>(specificationDtos, filter, totalRecords, _uriService, Request.Path.Value ?? "");
                 return Ok(pagedReponse);
             }
         }
@@ -109,7 +113,8 @@ namespace SpecificationAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(specificationExisting);
+            var specificationDto = _mappingService.Map<SpecificationDto>(specificationExisting);
+            return Ok(specificationDto);
         }
     }
 }

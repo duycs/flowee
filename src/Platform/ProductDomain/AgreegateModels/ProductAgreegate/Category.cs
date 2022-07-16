@@ -21,6 +21,36 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
 
         [JsonIgnore]
         public virtual ICollection<ProductCategory>? ProductCategories { get; set; }
+
+        public Category Create(string code, string name, string description)
+        {
+            return new Category()
+            {
+                Code = code,
+                Name = name,
+                Description = description
+            };
+        }
+
+        public Category PathUpdate(string? code, string? name, string? description)
+        {
+            if (code is not null)
+            {
+                Code = code;
+            }
+
+            if (name is not null)
+            {
+                Name = name;
+            }
+
+            if (description is not null)
+            {
+                Description = description;
+            }
+
+            return this;
+        }
     }
 }
 

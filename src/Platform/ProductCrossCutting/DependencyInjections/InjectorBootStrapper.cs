@@ -33,6 +33,7 @@ namespace ProductCrossCutting.DependencyInjections
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
                 return new UriService(uri);
             });
+            services.AddTransient<IProductService, ProductService>();
 
             // Domain
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();

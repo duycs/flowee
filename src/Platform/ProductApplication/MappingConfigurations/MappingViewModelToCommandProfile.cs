@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ProductApplication.Commands;
+using ProductApplication.ViewModels;
 
 namespace ProductApplication.MappingConfigurations
 {
@@ -9,6 +11,8 @@ namespace ProductApplication.MappingConfigurations
         /// </summary>
         public MappingViewModelToCommandProfile()
         {
+            CreateMap<CreateProductVM, CreateProductCommand>().ConvertUsing(c => new CreateProductCommand(c.Code, c.Name, c.Description, c.CatalogId, c.CategoryIds));
+            CreateMap<UpdateProductVM, UpdateProductCommand>().ConvertUsing(c => new UpdateProductCommand(c.Id, c.Code, c.Name, c.Description, c.CatalogId, c.CategoryIds));
         }
     }
 }

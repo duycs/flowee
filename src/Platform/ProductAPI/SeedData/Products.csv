@@ -1,2 +1,5 @@
-﻿Code,Name,Description,CatalogId
-FIT-MM,PE-LV1,Wall paint is white. Do not add fire. Do not add blue skies.,1
+﻿Code,Name,Description,CatalogId,CategoryIds
+FIT-HDRPhoto,PE-HDRPhoto,HDR Photo 90%,1,"1"
+FIT-MM,PE-LV1,Wall paint is white. Do not add fire. Do not add blue skies.,3,"1,2"
+CustomerCode-Catalog3,Catalog3,Catalog3 and addons 1 2 3 4 5,7,"3"
+FIT-NE,FIT-NE,Drone video,6,"4"

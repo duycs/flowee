@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppShareApplication\AppShareApplication.csproj" />
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
     <ProjectReference Include="..\CatalogDomain\CatalogDomain.csproj" />
     <ProjectReference Include="..\ProductApplication\ProductApplication.csproj" />

@@ -6,27 +6,35 @@ namespace ProductApplication.Commands
 {
     public abstract class ProductCommand : Command
     {
-        public string Code { get; set; }
+        public int Id { get; set; }
+        public string? Code { get; set; }
+
         public string? Name { get; set; }
+
         public string? Description { get; set; }
-        public decimal? PriceStandar { get; set; }
-        public int? QuantityAvailable { get; set; }
-        public int? SpecificationId { get; set; }
-        public int[]? AddonIds { get; set; }
+
         public int[]? CategoryIds { get; set; }
+
+        /// <summary>
+        /// Catalog has all data of product
+        /// </summary>
+        public int? CatalogId { get; set; }
+
+        /// <summary>
+        /// Instruction description overall how to made this product
+        /// Deductive from specifications of catalog
+        /// </summary>
+        public string? Instruction { get; set; }
     }
 
     public class CreateProductCommand : ProductCommand
     {
-        public CreateProductCommand(string code, string? name, string? description, decimal? priceStandar, int? quantityAvailable, int? specificationId, int[]? addonIds, int[]? categoryIds)
+        public CreateProductCommand(string code, string? name, string? description, int catalogId, int[]? categoryIds)
         {
             Code = code;
-            Name = name;
-            Description = description;
-            PriceStandar = priceStandar;
-            QuantityAvailable = quantityAvailable;
-            SpecificationId = specificationId;
-            AddonIds = addonIds;
+            Name = name ?? "";
+            Description = description ?? "";
+            CatalogId = catalogId;
             CategoryIds = categoryIds;
         }
 
@@ -46,27 +54,28 @@ namespace ProductApplication.Commands
 
     public class UpdateProductCommand : ProductCommand
     {
-        public UpdateProductCommand(string code, string? name, string? description, decimal? priceStandar, int? quantityAvailable, int? specificationId, int[]? addonIds, int[]? categoryIds)
+        public UpdateProductCommand(int id, string code, string? name, string? description, int? catalogId, int[]? categoryIds)
         {
+            Id = id;
             Code = code;
-            Name = name;
-            Description = description;
-            PriceStandar = priceStandar;
-            QuantityAvailable = quantityAvailable;
-            SpecificationId = specificationId;
-            AddonIds = addonIds;
+            Name = name ?? "";
+            Description = description ?? "";
+            CatalogId = catalogId;
             CategoryIds = categoryIds;
         }
 
         public override bool IsValid()
         {
-            return true;
+            return new UpdateProductValidator().Validate(this).IsValid;
         }
     }
 
     public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
     {
-        public UpdateProductValidator() { }
+        public UpdateProductValidator()
+        {
+            RuleFor(c => c.Id).NotNull().WithMessage("The Id is require");
+        }
     }
 }
 

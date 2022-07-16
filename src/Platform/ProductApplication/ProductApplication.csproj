@@ -11,13 +11,13 @@
     <None Remove="Commands\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ClientServices\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.9" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AppShareApplication\AppShareApplication.csproj" />
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
     <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
     <ProjectReference Include="..\ProductInfrastructure\ProductInfrastructure.csproj" />
