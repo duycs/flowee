@@ -21,19 +21,18 @@ namespace CatalogApplication.Services
             _specificationClientService = specificationClientService;
         }
 
+        /// <summary>
+        /// Description generate from instructions
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task BuildCatalogDescription(int id)
         {
             var catalogExisting = _repositoryService.Find<Catalog>(id, new CatalogSpecification(true));
             if (catalogExisting is not null)
             {
-                var specifications = await _specificationClientService.Get(catalogExisting.GetSpecificationIds(), true);
-                var instructions = specifications.Where(s => s.Instruction is not null).Select(s => s.Instruction).ToList();
-                var descriptionBuilder = new StringBuilder();
-                foreach (var instruction in instructions)
-                {
-                    descriptionBuilder.AppendLine(instruction);
-                }
-                _repositoryService.Update(catalogExisting.SetDescription(descriptionBuilder.ToString()));
+                var description = await BuildInstruction(catalogExisting);
+                _repositoryService.Update(catalogExisting.SetDescription(description));
                 _repositoryService.SaveChanges();
             }
         }
@@ -62,6 +61,9 @@ namespace CatalogApplication.Services
                     }
                 }
             }
+
+            // TODO: Optional build instruction?
+            catalogDto.Description = await BuildInstruction(catalogExisting);
 
             return catalogDto;
         }
@@ -113,6 +115,19 @@ namespace CatalogApplication.Services
             }
 
             return catalogDtos;
+        }
+
+        private async Task<string> BuildInstruction(Catalog catalogExisting)
+        {
+            var specifications = await _specificationClientService.Get(catalogExisting.GetSpecificationIds(), true);
+            var instructions = specifications.Where(s => s.Instruction is not null).Select(s => s.Instruction).ToList();
+            var descriptionBuilder = new StringBuilder();
+            foreach (var instruction in instructions)
+            {
+                descriptionBuilder.AppendLine(instruction);
+            }
+
+            return descriptionBuilder.ToString();
         }
     }
 }

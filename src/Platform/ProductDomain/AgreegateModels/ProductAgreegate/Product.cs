@@ -78,6 +78,12 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
             return this;
         }
 
+        public Product SetInstruction(string instruction)
+        {
+            Instruction = instruction;
+            return this;
+        }
+
     }
 }
 

@@ -9,6 +9,7 @@ using AppShareServices.Pagging;
 using AutoMapper;
 using CatalogApplication.ClientServices;
 using CatalogApplication.Commands;
+using CatalogApplication.MappingConfigurations;
 using CatalogApplication.Services;
 using CatalogInfrastructure.DataAccess;
 using MediatR;
@@ -26,6 +27,7 @@ namespace CatalogCrossCutting.DependencyInjections
         public static void AddLayersInjector(this IServiceCollection services, IConfiguration configuration)
         {
             // Application
+            services.AddAutoMapper(typeof(AutoMapping));
             services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUriService>(o =>
