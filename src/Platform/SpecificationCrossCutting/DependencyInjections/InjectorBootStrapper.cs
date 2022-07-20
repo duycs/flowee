@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SpecificationApplication.Commands;
+using SpecificationApplication.MappingConfigurations;
 using SpecificationInfrastructure.DataAccess;
 using System.Reflection;
 
@@ -23,7 +24,10 @@ namespace SpecificationCrossCutting.DependencyInjections
         public static void AddLayersInjector(this IServiceCollection services, IConfiguration configuration)
         {
             // Application
-            services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+            //services.AddAutoMapper(typeof(AutoMapping));
+            services.AddSingleton(AutoMapping.RegisterMappings().CreateMapper());
+            services.AddSingleton(sp => sp.GetRequiredService<IMapper>().ConfigurationProvider);
+            //services.AddSingleton<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUriService>(o =>
             {

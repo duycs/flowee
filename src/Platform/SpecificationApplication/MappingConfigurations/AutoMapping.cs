@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AppShareApplication.MappingConfigurations;
+using AutoMapper;
 
 namespace SpecificationApplication.MappingConfigurations
 {
@@ -12,7 +13,7 @@ namespace SpecificationApplication.MappingConfigurations
         {
             return new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new MappingEntityToDtoProfile());
+                cfg.AddProfile(new MappingSpecificationEntityToDtoProfile());
                 cfg.AddProfile(new MappingViewModelToCommandProfile());
                 cfg.AddProfile(new MappingViewModelToEntityProfile());
             });

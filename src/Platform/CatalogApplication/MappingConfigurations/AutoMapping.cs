@@ -1,10 +1,5 @@
 ﻿using AppShareApplication.MappingConfigurations;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatalogApplication.MappingConfigurations
 {
@@ -18,7 +13,8 @@ namespace CatalogApplication.MappingConfigurations
         {
             return new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new MappingEntityToDtoProfile());
+                cfg.AddProfile(new MappingCatalogEntityToDtoProfile());
+                cfg.AddProfile(new MappingSpecificationEntityToDtoProfile());
                 cfg.AddProfile(new MappingViewModelToCommandProfile());
                 cfg.AddProfile(new MappingViewModelToEntityProfile());
             });

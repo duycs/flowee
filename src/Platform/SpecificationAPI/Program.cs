@@ -32,7 +32,7 @@ configuration = configurationBuilder.Build();
 
 // Add services to the container.
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddAutoMapper(typeof(AutoMapping));
+//builder.Services.AddAutoMapper(typeof(AutoMapping));
 
 builder.Services.AddLayersInjector(configuration);
 
