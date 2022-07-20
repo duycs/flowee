@@ -74,11 +74,20 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude = true)
+        public async Task<IActionResult> Get(bool isInclude = true, [FromQuery] int pageNumber = -1, [FromQuery] int pageSize = 0, [FromQuery] string? columnOrders = "", [FromQuery] int[]? ids = null, string? searchValue = "")
         {
-            var pagedData = _catalogService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, searchValue, isInclude, out int totalRecords);
-            var pagedReponse = PaginationHelper.CreatePagedReponse<CatalogDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
-            return Ok(pagedReponse);
+            if (pageNumber == -1)
+            {
+                var catalogDtos = await _catalogService.Find(ids, isInclude);
+                return Ok(catalogDtos);
+            }
+            else
+            {
+                var filter = new PaginationFilterOrder(pageNumber, pageSize, columnOrders);
+                var pagedData = _catalogService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, searchValue, isInclude, out int totalRecords);
+                var pagedReponse = PaginationHelper.CreatePagedReponse<CatalogDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
+                return Ok(pagedReponse);
+            }
         }
 
         [HttpGet("{id}")]

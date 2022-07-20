@@ -12,8 +12,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 using ProductApplication.Commands;
+using ProductApplication.MappingConfigurations;
 using ProductApplication.Services;
 using ProductInfrastructure.DataAccess;
 using System.Reflection;
@@ -25,7 +26,8 @@ namespace ProductCrossCutting.DependencyInjections
         public static void AddLayersInjector(this IServiceCollection services, IConfiguration configuration)
         {
             // Application
-            services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+            services.AddSingleton(AutoMapping.RegisterMappings().CreateMapper());
+            services.AddSingleton(sp => sp.GetRequiredService<IMapper>().ConfigurationProvider);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUriService>(o =>
             {
@@ -54,6 +56,12 @@ namespace ProductCrossCutting.DependencyInjections
             // Ousite Domain Services
             services.AddHttpClient<ICatalogClientService>();
             services.AddTransient<ICatalogClientService, CatalogClientService>();
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Formatting = Newtonsoft.Json.Formatting.Indented,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
         }
     }
 }

@@ -23,6 +23,7 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
 
         public ICollection<Category>? Categories { get; set; }
 
+        [JsonIgnore]
         public ICollection<ProductCategory>? ProductCategories { get; set; }
 
         /// <summary>

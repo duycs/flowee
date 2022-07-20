@@ -76,6 +76,20 @@ namespace CatalogApplication.Services
             {
                 catalogDtos = await FindInclude(catalogDtos);
             }
+
+            if (catalogsExisting.Any())
+            {
+                // TODO: Optional build instruction?
+                catalogDtos.ForEach(async c =>
+                {
+                    var catalogExisting = catalogsExisting.FirstOrDefault(i => i.Id == c.Id);
+                    if (catalogExisting is not null)
+                    {
+                        c.Description = await BuildInstruction(catalogExisting);
+                    }
+                });
+            }
+
             return catalogDtos;
         }
 

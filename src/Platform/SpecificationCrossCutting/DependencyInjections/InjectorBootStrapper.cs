@@ -24,10 +24,8 @@ namespace SpecificationCrossCutting.DependencyInjections
         public static void AddLayersInjector(this IServiceCollection services, IConfiguration configuration)
         {
             // Application
-            //services.AddAutoMapper(typeof(AutoMapping));
             services.AddSingleton(AutoMapping.RegisterMappings().CreateMapper());
             services.AddSingleton(sp => sp.GetRequiredService<IMapper>().ConfigurationProvider);
-            //services.AddSingleton<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUriService>(o =>
             {

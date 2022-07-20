@@ -17,6 +17,7 @@ namespace ProductDomain.AgreegateModels.ProductAgreegate
         [MaxLength(500)]
         public string? Description { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Product>? Products { get; set; }
 
         [JsonIgnore]

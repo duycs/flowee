@@ -13,6 +13,8 @@ namespace ProductApplication.MappingConfigurations
         {
             return new MapperConfiguration(cfg =>
             {
+                cfg.AddProfile(new MappingSpecificationEntityToDtoProfile());
+                cfg.AddProfile(new MappingCatalogEntityToDtoProfile());
                 cfg.AddProfile(new MappingProductEntityToDtoProfile());
                 cfg.AddProfile(new MappingViewModelToCommandProfile());
                 cfg.AddProfile(new MappingViewModelToEntityProfile());

@@ -2,6 +2,7 @@
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
+using Newtonsoft.Json;
 using ProductDomain.AgreegateModels.ProductAgreegate;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace ProductApplication.Services
             {
                 return null;
             }
-
+            var json = JsonConvert.SerializeObject(productExisting);
             var productDto = _mappingService.Map<ProductDto>(productExisting);
             if (productDto is not null && productDto.CatalogId is not null && productDto.CatalogId > 0)
             {
