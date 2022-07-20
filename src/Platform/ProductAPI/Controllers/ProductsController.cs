@@ -76,12 +76,22 @@ namespace ProductAPI.Controllers
             return Ok();
         }
 
+        // TODO: System.Net.Http.HttpRequestException: No connection could be made because the target machine actively refused it.
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude)
+        public async Task<IActionResult> Get(bool isInclude = true, [FromQuery] int pageNumber = -1, [FromQuery] int pageSize = 0, [FromQuery] string? columnOrders = "", [FromQuery] int[]? ids = null, string? searchValue = "")
         {
-            var pagedData = _productService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, searchValue, isInclude, out int totalRecords);
-            var pagedReponse = PaginationHelper.CreatePagedReponse<ProductDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
-            return Ok(pagedReponse);
+            if (pageNumber == -1)
+            {
+                var productDtos = await _productService.Find(ids, isInclude);
+                return Ok(productDtos);
+            }
+            else
+            {
+                var filter = new PaginationFilterOrder(pageNumber, pageSize, columnOrders);
+                var pagedData = _productService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, searchValue, isInclude, out int totalRecords);
+                var pagedReponse = PaginationHelper.CreatePagedReponse<ProductDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
+                return Ok(pagedReponse);
+            }
         }
 
         /// <summary>

@@ -52,7 +52,7 @@ namespace ProductApplication.Services
             {
                 return null;
             }
-            var json = JsonConvert.SerializeObject(productExisting);
+
             var productDto = _mappingService.Map<ProductDto>(productExisting);
             if (productDto is not null && productDto.CatalogId is not null && productDto.CatalogId > 0)
             {

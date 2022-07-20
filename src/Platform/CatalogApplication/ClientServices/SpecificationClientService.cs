@@ -18,12 +18,26 @@ namespace CatalogApplication.ClientServices
 
         public async Task<SpecificationDto> Get(int id, bool isInclude)
         {
-            return await _httpClient.GetFromJsonAsync<SpecificationDto>($"{id}?isInclude={isInclude}");
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<SpecificationDto>($"{id}?isInclude={isInclude}") ?? new SpecificationDto();
+            }
+            catch (TaskCanceledException taskCanceledException)
+            {
+                return new SpecificationDto();
+            }
         }
 
         public async Task<IEnumerable<SpecificationDto>> Get(int[] ids, bool isInclude)
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<SpecificationDto>>($"?{ids.ToIdsQueries(isInclude)}");
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<IEnumerable<SpecificationDto>>($"?{ids.ToIdsQueries(isInclude)}") ?? new List<SpecificationDto>();
+            }
+            catch (TaskCanceledException taskCanceledException)
+            {
+                return new List<SpecificationDto>();
+            }
         }
     }
 }
