@@ -36,4 +36,7 @@
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Refit" Version="6.3.2" />
+	</ItemGroup>
 </Project>

@@ -20,7 +20,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 
         public virtual ICollection<Role>? Roles { get; set; }
         public virtual ICollection<Group>? Groups { get; set; }
-        public virtual ICollection<Skill>? Skills { get; set; }
+        public virtual ICollection<int>? SkillIds { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<WorkerGroup>? WorkerGroups { get; set; }
@@ -41,7 +41,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             };
         }
 
-        public static Worker Create(string email, string? code, string? fullName, List<Role>? roles, List<Group>? groups, List<Skill>? skills)
+        public static Worker Create(string email, string? code, string? fullName, List<Role>? roles, List<Group>? groups, List<int>? skillIds)
         {
             return new Worker()
             {
@@ -50,7 +50,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                 FullName = fullName ?? "",
                 Roles = roles,
                 Groups = groups,
-                Skills = skills
+                SkillIds = skillIds
             };
         }
 
@@ -62,7 +62,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         /// <param name="groups"></param>
         /// <param name="skills"></param>
         /// <returns></returns>
-        public Worker PathUpdateWorker(string? fullName, List<Role>? roles, List<Group>? groups, List<Skill>? skills)
+        public Worker PathUpdateWorker(string? fullName, List<Role>? roles, List<Group>? groups, List<int>? skillIds)
         {
             if (!string.IsNullOrEmpty(fullName))
             {
@@ -79,9 +79,9 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                 Groups = groups;
             }
 
-            if (skills is not null)
+            if (skillIds is not null)
             {
-                Skills = skills;
+                SkillIds = skillIds;
             }
 
             return this;
