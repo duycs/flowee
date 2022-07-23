@@ -12,20 +12,24 @@ namespace WorkerApplication.Commands
         public string Email { get; set; }
         public int[]? RoleIds { get; set; }
         public int[]? GroupIds { get; set; }
-        public int[]? SkillIds { get; set; }
+
+        /// <summary>
+        /// SkillId and SkillLevelId
+        /// </summary>
+        public Dictionary<int, int>? Skills { get; set; }
     }
 
     // Commands
     public sealed class CreateWorkerCommand : WorkerCommand
     {
-        public CreateWorkerCommand(string fullName, string? code, string email, int[]? roleIds, int[]? groupIds, int[]? skillIds)
+        public CreateWorkerCommand(string fullName, string? code, string email, int[]? roleIds, int[]? groupIds, Dictionary<int, int>? skills)
         {
             FullName = fullName;
             Code = code;
             Email = email;
             RoleIds = roleIds;
             GroupIds = groupIds;
-            SkillIds = skillIds;
+            Skills = skills;
         }
 
         public override bool IsValid()
@@ -36,13 +40,13 @@ namespace WorkerApplication.Commands
 
     public sealed class UpdateWorkerCommand : WorkerCommand
     {
-        public UpdateWorkerCommand(int id, string? fullName, int[]? roleIds, int[]? groupIds, int[]? skillIds)
+        public UpdateWorkerCommand(int id, string? fullName, int[]? roleIds, int[]? groupIds, Dictionary<int, int>? skills)
         {
             Id = id;
             FullName = fullName;
             RoleIds = roleIds;
             GroupIds = groupIds;
-            SkillIds = skillIds;
+            Skills = skills;
         }
 
         public override bool IsValid()

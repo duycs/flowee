@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppShareApplication\AppShareApplication.csproj" />
     <ProjectReference Include="..\SkillDomain\SkillDomain.csproj" />
+    <ProjectReference Include="..\SkillInfrastructure\SkillInfrastructure.csproj" />
   </ItemGroup>
 
 </Project>

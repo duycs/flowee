@@ -30,14 +30,11 @@ namespace WorkerInfrastructure.DataAccess
 
         public bool HasActiveTransaction => _currentTransaction is not null;
 
+        public WorkerContext() { }
 
         public WorkerContext(DbContextOptions<WorkerContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        }
-
-        public WorkerContext()
-        {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -58,7 +55,7 @@ namespace WorkerInfrastructure.DataAccess
             base.OnModelCreating(modelBuilder);
 
             // SkillLevel
-            modelBuilder.ApplyConfiguration(new SkillLevelEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new SkillLevelEntityTypeConfiguration());
 
             // Custom join entity: https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#join-entity-type-configuration
             // Workers-Roles
@@ -109,8 +106,9 @@ namespace WorkerInfrastructure.DataAccess
             modelBuilder.Entity<Group>().HasOne<Department>(s => s.Department).WithMany(c => c.Groups).HasForeignKey(c => c.DepartmentId);
 
             // Worker-Skills
-            modelBuilder.Entity<Worker>().HasMany(w => w.WorkerSkills);
-            modelBuilder.Entity<WorkerSkill>().HasKey(w => new { w.WorkerId, w.SkillId, w.SkillLevelId });
+            modelBuilder.Entity<WorkerSkill>()
+            .HasOne(s => s.Worker)
+            .WithMany(c => c.WorkerSkills);
         }
 
         public DbSet<T> GetDbSet<T>() where T : class, IEntityService

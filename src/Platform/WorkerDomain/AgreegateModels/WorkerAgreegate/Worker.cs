@@ -20,7 +20,6 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
 
         public virtual ICollection<Role>? Roles { get; set; }
         public virtual ICollection<Group>? Groups { get; set; }
-        public virtual ICollection<int>? SkillIds { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<WorkerGroup>? WorkerGroups { get; set; }
@@ -28,7 +27,6 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         [JsonIgnore]
         public virtual ICollection<WorkerRole>? WorkerRoles { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<WorkerSkill>? WorkerSkills { get; set; }
 
         public static Worker Create(string email, string? code, string? fullName)
@@ -41,7 +39,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
             };
         }
 
-        public static Worker Create(string email, string? code, string? fullName, List<Role>? roles, List<Group>? groups, List<int>? skillIds)
+        public static Worker Create(string email, string? code, string? fullName, List<Role>? roles, List<Group>? groups)
         {
             return new Worker()
             {
@@ -50,8 +48,13 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                 FullName = fullName ?? "",
                 Roles = roles,
                 Groups = groups,
-                SkillIds = skillIds
             };
+        }
+
+        public Worker AddWorkerSkills(List<WorkerSkill> workerSkills)
+        {
+            WorkerSkills = workerSkills;
+            return this;
         }
 
         /// <summary>
@@ -62,7 +65,7 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
         /// <param name="groups"></param>
         /// <param name="skills"></param>
         /// <returns></returns>
-        public Worker PathUpdateWorker(string? fullName, List<Role>? roles, List<Group>? groups, List<int>? skillIds)
+        public Worker PathUpdateWorker(string? fullName, List<Role>? roles, List<Group>? groups, List<WorkerSkill>? workerSkills)
         {
             if (!string.IsNullOrEmpty(fullName))
             {
@@ -79,9 +82,9 @@ namespace WorkerDomain.AgreegateModels.WorkerAgreegate
                 Groups = groups;
             }
 
-            if (skillIds is not null)
+            if (workerSkills is not null)
             {
-                SkillIds = skillIds;
+                WorkerSkills = workerSkills;
             }
 
             return this;

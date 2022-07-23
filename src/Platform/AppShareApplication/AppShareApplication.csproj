@@ -13,6 +13,7 @@
     <ProjectReference Include="..\JobDomain\JobDomain.csproj" />
     <ProjectReference Include="..\OrderDomain\OrderDomain.csproj" />
     <ProjectReference Include="..\ProductDomain\ProductDomain.csproj" />
+    <ProjectReference Include="..\SkillDomain\SkillDomain.csproj" />
     <ProjectReference Include="..\SpecificationDomain\SpecificationDomain.csproj" />
     <ProjectReference Include="..\WorkerDomain\WorkerDomain.csproj" />
   </ItemGroup>

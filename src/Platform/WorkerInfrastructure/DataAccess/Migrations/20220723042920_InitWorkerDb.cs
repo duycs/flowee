@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WorkerInfrastructure.DataAccess.Migrations
 {
-    public partial class InitData : Migration
+    public partial class InitWorkerDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,42 +77,6 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shifts", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "SkillLevels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
-                    Name = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SkillLevels", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Code = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DateDeleted = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -221,9 +185,11 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                 name: "WorkerSkills",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     WorkerId = table.Column<int>(type: "int", nullable: false),
                     SkillId = table.Column<int>(type: "int", nullable: false),
-                    SkillLevelId = table.Column<int>(type: "int", nullable: false),
+                    SkillLevelId = table.Column<int>(type: "int", nullable: true),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsPriority = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -232,19 +198,7 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkerSkills", x => new { x.WorkerId, x.SkillId });
-                    table.ForeignKey(
-                        name: "FK_WorkerSkills_SkillLevels_SkillLevelId",
-                        column: x => x.SkillLevelId,
-                        principalTable: "SkillLevels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WorkerSkills_Skills_SkillId",
-                        column: x => x.SkillId,
-                        principalTable: "Skills",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_WorkerSkills", x => x.Id);
                     table.ForeignKey(
                         name: "FK_WorkerSkills_Workers_WorkerId",
                         column: x => x.WorkerId,
@@ -299,14 +253,9 @@ namespace WorkerInfrastructure.DataAccess.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkerSkills_SkillId",
+                name: "IX_WorkerSkills_WorkerId",
                 table: "WorkerSkills",
-                column: "SkillId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkerSkills_SkillLevelId",
-                table: "WorkerSkills",
-                column: "SkillLevelId");
+                column: "WorkerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -331,12 +280,6 @@ namespace WorkerInfrastructure.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "SkillLevels");
-
-            migrationBuilder.DropTable(
-                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "Workers");

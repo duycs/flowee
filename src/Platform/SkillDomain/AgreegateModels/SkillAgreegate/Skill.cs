@@ -1,10 +1,11 @@
-﻿using AppShareServices.Models;
+﻿using AppShareDomain.Models;
+using AppShareServices.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace SkillDomain.AgreegateModels.SkillAgreegate
 {
-    public class Skill : Entity
+    public class Skill : Entity, IAggregateRoot
     {
         [MaxLength(36)]
         [Required]
@@ -15,5 +16,7 @@ namespace SkillDomain.AgreegateModels.SkillAgreegate
 
         [MaxLength(500)]
         public string Description { get; set; }
+
+        public virtual ICollection<MatrixSkill> MatrixSkills { get; set; }
     }
 }

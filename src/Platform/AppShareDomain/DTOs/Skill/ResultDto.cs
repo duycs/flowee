@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace AppShareDomain.DTOs.Skill
 {
-    public class SkillDto : DtoBase
+    public class ResultDto : DtoBase
     {
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<MatrixSkillDto> MatrixSkills { get; set; }
     }
 }

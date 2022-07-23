@@ -73,20 +73,6 @@ namespace WorkerAPI.SeedData
                     }
                 }
 
-                if (!_context.Skills.Any())
-                {
-                    var skills = GetSkillFromFile();
-                    await _context.Skills.AddRangeAsync(skills);
-                    _context.SaveChanges();
-                }
-
-                if (!_context.SkillLevels.Any())
-                {
-                    var skillLevels = GetSkillLevelFromFile();
-                    await _context.SkillLevels.AddRangeAsync(skillLevels);
-                    _context.SaveChanges();
-                }
-
                 // Relations data
                 if (!_context.Groups.Any())
                 {
@@ -231,39 +217,7 @@ namespace WorkerAPI.SeedData
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x is not null);
         }
-        private IEnumerable<SkillLevel> GetSkillLevelFromFile()
-        {
-            string csvFile = GetPathToFile("SkillLevels.csv");
-            if (!File.Exists(csvFile))
-            {
-                return Enumeration.GetAll<SkillLevel>();
-            }
 
-            int id = 1;
-            return File.ReadAllLines(csvFile)
-                                        .SelectTry(x => CreateSkillLevel(x, ref id))
-                                        .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x is not null);
-        }
-        private IEnumerable<Skill> GetSkillFromFile()
-        {
-            string csvFile = GetPathToFile("Skills.csv");
-
-            if (!File.Exists(csvFile))
-            {
-                return new List<Skill>();
-            }
-
-            string[] requiredHeaders = { "Code", "Name", "Description" };
-            string[] headers = csvFile.GetHeaders(requiredHeaders);
-
-            return File.ReadAllLines(csvFile)
-                                        .Skip(1) // skip header row
-                                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                                        .SelectTry(column => CreateSkill(column, headers))
-                                        .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                                        .Where(x => x is not null);
-        }
         private IEnumerable<WorkerShift> GetWorkerShiftFromFile()
         {
             string csvFile = GetPathToFile("WorkerShifts.csv");
@@ -349,7 +303,7 @@ namespace WorkerAPI.SeedData
                 return new List<WorkerSkill>();
             }
 
-            string[] requiredHeaders = { "WorkerCode", "SkillCode", "SkillLevelName", "IsActive", "IsPriority" };
+            string[] requiredHeaders = { "WorkerCode", "IsActive", "IsPriority", "SkillId", "SkillLevelId" };
             string[] headers = csvFile.GetHeaders(requiredHeaders);
 
             return File.ReadAllLines(csvFile)
@@ -395,18 +349,7 @@ namespace WorkerAPI.SeedData
             return group;
         }
 
-        private Skill CreateSkill(string[] column, string[] headers)
-        {
-            var skill = new Skill()
-            {
-                Name = column[Array.IndexOf(headers, "Name".ToLower())].Trim('"').Trim(),
-                Code = column[Array.IndexOf(headers, "Code".ToLower())].Trim('"').Trim(),
-                Description = column[Array.IndexOf(headers, "Description".ToLower())].Trim('"').Trim(),
-                DateCreated = DateTime.UtcNow,
-            };
 
-            return skill;
-        }
 
         private Department CreateDepartment(string[] column, string[] headers)
         {
@@ -449,15 +392,7 @@ namespace WorkerAPI.SeedData
             return shift;
         }
 
-        private SkillLevel CreateSkillLevel(string value, ref int id)
-        {
-            if (String.IsNullOrEmpty(value))
-            {
-                throw new Exception("SkillLevel is null or empty");
-            }
 
-            return new SkillLevel(id++, value.Trim('"').Trim().ToLowerInvariant());
-        }
 
         private WorkerShift CreateWorkerShift(string[] column, string[] headers)
         {
@@ -523,33 +458,19 @@ namespace WorkerAPI.SeedData
         {
             var workerCode = column[Array.IndexOf(headers, "WorkerCode".ToLower())].Trim('"').Trim();
             var worker = _context.Workers.FirstOrDefault(i => i.Code.ToLower() == workerCode);
-            var skillCode = column[Array.IndexOf(headers, "SkillCode".ToLower())].Trim('"').Trim();
-            var skill = _context.Skills.FirstOrDefault(i => i.Code.ToLower() == skillCode);
-            var skillLevelName = column[Array.IndexOf(headers, "SkillLevelName".ToLower())].Trim('"').Trim();
-            var skillLevel = _context.SkillLevels.FirstOrDefault(i => i.Name.ToLower() == skillLevelName);
 
             if (worker is null)
             {
                 throw new Exception($"Worker {workerCode} not found");
             }
 
-            if (skill is null)
-            {
-                throw new Exception($"Skill {skillCode} not found");
-            }
-
-            if (skillLevel is null)
-            {
-                throw new Exception($"SkillLevel {skillLevel} not found");
-            }
-
             var workerSkill = new WorkerSkill()
             {
                 Worker = worker,
-                Skill = skill,
-                SkillLevelId = skillLevel.Id,
                 IsActive = bool.Parse(column[Array.IndexOf(headers, "IsActive".ToLower())].Trim('"').Trim()),
                 IsPriority = bool.Parse(column[Array.IndexOf(headers, "IsPriority".ToLower())].Trim('"').Trim()),
+                SkillId = int.Parse(column[Array.IndexOf(headers, "SkillId".ToLower())].Trim('"').Trim()),
+                SkillLevelId = int.Parse(column[Array.IndexOf(headers, "SkillLevelId".ToLower())].Trim('"').Trim()),
                 DateCreated = DateTime.UtcNow,
             };
 
@@ -583,6 +504,6 @@ namespace WorkerAPI.SeedData
 
             return workerRole;
         }
-      
+
     }
 }

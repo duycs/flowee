@@ -14,6 +14,6 @@ namespace WorkerApplication.ViewModels
         public string? Code { get; set; }
         public int[]? RoleIds { get; set; }
         public int[]? GroupIds { get; set; }
-        public int[]? SkillIds { get; set; }
+        public Dictionary<int, int>? Skills { get; set; }
     }
 }

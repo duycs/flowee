@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SkillApplication\SkillApplication.csproj" />
+    <ProjectReference Include="..\SkillInfrastructure\SkillInfrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

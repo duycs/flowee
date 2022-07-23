@@ -18,6 +18,7 @@ namespace JobApplication.Services
 
         public async Task<List<Step>> GenerateSteps(int productId)
         {
+            var steps = new List<Step>();
             var catalogId = productId;
             var catalogDto = await _catalogClientService.Get(catalogId, true);
 
@@ -25,6 +26,8 @@ namespace JobApplication.Services
             {
 
             }
+
+            return steps;
         }
     }
 }

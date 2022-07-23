@@ -16,8 +16,8 @@ namespace WorkerApplication.MappingConfigurations
         /// </summary>
         public MappingViewModelToCommandProfile()
         {
-            CreateMap<CreateWorkerVM, CreateWorkerCommand>().ConvertUsing(c => new CreateWorkerCommand(c.FullName, c.Code, c.Email, c.RoleIds, c.GroupIds, c.SkillIds));
-            CreateMap<PathUpdateWorkerVM, UpdateWorkerCommand>().ConvertUsing(c => new UpdateWorkerCommand(c.Id, c.FullName, c.RoleIds, c.GroupIds, c.SkillIds));
+            CreateMap<CreateWorkerVM, CreateWorkerCommand>().ConvertUsing(c => new CreateWorkerCommand(c.FullName, c.Code, c.Email, c.RoleIds, c.GroupIds, c.Skills));
+            CreateMap<PathUpdateWorkerVM, UpdateWorkerCommand>().ConvertUsing(c => new UpdateWorkerCommand(c.Id, c.FullName, c.RoleIds, c.GroupIds, c.Skills));
         }
     }
 }

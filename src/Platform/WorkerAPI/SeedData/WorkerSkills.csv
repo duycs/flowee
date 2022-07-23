@@ -1,3 +1,4 @@
-﻿WorkerCode,SkillCode,SkillLevelName,IsActive,IsPriority
-DuyCS,All,Level1,true,true
-WinVu2,QC,Level3,true,false
+﻿WorkerCode,IsActive,IsPriority,SkillId,SkillLevelId
+DuyCS,true,true,1,1
+WinVu2,true,false,1,2
+WinVu2,true,false,2,1

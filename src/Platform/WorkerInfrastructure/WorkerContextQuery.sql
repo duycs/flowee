@@ -4,8 +4,6 @@ select * from roles;
 select * from workerdb.groups;
 select * from departments;
 select * from shifts;
-select * from skillLevels;
-select * from skills;
 select * from workers;
 
 select * from workergroups;
@@ -40,3 +38,6 @@ ws.Id ShiftId, s.Name ShiftName, s.isNormal IsNormalShift, s.timeStart ShiftTime
 from workers w
 join workershifts ws on w.id = ws.workerId
 join shifts s on ws.shiftId = s.id;
+
+
+update WorkerSkills set Id = 3 where workerId = 2 and SkillId = 7

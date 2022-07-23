@@ -33,7 +33,6 @@ namespace WorkerApplication.Commands
             // Can nullable for not insert
             List<Role>? roles = null;
             List<Group>? groups = null;
-            List<Skill>? skills = null;
             if (request.RoleIds is not null)
             {
                 roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
@@ -54,28 +53,36 @@ namespace WorkerApplication.Commands
                 }
             }
 
-            if (request.SkillIds is not null)
-            {
-                skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
-                if (invalidSkillIds.Any())
-                {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"SkillId {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
-                    return Unit.Value;
-                }
-            }
-
-            var workerAdded = _repositoryService.Add<Worker>(Worker.Create(request.Email, request.Code, request.FullName, roles, groups, skills));
+            var workerAdded = _repositoryService.Add<Worker>(Worker.Create(request.Email, request.Code, request.FullName, roles, groups));
             var result = _repositoryService.SaveChanges();
 
             // TODO: add then save change but DateCreated of relations entity is default
-
             // TODO: unitOfWork return false
             //var isCommited = _unitOfWork.Commit() > 0;
-
             if (!result)
             {
                 await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"New Worker could not insert"));
                 return Unit.Value;
+            }
+
+            // Add worker skills
+            if (request.Skills is not null)
+            {
+                List<WorkerSkill>? workerSkills = new List<WorkerSkill>();
+                foreach (var skill in request.Skills)
+                {
+                    workerSkills.Add(WorkerSkill.Create(workerAdded.Id, skill.Key, skill.Value));
+                }
+
+                if (workerSkills.Any())
+                {
+                    _repositoryService.Update(workerAdded.AddWorkerSkills(workerSkills));
+                    if (!_repositoryService.SaveChanges())
+                    {
+                        await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Skill could not insert"));
+                        return Unit.Value;
+                    }
+                }
             }
 
             // raise created event
@@ -89,7 +96,6 @@ namespace WorkerApplication.Commands
             // Can nullable for not update
             List<Role>? roles = null;
             List<Group>? groups = null;
-            List<Skill>? skills = null;
             if (request.RoleIds is not null)
             {
                 roles = _repositoryService.List<Role>(request.RoleIds, out int[] invalidRoleIds);
@@ -110,16 +116,6 @@ namespace WorkerApplication.Commands
                 }
             }
 
-            if (request.SkillIds is not null)
-            {
-                skills = _repositoryService.List<Skill>(request.SkillIds, out int[] invalidSkillIds);
-                if (invalidSkillIds.Any())
-                {
-                    await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @$"SkillIds {string.Join(",", invalidSkillIds)} does not exist, new worker could not insert"));
-                    return Unit.Value;
-                }
-            }
-
             var workerExsiting = _repositoryService.Find<Worker>(request.Id);
             if (workerExsiting is null)
             {
@@ -127,11 +123,19 @@ namespace WorkerApplication.Commands
                 return Unit.Value;
             }
 
-            // TODO: wrong update relations table: not override, not found relations data in tables
-            var workerUpdated = _repositoryService.Update(workerExsiting.PathUpdateWorker(request.FullName, roles, groups, skills));
-            var result = _repositoryService.SaveChanges();
+            List<WorkerSkill>? workerSkills = null;
+            if (request.Skills is not null)
+            {
+                workerSkills = new List<WorkerSkill>();
+                foreach (var skill in request.Skills)
+                {
+                    workerSkills.Add(WorkerSkill.Create(workerExsiting.Id, skill.Key, skill.Value));
+                }
+            }
 
-            if (!result)
+            // TODO: wrong update relations table: not override, not found relations data in tables
+            _repositoryService.Update(workerExsiting.PathUpdateWorker(request.FullName, roles, groups, workerSkills));
+            if (!_repositoryService.SaveChanges())
             {
                 await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Worker could not update"));
                 return Unit.Value;
