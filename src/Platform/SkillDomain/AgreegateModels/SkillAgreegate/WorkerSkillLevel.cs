@@ -1,4 +1,5 @@
 ﻿using AppShareDomain.Models;
+using AppShareServices.DataAccess.Persistences;
 
 namespace SkillDomain.AgreegateModels.SkillAgreegate
 {

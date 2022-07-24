@@ -1,3 +1,4 @@
+using AppShareDomain.DTOs.Worker;
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
@@ -101,7 +102,8 @@ namespace WorkerAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(workerExisting);
+            var workerDto = _mappingService.Map<WorkerDto>(workerExisting);
+            return Ok(workerDto);
         }
 
     }

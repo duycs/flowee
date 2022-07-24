@@ -1,5 +1,10 @@
+using AppShareDomain.DTOs;
+using AppShareDomain.Models;
+using AppShareServices.DataAccess.Repository;
+using AppShareServices.Mappings;
 using Microsoft.AspNetCore.Mvc;
 using SkillApplication.Services;
+using SkillDomain.AgreegateModels.SkillAgreegate;
 
 namespace SkillAPI.Controllers
 {
@@ -8,10 +13,14 @@ namespace SkillAPI.Controllers
     public class SkillsController : ControllerBase
     {
         private readonly ISkillService _skillService;
+        private readonly IRepositoryService _repositoryService;
+        private readonly IMappingService _mappingService;
 
-        public SkillsController(ISkillService skillService)
+        public SkillsController(ISkillService skillService, IRepositoryService repositoryService, IMappingService mappingService)
         {
             _skillService = skillService;
+            _repositoryService = repositoryService;
+            _mappingService = mappingService;
         }
 
         [HttpGet]
@@ -26,6 +35,14 @@ namespace SkillAPI.Controllers
         {
             var skillDto = _skillService.FindSkill(id, isInclude);
             return Ok(skillDto);
+        }
+
+        [HttpGet("worker-level-skills")]
+        public IActionResult GetWorkerLevelSkills([FromQuery] int[]? ids, [FromQuery] bool isInclude = true)
+        {
+            var workerSkillLevels = _repositoryService.List<WorkerSkillLevel>(ids);
+            var workerSkillLevelDtos = _mappingService.Map<List<EnumerationDto>>(workerSkillLevels);
+            return Ok(workerSkillLevelDtos);
         }
 
         [HttpGet("matrix-skills")]
