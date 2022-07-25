@@ -1,12 +1,8 @@
-﻿using AppShareServices.DataAccess.Persistences;
+﻿using AppShareDomain.Models;
+using AppShareServices.DataAccess.Persistences;
 using AppShareServices.Queries.Specification;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppShareServices.DataAccess.Repository
 {
@@ -19,14 +15,14 @@ namespace AppShareServices.DataAccess.Repository
             Database = database;
         }
 
-        public T Add<T>(T entity) where T : class, IEntityService
+        public T Add<T>(T entity) where T : EntityBase
         {
             entity.DateCreated = DateTime.UtcNow;
             Database.GetDbSet<T>().Add(entity);
             return entity;
         }
 
-        public List<T> Add<T>(params T[] entities) where T : class, IEntityService
+        public List<T> Add<T>(params T[] entities) where T : EntityBase
         {
             var dbset = Database.GetDbSet<T>();
             foreach (var entity in entities)
@@ -38,12 +34,12 @@ namespace AppShareServices.DataAccess.Repository
             return entities.ToList();
         }
 
-        public T Find<T>(int id) where T : class, IEntityService
+        public T Find<T>(int id) where T : EntityBase
         {
             return Database.GetDbSet<T>().FirstOrDefault(x => x.Id.Equals(id));
         }
 
-        public T Find<T>(int id, SpecificationBase<T> specification) where T : class, IEntityService
+        public T Find<T>(int id, SpecificationBase<T> specification) where T : EntityBase
         {
             var query = Database.GetDbSet<T>().AsQueryable();
 
@@ -60,17 +56,17 @@ namespace AppShareServices.DataAccess.Repository
         }
 
 
-        public T Find<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
+        public T Find<T>(Expression<Func<T, bool>> @where) where T : EntityBase
         {
             return Database.GetDbSet<T>().FirstOrDefault(@where);
         }
 
-        public List<T> List<T>(int[] Ids) where T : class, IEntityService
+        public List<T> List<T>(int[] Ids) where T : EntityBase
         {
             return Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id)).ToList();
         }
 
-        public List<T> List<T>(int[] Ids, SpecificationBase<T> specification) where T : class, IEntityService
+        public List<T> List<T>(int[] Ids, SpecificationBase<T> specification) where T : EntityBase
         {
             var query = Database.GetDbSet<T>().AsQueryable();
 
@@ -86,7 +82,7 @@ namespace AppShareServices.DataAccess.Repository
             return query.Where(w => Ids.Contains(w.Id)).ToList();
         }
 
-        public List<T> List<T>(int[] Ids, out int[] invalidIds) where T : class, IEntityService
+        public List<T> List<T>(int[] Ids, out int[] invalidIds) where T : EntityBase
         {
             var result = Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id)).ToList();
             invalidIds = Ids.Except(result.Select(i => i.Id).ToArray()).ToArray();
@@ -94,12 +90,12 @@ namespace AppShareServices.DataAccess.Repository
             return result;
         }
 
-        public List<T> List<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
+        public List<T> List<T>(Expression<Func<T, bool>> @where) where T : EntityBase
         {
             return Database.GetDbSet<T>().Where(@where).ToList();
         }
 
-        public IQueryable<T> ListAsQueryable<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
+        public IQueryable<T> ListAsQueryable<T>(Expression<Func<T, bool>> @where) where T : EntityBase
         {
             var dbset = Database.GetDbSet<T>();
             if (@where is null)
@@ -108,23 +104,23 @@ namespace AppShareServices.DataAccess.Repository
             return dbset.Where(@where);
         }
 
-        public IQueryable<T> ListAsQueryable<T>(int[] Ids) where T : class, IEntityService
+        public IQueryable<T> ListAsQueryable<T>(int[] Ids) where T : EntityBase
         {
             return Database.GetDbSet<T>().Where(x => Ids.Contains(x.Id));
         }
 
-        public List<T> List<T>(int pageIndex, int pageSize) where T : class, IEntityService
+        public List<T> List<T>(int pageIndex, int pageSize) where T : EntityBase
         {
             var dbset = Database.GetDbSet<T>();
             return dbset.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
 
-        public List<T> List<T>(int pageIndex, int pageSize, Expression<Func<T, bool>> @where) where T : class, IEntityService
+        public List<T> List<T>(int pageIndex, int pageSize, Expression<Func<T, bool>> @where) where T : EntityBase
         {
             return Database.GetDbSet<T>().Where(@where).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
 
-        public List<T> List<T>(int pageIndex, int pageSize, Expression<Func<T, bool>> @where, out int totalPage) where T : class, IEntityService
+        public List<T> List<T>(int pageIndex, int pageSize, Expression<Func<T, bool>> @where, out int totalPage) where T : EntityBase
         {
             var query = Database.GetDbSet<T>().Where(@where);
             totalPage = query.Count();
@@ -132,13 +128,13 @@ namespace AppShareServices.DataAccess.Repository
             return query.OrderByDescending(x => x.DateCreated).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
         }
 
-        public IQueryable<T> ListAsQueryable<T>(int pageIndex, int pageSize, Expression<Func<T, bool>> @where) where T : class, IEntityService
+        public IQueryable<T> ListAsQueryable<T>(int pageIndex, int pageSize, Expression<Func<T, bool>> @where) where T : EntityBase
         {
             return Database.GetDbSet<T>().Where(@where).Skip((pageIndex - 1) * pageSize).Take(pageSize);
         }
 
         // TODO: Can mapping item vs entity modified fields?
-        //public List<T> Update<T>(params T[] entities) where T : class, IEntityService
+        //public List<T> Update<T>(params T[] entities) where T : EntityBase
         //{
         //    var dbset = Database.GetDbSet<T>();
         //    foreach (var entity in entities)
@@ -155,7 +151,7 @@ namespace AppShareServices.DataAccess.Repository
         //    return entities.ToList();
         //}
 
-        public List<T> Update<T>(params T[] entities) where T : class, IEntityService
+        public List<T> Update<T>(params T[] entities) where T : EntityBase
         {
             entities.ToList().ForEach(item =>
             {
@@ -167,14 +163,14 @@ namespace AppShareServices.DataAccess.Repository
             return entities.ToList();
         }
 
-        public T Update<T>(T entity) where T : class, IEntityService
+        public T Update<T>(T entity) where T : EntityBase
         {
             entity.DateModified = DateTime.Now.ToUniversalTime();
             Database.GetDbSet<T>().Update(entity);
             return entity;
         }
 
-        public bool Delete<T>(T entity) where T : class, IEntityService
+        public bool Delete<T>(T entity) where T : EntityBase
         {
             var dbset = Database.GetDbSet<T>();
             var item = dbset.FirstOrDefault(x => x.Id == entity.Id);
@@ -185,7 +181,7 @@ namespace AppShareServices.DataAccess.Repository
             return true;
         }
 
-        public bool Delete<T>(T[] entities) where T : class, IEntityService
+        public bool Delete<T>(T[] entities) where T : EntityBase
         {
             var dbset = Database.GetDbSet<T>();
             foreach (var entity in entities)
@@ -195,7 +191,7 @@ namespace AppShareServices.DataAccess.Repository
             return true;
         }
 
-        public bool Delete<T>(int id) where T : class, IEntityService
+        public bool Delete<T>(int id) where T : EntityBase
         {
             var dbset = Database.GetDbSet<T>();
             var item = dbset.FirstOrDefault(x => x.Id == id);
@@ -206,7 +202,7 @@ namespace AppShareServices.DataAccess.Repository
             return true;
         }
 
-        public bool Delete<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
+        public bool Delete<T>(Expression<Func<T, bool>> @where) where T : EntityBase
         {
             var dbset = Database.GetDbSet<T>();
             var items = dbset.Where(@where);
@@ -217,17 +213,17 @@ namespace AppShareServices.DataAccess.Repository
             return true;
         }
 
-        public int CountWhere<T>(Expression<Func<T, bool>> @where) where T : class, IEntityService
+        public int CountWhere<T>(Expression<Func<T, bool>> @where) where T : EntityBase
         {
             return Database.GetDbSet<T>().Count(@where);
         }
 
-        public int CountAll<T>() where T : class, IEntityService
+        public int CountAll<T>() where T : EntityBase
         {
             return Database.GetDbSet<T>().Count();
         }
 
-        public IEnumerable<T> Find<T>(SpecificationBase<T> specification) where T : class, IEntityService
+        public IEnumerable<T> Find<T>(SpecificationBase<T> specification) where T : EntityBase
         {
             var query = Database.GetDbSet<T>().AsQueryable();
 
@@ -243,7 +239,7 @@ namespace AppShareServices.DataAccess.Repository
             return query.AsEnumerable();
         }
 
-        public IEnumerable<T> Find<T>(int pageIndex, int pageSize, SpecificationBase<T> specification, out int totalPage) where T : class, IEntityService
+        public IEnumerable<T> Find<T>(int pageIndex, int pageSize, SpecificationBase<T> specification, out int totalPage) where T : EntityBase
         {
             var query = Database.GetDbSet<T>().AsQueryable();
 
@@ -263,7 +259,7 @@ namespace AppShareServices.DataAccess.Repository
 
 
         // https://github.com/dotnet-architecture/eShopOnWeb
-        public IQueryable<T> AsQueryInClude<T>(ISpecification<T> specification) where T : class, IEntityService
+        public IQueryable<T> AsQueryInClude<T>(ISpecification<T> specification) where T : EntityBase
         {
             // fetch a Queryable that includes all expression-based includes
             var queryableResultWithIncludes = specification.Includes

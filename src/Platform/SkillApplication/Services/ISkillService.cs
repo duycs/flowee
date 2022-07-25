@@ -15,7 +15,7 @@ namespace SkillApplication.Services
         /// <param name="workerSkillLevelId"></param>
         /// <param name="specificationSkillLevelId"></param>
         /// <returns></returns>
-        public List<MatrixSkillDto> FindMatrixSkill(int skillId, int? workerSkillLevelId, int? specificationSkillLevelId);
+        public List<MatrixSkillDto> FindMatrixSkill(int skillId, int? workerSkillLevelId, int? specificationSkillLevelId, bool? isInclude = false);
 
     }
 }

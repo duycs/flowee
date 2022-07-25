@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AppShareDomain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace AppShareServices.DataAccess.Persistences
 {
     public interface IDatabaseService
     {
-        DbSet<T> GetDbSet<T>() where T : class, IEntityService;
+        DbSet<T> GetDbSet<T>() where T : EntityBase;
         Task SaveChanges();
     }
 }

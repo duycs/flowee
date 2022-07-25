@@ -11,6 +11,6 @@ namespace AppShareDomain.DTOs.Skill
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<MatrixSkillDto> MatrixSkills { get; set; }
+        //public List<MatrixSkillDto> MatrixSkills { get; set; }
     }
 }

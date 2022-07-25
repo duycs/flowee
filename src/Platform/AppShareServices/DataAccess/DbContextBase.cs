@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppShareServices.DataAccess
 {
-    public abstract class DbContextBase<T> : DbContext, IDatabaseService where T : class, IEntityService
+    public abstract class DbContextBase<T> : DbContext, IDatabaseService where T : class
     {
         public DbContextBase()
         {

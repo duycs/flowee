@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace AppShareDomain.Models
 {
-    public abstract class Enumeration : IComparable
+    public abstract class Enumeration : EntityBase, IComparable
     {
         /// <summary>
         /// Gets the name.

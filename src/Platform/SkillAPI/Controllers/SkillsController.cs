@@ -38,17 +38,26 @@ namespace SkillAPI.Controllers
         }
 
         [HttpGet("worker-level-skills")]
-        public IActionResult GetWorkerLevelSkills([FromQuery] int[]? ids, [FromQuery] bool isInclude = true)
+        public IActionResult GetWorkerLevelSkills([FromQuery] int[]? ids)
         {
             var workerSkillLevels = _repositoryService.List<WorkerSkillLevel>(ids);
             var workerSkillLevelDtos = _mappingService.Map<List<EnumerationDto>>(workerSkillLevels);
             return Ok(workerSkillLevelDtos);
         }
 
-        [HttpGet("matrix-skills")]
-        public IActionResult GetMatchingMatrixSkill([FromQuery] int skillId, [FromQuery] int? workerSkillLevelId, [FromQuery] int? specificationLevelId)
+        [HttpGet("specification-level-skills")]
+        public IActionResult GetSpecificationLevelSkills([FromQuery] int[]? ids)
         {
-            var matrixSkills = _skillService.FindMatrixSkill(skillId, workerSkillLevelId, specificationLevelId);
+
+            var specificationSkillLevels = _repositoryService.List<SpecificationSkillLevel>(ids);
+            var specificationSkillLevelDtos = _mappingService.Map<List<EnumerationDto>>(specificationSkillLevels);
+            return Ok(specificationSkillLevelDtos);
+        }
+
+        [HttpGet("matrix-skills")]
+        public IActionResult GetMatchingMatrixSkill([FromQuery] int skillId, [FromQuery] int? workerSkillLevelId, [FromQuery] int? specificationLevelId, [FromQuery] bool isInclude = true)
+        {
+            var matrixSkills = _skillService.FindMatrixSkill(skillId, workerSkillLevelId, specificationLevelId, isInclude);
             return Ok(matrixSkills);
         }
     }

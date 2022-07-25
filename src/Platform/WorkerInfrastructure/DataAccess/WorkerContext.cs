@@ -1,4 +1,5 @@
-﻿using AppShareServices.DataAccess.Persistences;
+﻿using AppShareDomain.Models;
+using AppShareServices.DataAccess.Persistences;
 using AppShareServices.Events;
 using AppShareServices.Models;
 using MediatR;
@@ -111,7 +112,7 @@ namespace WorkerInfrastructure.DataAccess
             .WithMany(c => c.WorkerSkills);
         }
 
-        public DbSet<T> GetDbSet<T>() where T : class, IEntityService
+        public DbSet<T> GetDbSet<T>() where T : EntityBase
         {
             return Set<T>();
         }
