@@ -3,6 +3,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
+using WorkerApplication.MappingConfigurations;
+using WorkerApplication.Services;
 
 namespace WorkerCrossCutting.DependencyInjections
 {
@@ -13,17 +15,20 @@ namespace WorkerCrossCutting.DependencyInjections
     {
         public static void Register(IServiceCollection services)
         {
-            services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+            // Application
+            services.AddSingleton(AutoMapping.RegisterMappings().CreateMapper());
+            services.AddSingleton(sp => sp.GetRequiredService<IMapper>().ConfigurationProvider);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUriService>(o =>
             {
                 var request = o.GetRequiredService<IHttpContextAccessor>().HttpContext.Request;
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
-                //TODO: https://codewithmukesh.com/blog/pagination-in-aspnet-core-webapi/
                 return new UriService(uri);
             });
+            services.AddTransient<IWorkerService, WorkerService>();
+            services.AddHttpClient<ISkillClientService>();
+            services.AddTransient<ISkillClientService, SkillClientService>();
 
-            // application services
         }
     }
 }

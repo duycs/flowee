@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WorkerApplication.DTOs;
+﻿using AppShareDomain.DTOs;
+using AppShareDomain.DTOs.Skill;
+using AppShareDomain.DTOs.Worker;
+using AutoMapper;
+using SkillDomain.AgreegateModels.SkillAgreegate;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
 namespace WorkerApplication.MappingConfigurations
@@ -17,6 +15,11 @@ namespace WorkerApplication.MappingConfigurations
         public MappingEntityToDtoProfile()
         {
             CreateMap<Worker, WorkerDto>();
+            CreateMap<Role, RoleDto>();
+            CreateMap<Group, GroupDto>();
+            CreateMap<WorkerSkill, WorkerSkillDto>();
+            CreateMap<Skill, SkillDto>();
+            CreateMap<WorkerSkillLevel, EnumerationDto>();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace WorkerApplication.Services
         public SkillClientService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri($"https://localhost:7170/skills/");
+            _httpClient.BaseAddress = new Uri($"https://localhost:7234/skills/");
             _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
         }
 
@@ -32,9 +32,14 @@ namespace WorkerApplication.Services
             return await _httpClient.GetFromJsonAsync<IEnumerable<SkillDto>>($"?{ids.ToIdsQueries(isInclude)}");
         }
 
-        public async Task<IEnumerable<EnumerationDto>> GetSkillLevels(int[] ids, bool isInclude)
+        public async Task<IEnumerable<EnumerationDto>> GetWorkerSkillLevels(int[] ids, bool isInclude)
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<EnumerationDto>>($"?{ids.ToIdsQueries(isInclude)}");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<EnumerationDto>>($"worker-skill-levels?{ids.ToIdsQueries(isInclude)}");
+        }
+
+        public async Task<IEnumerable<EnumerationDto>> GetSpecificationSkillLevels(int[] ids, bool isInclude)
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<EnumerationDto>>($"specification-skill-levels?{ids.ToIdsQueries(isInclude)}");
         }
     }
 }

@@ -37,7 +37,7 @@ namespace SkillAPI.Controllers
             return Ok(skillDto);
         }
 
-        [HttpGet("worker-level-skills")]
+        [HttpGet("worker-skill-levels")]
         public IActionResult GetWorkerLevelSkills([FromQuery] int[]? ids)
         {
             var workerSkillLevels = _repositoryService.List<WorkerSkillLevel>(ids);
@@ -45,7 +45,7 @@ namespace SkillAPI.Controllers
             return Ok(workerSkillLevelDtos);
         }
 
-        [HttpGet("specification-level-skills")]
+        [HttpGet("specification-skill-levels")]
         public IActionResult GetSpecificationLevelSkills([FromQuery] int[]? ids)
         {
 

@@ -5,6 +5,7 @@ using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using Microsoft.AspNetCore.Mvc;
 using WorkerApplication.Commands;
+using WorkerApplication.Services;
 using WorkerApplication.ViewModels;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
@@ -16,6 +17,7 @@ namespace WorkerAPI.Controllers
     {
         private readonly ILogger<WorkersController> _logger;
         private readonly IRepositoryService _repositoryService;
+        private readonly IWorkerService _workerService;
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
@@ -24,6 +26,7 @@ namespace WorkerAPI.Controllers
             IMappingService mappingService,
             IUriService uriService,
             IRepositoryService repositoryService,
+            IWorkerService workerService,
             ICommandDispatcher commandDispatcher
             )
         {
@@ -31,6 +34,7 @@ namespace WorkerAPI.Controllers
             _uriService = uriService;
             _mappingService = mappingService;
             _repositoryService = repositoryService;
+            _workerService = workerService;
             _commandDispatcher = commandDispatcher;
         }
 
@@ -84,25 +88,31 @@ namespace WorkerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilterOrder filter, string? searchValue, bool isInclude)
+        public async Task<IActionResult> Get(bool isInclude = true, [FromQuery] int pageNumber = -1, [FromQuery] int pageSize = 0, [FromQuery] string? columnOrders = "", [FromQuery] int[]? ids = null, string? searchValue = "")
         {
-            int totalRecords;
-            var workerSpecification = new WorkerSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
-            var pagedData = _repositoryService.Find<Worker>(filter.PageNumber, filter.PageSize, workerSpecification, out totalRecords).ToList();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Worker>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
-            return Ok(pagedReponse);
+            if (pageNumber == -1)
+            {
+                var workerDtos = await _workerService.Find(ids, isInclude);
+                return Ok(workerDtos);
+            }
+            else
+            {
+                var filter = new PaginationFilterOrder(pageNumber, pageSize, columnOrders);
+                var pagedData = _workerService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, searchValue, isInclude, out int totalRecords);
+                var pagedReponse = PaginationHelper.CreatePagedReponse<WorkerDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
+                return Ok(pagedReponse);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, bool isInclude)
         {
-            var workerExisting = _repositoryService.Find<Worker>(id, new WorkerSpecification(isInclude));
-            if (workerExisting is null)
+            var workerDto = await _workerService.Find(id, isInclude);
+            if (workerDto is null)
             {
                 return NotFound();
             }
 
-            var workerDto = _mappingService.Map<WorkerDto>(workerExisting);
             return Ok(workerDto);
         }
 
