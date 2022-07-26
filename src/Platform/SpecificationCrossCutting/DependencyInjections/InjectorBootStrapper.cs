@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SpecificationApplication.Commands;
 using SpecificationApplication.MappingConfigurations;
+using SpecificationApplication.Services;
 using SpecificationInfrastructure.DataAccess;
 using System.Reflection;
 
@@ -33,6 +34,9 @@ namespace SpecificationCrossCutting.DependencyInjections
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
                 return new UriService(uri);
             });
+            services.AddTransient<ISpecificationService, SpecificationService>();
+            services.AddHttpClient<ISkillClientService>();
+            services.AddTransient<ISkillClientService, SkillClientService>();
 
             // Domain
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();

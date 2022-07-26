@@ -1,13 +1,10 @@
 ﻿using AppShareDomain.DTOs;
 using AppShareDomain.DTOs.Catalog;
+using AppShareDomain.DTOs.Skill;
 using AppShareDomain.DTOs.Specification;
 using AutoMapper;
+using SkillDomain.AgreegateModels.SkillAgreegate;
 using SpecificationDomain.AgreegateModels.SpecificationAgreegate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppShareApplication.MappingConfigurations
 {
@@ -25,6 +22,8 @@ namespace AppShareApplication.MappingConfigurations
             CreateMap<Condition, EnumerationDto>();
             CreateMap<Operator, EnumerationDto>();
             CreateMap<Specification, SpecificationDto>();
+            CreateMap<Skill, SkillDto>();
+            CreateMap<SpecificationSkillLevel, EnumerationDto>();
         }
     }
 }

@@ -11,5 +11,7 @@ namespace AppShareDomain.DTOs.Specification
         public List<RuleDto> Rules { get; set; }
         public int? SkillId { get; set; }
         public SkillDto? Skill { get; set; }
+
+        public List<SpecificationSkillDto>? SpecificationSkills { get; set; }
     }
 }

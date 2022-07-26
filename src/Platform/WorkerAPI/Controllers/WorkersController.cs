@@ -87,6 +87,7 @@ namespace WorkerAPI.Controllers
             return Ok();
         }
 
+        // TODO: ids does not require?
         [HttpGet]
         public async Task<IActionResult> Get(bool isInclude = true, [FromQuery] int pageNumber = -1, [FromQuery] int pageSize = 0, [FromQuery] string? columnOrders = "", [FromQuery] int[]? ids = null, string? searchValue = "")
         {

@@ -5,6 +5,7 @@ using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using Microsoft.AspNetCore.Mvc;
 using SpecificationApplication.Commands;
+using SpecificationApplication.Services;
 using SpecificationApplication.ViewModels;
 using SpecificationDomain.AgreegateModels.SpecificationAgreegate;
 
@@ -16,15 +17,18 @@ namespace SpecificationAPI.Controllers
     {
         private readonly ILogger<SpecificationsController> _logger;
         private readonly IRepositoryService _repositoryService;
+        private readonly ISpecificationService _specificationService;
         private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
         private readonly ICommandDispatcher _commandDispatcher;
 
         public SpecificationsController(ILogger<SpecificationsController> logger, IRepositoryService repositoryService,
+            ISpecificationService specificationService,
             IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher)
         {
             _logger = logger;
             _repositoryService = repositoryService;
+            _specificationService = specificationService;
             _mappingService = mappingService;
             _uriService = uriService;
             _commandDispatcher = commandDispatcher;
@@ -87,18 +91,14 @@ namespace SpecificationAPI.Controllers
         {
             if (pageNumber == -1)
             {
-                var specifications = _repositoryService.List<Specification>(ids, new SpecificationSpecification(isInclude)).ToList();
-                var specificationDtos = _mappingService.Map<List<SpecificationDto>>(specifications);
-
+                var specificationDtos = await _specificationService.Find(ids, isInclude);
                 return Ok(specificationDtos);
             }
             else
             {
                 var filter = new PaginationFilterOrder(pageNumber, pageSize, columnOrders);
-                var specificationSpecification = new SpecificationSpecification(isInclude, searchValue, ids, filter.ColumnOrders.ToColumnOrders());
-                var pagedSpecifications = _repositoryService.Find<Specification>(filter.PageNumber, filter.PageSize, specificationSpecification, out int totalRecords).ToList();
-                var specificationDtos = _mappingService.Map<List<SpecificationDto>>(pagedSpecifications);
-                var pagedReponse = PaginationHelper.CreatePagedReponse<SpecificationDto>(specificationDtos, filter, totalRecords, _uriService, Request.Path.Value ?? "");
+                var pagedData = _specificationService.Find(filter.PageNumber, filter.PageSize, filter.ColumnOrders, ids, searchValue, isInclude, out int totalRecords);
+                var pagedReponse = PaginationHelper.CreatePagedReponse<SpecificationDto>(pagedData, filter, totalRecords, _uriService, Request.Path.Value);
                 return Ok(pagedReponse);
             }
         }
@@ -106,14 +106,12 @@ namespace SpecificationAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id, bool isInclude = true)
         {
-            var specificationExisting = _repositoryService.Find<Specification>(id, new SpecificationSpecification(isInclude));
-
-            if (specificationExisting is null)
+            var specificationDto = await _specificationService.Find(id, isInclude);
+            if (specificationDto is null)
             {
                 return NotFound();
             }
 
-            var specificationDto = _mappingService.Map<SpecificationDto>(specificationExisting);
             return Ok(specificationDto);
         }
     }

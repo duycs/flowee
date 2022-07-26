@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpecificationInfrastructure.DataAccess;
 
@@ -10,9 +11,10 @@ using SpecificationInfrastructure.DataAccess;
 namespace SpecificationInfrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(SpecificationContext))]
-    partial class SpecificationContextModelSnapshot : ModelSnapshot
+    [Migration("20220726165432_UpdateEntityBase")]
+    partial class UpdateEntityBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

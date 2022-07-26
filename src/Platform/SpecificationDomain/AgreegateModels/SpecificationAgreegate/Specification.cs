@@ -22,6 +22,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         [JsonIgnore]
         public virtual ICollection<SpecificationRule>? SpecificationRules { get; set; }
 
+        public virtual ICollection<SpecificationSkill>? SpecificationSkills { get; set; }
 
         /// <summary>
         /// Build specification from Settings
