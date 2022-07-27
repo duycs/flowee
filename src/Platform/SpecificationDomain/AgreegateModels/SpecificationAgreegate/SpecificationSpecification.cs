@@ -81,6 +81,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
                 AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Condition)}");
                 AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Setting)}.{nameof(Setting.SettingType)}");
                 AddInclude($"{nameof(Specification.Rules)}.{nameof(Rule.Operator)}");
+                AddInclude(s => s.SpecificationSkills);
             }
 
         }

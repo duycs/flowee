@@ -15,7 +15,6 @@ namespace AppShareApplication.MappingConfigurations
         /// </summary>
         public MappingSpecificationEntityToDtoProfile()
         {
-            // Specification
             CreateMap<Rule, RuleDto>();
             CreateMap<Setting, SettingDto>();
             CreateMap<SettingType, EnumerationDto>();
@@ -23,6 +22,7 @@ namespace AppShareApplication.MappingConfigurations
             CreateMap<Operator, EnumerationDto>();
             CreateMap<Specification, SpecificationDto>();
             CreateMap<Skill, SkillDto>();
+            CreateMap<SpecificationSkill, SpecificationSkillDto>();
             CreateMap<SpecificationSkillLevel, EnumerationDto>();
         }
     }

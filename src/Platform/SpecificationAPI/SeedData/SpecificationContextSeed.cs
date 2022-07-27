@@ -83,6 +83,16 @@ namespace SpecificationAPI.SeedData
                         _dbContext.SaveChanges();
                     }
                 }
+
+                if (!_dbContext.SpecificationSkills.Any())
+                {
+                    var specificationSkills = GetSpecificationSkillFromFile();
+                    if (specificationSkills.Any())
+                    {
+                        await _dbContext.SpecificationSkills.AddRangeAsync(specificationSkills);
+                        _dbContext.SaveChanges();
+                    }
+                }
             });
         }
 
@@ -196,6 +206,7 @@ namespace SpecificationAPI.SeedData
                                         .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                                         .Where(x => x is not null);
         }
+
         private Specification CreateSpecification(string[] column, string[] headers)
         {
             var ruleIds = column[Array.IndexOf(headers, "RuleIds".ToLower())].Trim('"').Trim().Split(",").Select(int.Parse).ToList();
@@ -211,5 +222,44 @@ namespace SpecificationAPI.SeedData
             return specification;
         }
 
+        private IEnumerable<SpecificationSkill> GetSpecificationSkillFromFile()
+        {
+            string csvFile = GetPathToFile("SpecificationSkills.csv");
+
+            if (!File.Exists(csvFile))
+            {
+                return new List<SpecificationSkill>();
+            }
+
+            string[] requiredHeaders = { "SpecificationId", "SkillId", "SkillLevelId" };
+            string[] headers = csvFile.GetHeaders(requiredHeaders);
+
+            return File.ReadAllLines(csvFile)
+                                        .Skip(1) // skip header row
+                                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                                        .SelectTry(column => CreateSpecificationSkill(column, headers))
+                                        .OnCaughtException(ex => { _logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                                        .Where(x => x is not null);
+        }
+
+        private SpecificationSkill CreateSpecificationSkill(string[] column, string[] headers)
+        {
+            var specification = _dbContext.Specifications.FirstOrDefault(c => c.Id == int.Parse(column[Array.IndexOf(headers, "SpecificationId".ToLower())].Trim('"').Trim()));
+
+            if (specification == null)
+            {
+                throw new Exception("Specification does not found");
+            }
+
+            var specificationSkill = new SpecificationSkill()
+            {
+                Specification = specification,
+                SkillId = int.Parse(column[Array.IndexOf(headers, "SkillId".ToLower())].Trim('"').Trim()),
+                SkillLevelId = int.Parse(column[Array.IndexOf(headers, "SkillLevelId".ToLower())].Trim('"').Trim()),
+                DateCreated = DateTime.UtcNow,
+            };
+
+            return specificationSkill;
+        }
     }
 }

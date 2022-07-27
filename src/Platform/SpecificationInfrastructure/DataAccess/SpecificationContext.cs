@@ -14,6 +14,7 @@ public class SpecificationContext : DbContext, IDatabaseService
     public DbSet<SettingType> SettingTypes { get; set; }
     public DbSet<Specification> Specifications { get; set; }
     public DbSet<SpecificationRule> SpecificationRules { get; set; }
+    public DbSet<SpecificationSkill> SpecificationSkills { get; set; }
 
     public SpecificationContext() { }
 
@@ -102,6 +103,11 @@ public class SpecificationContext : DbContext, IDatabaseService
            {
                j.Ignore(w => w.Id).HasKey(w => new { w.SpecificationId, w.RuleId });
            });
+
+        // Specification-Skills
+        modelBuilder.Entity<SpecificationSkill>()
+        .HasOne(s => s.Specification)
+        .WithMany(c => c.SpecificationSkills);
     }
 
 }
