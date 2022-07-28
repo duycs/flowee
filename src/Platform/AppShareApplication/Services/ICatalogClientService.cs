@@ -1,7 +1,7 @@
 ﻿using AppShareDomain.DTOs.Catalog;
 using Refit;
 
-namespace ProductApplication.Services
+namespace AppShareServices.Services
 {
     public interface ICatalogClientService
     {

@@ -1,25 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
-    <ProjectReference Include="..\CatalogDomain\CatalogDomain.csproj" />
-    <ProjectReference Include="..\CustomerDomain\CustomerDomain.csproj" />
-    <ProjectReference Include="..\JobDomain\JobDomain.csproj" />
-    <ProjectReference Include="..\OrderDomain\OrderDomain.csproj" />
-    <ProjectReference Include="..\ProductDomain\ProductDomain.csproj" />
-    <ProjectReference Include="..\SkillDomain\SkillDomain.csproj" />
-    <ProjectReference Include="..\SpecificationDomain\SpecificationDomain.csproj" />
-    <ProjectReference Include="..\WorkerDomain\WorkerDomain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
+		<ProjectReference Include="..\CatalogDomain\CatalogDomain.csproj" />
+		<ProjectReference Include="..\CustomerDomain\CustomerDomain.csproj" />
+		<ProjectReference Include="..\JobDomain\JobDomain.csproj" />
+		<ProjectReference Include="..\OrderDomain\OrderDomain.csproj" />
+		<ProjectReference Include="..\ProductDomain\ProductDomain.csproj" />
+		<ProjectReference Include="..\SkillDomain\SkillDomain.csproj" />
+		<ProjectReference Include="..\SpecificationDomain\SpecificationDomain.csproj" />
+		<ProjectReference Include="..\WorkerDomain\WorkerDomain.csproj" />
+		<PackageReference Include="Refit" Version="6.3.2" />
+	</ItemGroup>
 
 </Project>

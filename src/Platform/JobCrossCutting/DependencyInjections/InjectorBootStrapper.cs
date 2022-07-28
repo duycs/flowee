@@ -6,7 +6,10 @@ using AppShareServices.Events;
 using AppShareServices.Mappings;
 using AppShareServices.Notification;
 using AppShareServices.Pagging;
+using AppShareServices.Services;
 using AutoMapper;
+using JobApplication.MappingConfigurations;
+using JobApplication.Services;
 using JobInfrastructure.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +24,8 @@ namespace JobCrossCutting.DependencyInjections
         public static void AddLayersInjector(this IServiceCollection services, IConfiguration configuration)
         {
             // Application
-            services.AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService));
+            services.AddSingleton(AutoMapping.RegisterMappings().CreateMapper());
+            services.AddSingleton(sp => sp.GetRequiredService<IMapper>().ConfigurationProvider);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUriService>(o =>
             {
@@ -29,6 +33,11 @@ namespace JobCrossCutting.DependencyInjections
                 var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
                 return new UriService(uri);
             });
+            services.AddHttpClient<ICatalogClientService>();
+            services.AddTransient<ICatalogClientService, CatalogClientService>();
+            services.AddHttpClient<ISkillClientService>();
+            services.AddTransient<ISkillClientService, SkillClientService>();
+            services.AddTransient<IJobService, JobService>();
 
             // Domain
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();

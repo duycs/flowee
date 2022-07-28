@@ -9,6 +9,6 @@ namespace JobApplication.Services
 {
     public interface IJobService
     {
-        public Task<List<Step>> GenerateSteps(int productId);
+        public Task<List<Step>> GenerateStepFromProduct(int productId);
     }
 }

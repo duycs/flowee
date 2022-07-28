@@ -19,6 +19,8 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
         public int? WorkerId { get; set; }
         public int? SkillId { get; set; }
+        public int? WorkerSkillLevelId { get; set; }
+        public int? SpecificationSkillLevelId { get; set; }
 
         public string? Instruction { get; set; }
 
@@ -36,6 +38,17 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
+        public static Step Create(int specificationId, int? skillId, string instruction, int orderNumber)
+        {
+            return new Step()
+            {
+                SpecificationId = specificationId,
+                SkillId = skillId,
+                Instruction = instruction,
+                OrderNumber = orderNumber,
+                StepStatus = StepStatus.None
+            };
+        }
 
         public void SetInstruction(string instruction)
         {

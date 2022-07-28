@@ -37,6 +37,15 @@ namespace CatalogCrossCutting.DependencyInjections
                 return new UriService(uri);
             });
             services.AddTransient<ICatalogService, CatalogService>();
+            // Ousite Domain Services, ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0
+            services.AddHttpClient<ISpecificationClientService>();
+            // TODO: can not register base address at here?
+            //services.AddHttpClient<ISpecificationClientService>(_httpClient =>
+            //{
+            //    _httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
+            //    _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            //});
+            services.AddTransient<ISpecificationClientService, SpecificationClientService>();
 
             // Domain Services
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
@@ -52,17 +61,6 @@ namespace CatalogCrossCutting.DependencyInjections
             services.AddScoped<IRepositoryService, RepositoryService>();
             services.AddScoped<IDomainEventRepository, DomainEventRepository>();
             services.AddScoped<IMappingService, MappingService>();
-
-            // Ousite Domain Services, ref: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0
-            services.AddHttpClient<ISpecificationClientService>();
-            // TODO: can not register base address at here?
-            //services.AddHttpClient<ISpecificationClientService>(_httpClient =>
-            //{
-            //    _httpClient.BaseAddress = new Uri($"https://localhost:7174/Specifications/");
-            //    _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            //});
-            services.AddTransient<ISpecificationClientService, SpecificationClientService>();
-
         }
     }
 }

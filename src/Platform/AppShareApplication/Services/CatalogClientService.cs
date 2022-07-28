@@ -3,7 +3,7 @@ using AppShareServices.Pagging;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace ProductApplication.Services
+namespace AppShareServices.Services
 {
     public class CatalogClientService : ICatalogClientService
     {

@@ -68,7 +68,10 @@ namespace AppShareServices.Pagging
             {
                 foreach (var keyValue in keyValueParams)
                 {
-                    queries += $"{keyValue.Key}={keyValue.Value}&";
+                    if (keyValue.Value is not null)
+                    {
+                        queries += $"{keyValue.Key}={keyValue.Value}&";
+                    }
                 }
             }
 

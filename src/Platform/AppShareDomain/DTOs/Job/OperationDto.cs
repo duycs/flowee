@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JobApplication.Services
+namespace AppShareDomain.DTOs.Job
 {
-    public class CatalogService : ICatalogService
+    public class OperationDto : DtoBase
     {
     }
 }

@@ -49,7 +49,7 @@ namespace ProductInfrastructure.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ProductDomain.AgreegateModels.ProductAgreegate.Product", b =>
@@ -90,7 +90,7 @@ namespace ProductInfrastructure.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ProductDomain.AgreegateModels.ProductAgreegate.ProductCategory", b =>
@@ -114,7 +114,7 @@ namespace ProductInfrastructure.DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("ProductDomain.AgreegateModels.ProductAgreegate.ProductCategory", b =>

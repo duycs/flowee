@@ -4,7 +4,7 @@ using AppShareServices.Pagging;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace SpecificationApplication.Services
+namespace AppShareServices.Services
 {
     public class SkillClientService : ISkillClientService
     {
@@ -35,6 +35,16 @@ namespace SpecificationApplication.Services
         public async Task<IEnumerable<EnumerationDto>> GetSpecificationSkillLevels(int[] ids, bool isInclude)
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<EnumerationDto>>($"specification-skill-levels?{ids.ToIdsQueries(isInclude)}");
+        }
+
+        public async Task<IEnumerable<MatrixSkillDto>> GetMatrixSkills(int skillId, int? workerSkillLevelId, int? specificationLevelId, bool isInclude)
+        {
+            var keyValueParams = new Dictionary<string, string>();
+            keyValueParams.Add("skillId", skillId.ToString());
+            keyValueParams.Add("workerSkillLevelId", workerSkillLevelId?.ToString());
+            keyValueParams.Add("specificationLevelId", specificationLevelId?.ToString());
+
+            return await _httpClient.GetFromJsonAsync<IEnumerable<MatrixSkillDto>>($"matrix-skills?{keyValueParams.ToQueries(isInclude)}");
         }
     }
 }

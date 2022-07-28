@@ -2,6 +2,7 @@
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
+using AppShareServices.Services;
 using SpecificationDomain.AgreegateModels.SpecificationAgreegate;
 
 namespace SpecificationApplication.Services

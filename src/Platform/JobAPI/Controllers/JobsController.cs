@@ -2,6 +2,7 @@ using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
+using JobApplication.Services;
 using JobApplication.ViewModels;
 using JobDomain.AgreegateModels.JobAgreegate;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +15,19 @@ namespace JobAPI.Controllers
     {
         private readonly ILogger<JobsController> _logger;
         private readonly IRepositoryService _repositoryService;
+        private readonly IJobService _jobService;
         private readonly IMappingService _mappingService;
         private readonly IUriService _uriService;
         private readonly ICommandDispatcher _commandDispatcher;
 
-        public JobsController(ILogger<JobsController> logger, IRepositoryService repositoryService,
+        public JobsController(ILogger<JobsController> logger,
+            IRepositoryService repositoryService,
+            IJobService jobService,
             IMappingService mappingService, IUriService uriService, ICommandDispatcher commandDispatcher)
         {
             _logger = logger;
             _repositoryService = repositoryService;
+            _jobService = jobService;
             _mappingService = mappingService;
             _uriService = uriService;
             _commandDispatcher = commandDispatcher;
@@ -78,6 +83,13 @@ namespace JobAPI.Controllers
             }
 
             return Ok(jobExisting);
+        }
+
+        [HttpGet("generate-step-from-product")]
+        public async Task<IActionResult> GenerateStepFromProduct([FromQuery] int produtId)
+        {
+            var steps = await _jobService.GenerateStepFromProduct(produtId);
+            return Ok(steps);
         }
     }
 }

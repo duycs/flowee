@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AppShareApplication.MappingConfigurations;
+using AutoMapper;
 
 namespace JobApplication.MappingConfigurations
 {
@@ -12,7 +13,10 @@ namespace JobApplication.MappingConfigurations
         {
             return new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new MappingEntityToDtoProfile());
+                cfg.AddProfile(new MappingCatalogEntityToDtoProfile());
+                cfg.AddProfile(new MappingSpecificationEntityToDtoProfile());
+                cfg.AddProfile(new MappingJobEntityToDtoProfile());
+
                 cfg.AddProfile(new MappingViewModelToCommandProfile());
                 cfg.AddProfile(new MappingViewModelToEntityProfile());
             });
