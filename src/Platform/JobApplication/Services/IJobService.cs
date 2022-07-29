@@ -1,4 +1,5 @@
-﻿using JobDomain.AgreegateModels.JobAgreegate;
+﻿using AppShareDomain.DTOs.Job;
+using JobDomain.AgreegateModels.JobAgreegate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace JobApplication.Services
 {
     public interface IJobService
     {
-        public Task<List<Step>> GenerateStepFromProduct(int productId);
+        public Task<List<StepDto>> GenerateStepFromProduct(int productId);
     }
 }

@@ -19,8 +19,8 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
         public int? WorkerId { get; set; }
         public int? SkillId { get; set; }
-        public int? WorkerSkillLevelId { get; set; }
-        public int? SpecificationSkillLevelId { get; set; }
+        //public int? WorkerSkillLevelId { get; set; }
+        //public int? SpecificationSkillLevelId { get; set; }
 
         public string? Instruction { get; set; }
 

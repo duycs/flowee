@@ -1,4 +1,7 @@
-﻿using AppShareServices.Services;
+﻿using AppShareDomain.DTOs.Job;
+using AppShareDomain.DTOs.Specification;
+using AppShareServices.Mappings;
+using AppShareServices.Services;
 using JobDomain.AgreegateModels.JobAgreegate;
 using System;
 using System.Collections.Generic;
@@ -12,52 +15,63 @@ namespace JobApplication.Services
     {
         private readonly ICatalogClientService _catalogClientService;
         private readonly ISkillClientService _skillClientService;
+        private readonly IMappingService _mappingService;
 
-        public JobService(ICatalogClientService catalogClientService, ISkillClientService skillClientService)
+        public JobService(ICatalogClientService catalogClientService, ISkillClientService skillClientService, IMappingService mappingService)
         {
             _catalogClientService = catalogClientService;
             _skillClientService = skillClientService;
+            _mappingService = mappingService;
         }
 
-        public async Task<List<Step>> GenerateStepFromProduct(int productId)
+        public async Task<List<StepDto>> GenerateStepFromProduct(int productId)
         {
             var steps = new List<Step>();
-            int orderNumber = 1;
+            int orderNumber = 0;
             var catalogId = productId;
             var catalogDto = await _catalogClientService.Get(catalogId, true);
+            var specificationDtos = new List<SpecificationDto>();
 
             if (catalogDto is not null)
             {
-                if (catalogDto.Specification is not null && catalogDto.Specification.SpecificationSkills is not null && catalogDto.Specification.SpecificationSkills.Any())
-                {
-                    foreach (var skill in catalogDto.Specification.SpecificationSkills)
-                    {
-                        var matrixSkills = await _skillClientService.GetMatrixSkills((int)skill.SkillId, null, catalogDto.Specification.Id, true);
-                        var catalogStep = Step.Create(catalogDto.Specification.Id, skill.SkillId, catalogDto.Specification.Instruction, orderNumber);
+                //var matrixSkills = await _skillClientService.GetMatrixSkills((int)specificationSkill.SkillId, null, specification.Id, true);
 
-                        // TODO: matrixSkill -> Step?
-                        var firstMatchingMatrixSkill = matrixSkills.FirstOrDefault();
-                        catalogStep.WorkerSkillLevelId = firstMatchingMatrixSkill.WorkerSkillLevel.Id;
-                        catalogStep.SpecificationSkillLevelId = firstMatchingMatrixSkill.SpecificationSkillLevel.Id;
-
-                        steps.Add(catalogStep);
-                    }
-                }
+                var catalogStep = MappingSpecificationSkillToStep(catalogDto.Specification, ref orderNumber);
+                steps.AddRange(catalogStep);
 
                 if (catalogDto.Addons is not null && catalogDto.Addons.Any())
                 {
                     foreach (var addon in catalogDto.Addons)
                     {
-                        if (addon.Specification is not null && addon.Specification.SpecificationSkills is not null && addon.Specification.SpecificationSkills.Any())
-                        {
-                            foreach (var skill in catalogDto.Specification.SpecificationSkills)
-                            {
-                                orderNumber++;
-                                var addOnStep = Step.Create(addon.Specification.Id, skill.SkillId, addon.Specification.Instruction, orderNumber);
-                                steps.Add(addOnStep);
-                            }
-                        }
+                        var addOnSteps = MappingSpecificationSkillToStep(addon.Specification, ref orderNumber);
+                        steps.AddRange(addOnSteps);
+
+                        specificationDtos.Add(addon.Specification);
                     }
+                }
+
+                specificationDtos.Add(catalogDto.Specification);
+            }
+
+            var stepDtos = _mappingService.Map<List<StepDto>>(steps);
+
+            stepDtos.ForEach(stepDto =>
+            {
+                stepDto.Specification = specificationDtos.FirstOrDefault(s => s.Id == stepDto.SpecificationId);
+            });
+
+            return stepDtos;
+        }
+
+        private List<Step> MappingSpecificationSkillToStep(SpecificationDto specification, ref int orderNumber)
+        {
+            var steps = new List<Step>();
+            if (specification is not null && specification.SpecificationSkills is not null && specification.SpecificationSkills.Any())
+            {
+                foreach (var specificationSkill in specification.SpecificationSkills)
+                {
+                    orderNumber++;
+                    steps.Add(Step.Create(specification.Id, specificationSkill.SkillId, specification.Instruction, orderNumber));
                 }
             }
 
