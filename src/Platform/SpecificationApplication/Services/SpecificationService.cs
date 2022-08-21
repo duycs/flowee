@@ -1,8 +1,10 @@
 ﻿using AppShareDomain.DTOs.Specification;
+using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
 using AppShareServices.Services;
+using SpecificationApplication.Commands;
 using SpecificationDomain.AgreegateModels.SpecificationAgreegate;
 
 namespace SpecificationApplication.Services
@@ -12,12 +14,15 @@ namespace SpecificationApplication.Services
         private readonly IRepositoryService _repositoryService;
         private readonly ISkillClientService _skillClientService;
         private readonly IMappingService _mappingService;
+        private readonly ICommandDispatcher _commandDispatcher;
 
-        public SpecificationService(IRepositoryService repositoryService, ISkillClientService skillClientService, IMappingService mappingService)
+        public SpecificationService(IRepositoryService repositoryService, ISkillClientService skillClientService,
+            IMappingService mappingService, ICommandDispatcher commandDispatcher)
         {
             _repositoryService = repositoryService;
             _skillClientService = skillClientService;
             _mappingService = mappingService;
+            _commandDispatcher = commandDispatcher;
         }
 
         public async Task<SpecificationDto?> Find(int id, bool isInclude)
@@ -36,6 +41,9 @@ namespace SpecificationApplication.Services
                     specificationSkill.Skill = skillDtos.FirstOrDefault(s => s.Id == specificationSkill.SkillId);
                     specificationSkill.SkillLevel = specificationSkillLevelDtos.FirstOrDefault(s => s.Id == specificationSkill.SkillLevelId);
                 });
+
+                // Get operations from command pattern
+                specificationDto.Instruction = await _commandDispatcher.SendGetResponse(new GetInstructionOperationCommand(specificationExisting));
             }
 
             return specificationDto;

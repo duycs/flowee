@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppShareServices.Commands
 {
-    public abstract class CommandResponse : IRequest<int>
+    public abstract class CommandResponse<T> : IRequest<T> where T : class
     {
         public int Id { get; set; }
 

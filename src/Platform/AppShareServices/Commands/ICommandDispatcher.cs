@@ -9,6 +9,6 @@ namespace AppShareServices.Commands
     public interface ICommandDispatcher
     {
         Task Send<T>(T command) where T : Command;
-        Task<int> SendGetResponse<T>(T command) where T : CommandResponse;
+        Task<string> SendGetResponse<T>(T command) where T : CommandResponse<string>;
     }
 }

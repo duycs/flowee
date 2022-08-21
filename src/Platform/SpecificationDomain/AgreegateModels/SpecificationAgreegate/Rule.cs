@@ -17,6 +17,9 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public int? OperatorId { get; set; }
         public Operator? Operator { get; set; }
 
+        // TODO
+        public Operation? Operation { get; set; }
+
         public string Value { get; set; }
 
         [JsonIgnore]

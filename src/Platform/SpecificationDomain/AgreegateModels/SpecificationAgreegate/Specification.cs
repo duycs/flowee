@@ -24,6 +24,9 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
         public virtual ICollection<SpecificationSkill>? SpecificationSkills { get; set; }
 
+        // TODO:
+        public virtual ICollection<Operation>? Operations { get; set; }
+
         /// <summary>
         /// Build specification from Settings
         /// Ex: 
