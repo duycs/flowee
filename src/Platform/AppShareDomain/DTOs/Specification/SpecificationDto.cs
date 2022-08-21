@@ -13,5 +13,7 @@ namespace AppShareDomain.DTOs.Specification
         public SkillDto? Skill { get; set; }
 
         public List<SpecificationSkillDto>? SpecificationSkills { get; set; }
+
+        public List<OperationDto>? Operations { get; set; }
     }
 }

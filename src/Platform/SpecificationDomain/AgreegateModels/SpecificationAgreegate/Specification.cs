@@ -13,7 +13,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public string? Name { get; set; }
 
         [MaxLength(36)]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         public string? Instruction { get; set; }
 
@@ -24,8 +24,22 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
         public virtual ICollection<SpecificationSkill>? SpecificationSkills { get; set; }
 
-        // TODO:
-        public virtual ICollection<Operation>? Operations { get; set; }
+        /// <summary>
+        /// List operations generate from rules of settings
+        /// </summary>
+        /// <returns></returns>
+        public List<Operation>? GetOperations()
+        {
+            if (Rules is null || !Rules.Any())
+            {
+                return new List<Operation>();
+            }
+
+            var rules = Rules.Where(r => r.Operations is not null && r.Operations.Any())
+                .SelectMany(r => r?.Operations.Where(o => o.IsStatify())).ToList();
+
+            return rules;
+        }
 
         /// <summary>
         /// Build specification from Settings

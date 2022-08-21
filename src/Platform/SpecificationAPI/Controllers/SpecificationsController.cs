@@ -115,5 +115,17 @@ namespace SpecificationAPI.Controllers
 
             return Ok(specificationDto);
         }
+
+        [HttpGet("{id}/operations")]
+        public async Task<IActionResult> GetOperations(int id, bool isInclude = true)
+        {
+            var specificationDto = await _specificationService.Find(id, isInclude);
+            if (specificationDto is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(specificationDto.Operations);
+        }
     }
 }

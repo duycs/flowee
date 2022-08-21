@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppShareDomain.DTOs.Catalog
 {
-    public class RuleDto
+    public class RuleDto : DtoBase
     {
         public bool IsNot { get; set; }
 

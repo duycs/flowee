@@ -42,8 +42,11 @@ namespace SpecificationApplication.Services
                     specificationSkill.SkillLevel = specificationSkillLevelDtos.FirstOrDefault(s => s.Id == specificationSkill.SkillLevelId);
                 });
 
-                // Get operations from command pattern
-                specificationDto.Instruction = await _commandDispatcher.SendGetResponse(new GetInstructionOperationCommand(specificationExisting));
+                var operations = specificationExisting.GetOperations();
+                if (operations is not null && operations.Any())
+                {
+                    specificationDto.Operations = _mappingService.Map<List<OperationDto>>(operations);
+                }
             }
 
             return specificationDto;
@@ -92,6 +95,19 @@ namespace SpecificationApplication.Services
             }
 
             return specificationDtos;
+        }
+
+        public List<OperationDto>? GetOperations(int id, bool isInclude)
+        {
+            var operationDtos = new List<OperationDto>();
+            var specificationExisting = _repositoryService.Find<Specification>(id, new SpecificationSpecification(isInclude));
+            var operations = specificationExisting.GetOperations();
+            if (operations is not null && operations.Any())
+            {
+                operationDtos = _mappingService.Map<List<OperationDto>>(operations);
+            }
+
+            return operationDtos;
         }
     }
 }

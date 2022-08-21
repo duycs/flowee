@@ -17,9 +17,6 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public int? OperatorId { get; set; }
         public Operator? Operator { get; set; }
 
-        // TODO
-        public Operation? Operation { get; set; }
-
         public string Value { get; set; }
 
         [JsonIgnore]
@@ -27,6 +24,23 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
 
         [JsonIgnore]
         public virtual ICollection<SpecificationRule>? SpecificationRules { get; set; }
+
+        public virtual ICollection<Operation>? Operations { get; set; }
+
+        [JsonIgnore]
+
+        public virtual ICollection<OperationRule>? OperationRules { get; set; }
+
+        /// <summary>
+        /// Statify setting condition versus value
+        /// Ex: number > value or boolean is true/false
+        /// </summary>
+        /// <returns></returns>
+        public bool IsStatisfy()
+        {
+            // TODO
+            return true;
+        }
 
 
         /// <summary>

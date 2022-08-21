@@ -15,6 +15,7 @@ public class SpecificationContext : DbContext, IDatabaseService
     public DbSet<Specification> Specifications { get; set; }
     public DbSet<SpecificationRule> SpecificationRules { get; set; }
     public DbSet<SpecificationSkill> SpecificationSkills { get; set; }
+    public DbSet<OperationRule> OperationRules { get; set; }
 
     public SpecificationContext() { }
 
@@ -102,6 +103,26 @@ public class SpecificationContext : DbContext, IDatabaseService
            j =>
            {
                j.Ignore(w => w.Id).HasKey(w => new { w.SpecificationId, w.RuleId });
+           });
+
+        // Operations - Rules
+        modelBuilder.Entity<Operation>()
+       .HasMany(i => i.Rules)
+       .WithMany(i => i.Operations)
+       .UsingEntity<OperationRule>(
+           j => j
+               .HasOne(w => w.Rule)
+               .WithMany(w => w.OperationRules)
+               .HasForeignKey(w => w.RuleId)
+               .OnDelete(DeleteBehavior.Cascade),
+           j => j
+               .HasOne(w => w.Operation)
+               .WithMany(w => w.OperationRules)
+               .HasForeignKey(w => w.OperationId)
+               .OnDelete(DeleteBehavior.Cascade),
+           j =>
+           {
+               j.Ignore(w => w.Id).HasKey(w => new { w.OperationId, w.RuleId });
            });
 
         // Specification-Skills
