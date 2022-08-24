@@ -17,10 +17,18 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
     public class Operation : Entity
     {
         /// <summary>
-        /// Reflection method name
+        /// Guid for public global function
         /// </summary>
+        public Guid Guid { get; set; }
+
+        /// <summary>
+        /// Function name for invoke
+        /// </summary>
+        public string Function { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
+        public OperationState State { get; set; }
 
         public virtual ICollection<Rule> Rules { get; set; }
 
@@ -29,12 +37,43 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public virtual ICollection<OperationRule>? OperationRules { get; set; }
 
         /// <summary>
+        /// Invoke function
+        /// </summary>
+        /// <param name="function"></param>
+        /// <returns></returns>
+        public Response Invoke(string function)
+        {
+            // send command to execute function
+            return Response.Create(1, String.Empty);
+        }
+
+        public Operation UpdateState(OperationState state)
+        {
+            State = state;
+            return this;
+        }
+
+        /// <summary>
         /// Operation is statify all rules
         /// </summary>
         /// <returns></returns>
         public bool IsStatify()
         {
             return Rules.All(r => r.IsStatisfy());
+        }
+
+        /// <summary>
+        /// Get all settings
+        /// </summary>
+        /// <returns></returns>
+        public List<Setting> GetSettings(bool? isStatisfy)
+        {
+            if(!isStatisfy ?? false)
+            {
+                return Rules.Select(r => r.Setting).ToList();
+            }
+
+            return Rules.Where(r => r.IsStatisfy()).Select(r => r.Setting).ToList();
         }
     }
 }
