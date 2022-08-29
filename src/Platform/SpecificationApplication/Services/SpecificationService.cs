@@ -1,4 +1,5 @@
-﻿using AppShareDomain.DTOs.Specification;
+﻿using AppShareDomain.DTOs.Skill;
+using AppShareDomain.DTOs.Specification;
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
@@ -97,10 +98,10 @@ namespace SpecificationApplication.Services
             return specificationDtos;
         }
 
-        public List<OperationDto>? GetOperations(int id, bool isInclude)
+        public List<OperationDto>? GetOperations(int specificationId, bool isInclude)
         {
             var operationDtos = new List<OperationDto>();
-            var specificationExisting = _repositoryService.Find<Specification>(id, new SpecificationSpecification(isInclude));
+            var specificationExisting = _repositoryService.Find<Specification>(specificationId, new SpecificationSpecification(isInclude));
             var operations = specificationExisting.GetOperations();
             if (operations is not null && operations.Any())
             {
@@ -108,6 +109,19 @@ namespace SpecificationApplication.Services
             }
 
             return operationDtos;
+        }
+
+        public async Task<List<SkillDto>?> GetSkills(int specificationId, bool isInclude)
+        {
+            var operations = GetOperations(specificationId, isInclude);
+            if (operations is null || !operations.Any())
+            {
+                return new List<SkillDto>();
+            }
+
+            var operationIds = operations.Select(o => o.Guid).ToArray();
+            var skills = await _skillClientService.GetSkillsByOperations(operationIds, isInclude);
+            return skills.ToList();
         }
     }
 }

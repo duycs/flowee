@@ -18,5 +18,13 @@ namespace SkillDomain.AgreegateModels.SkillAgreegate
         public string Description { get; set; }
 
         public virtual ICollection<MatrixSkill> MatrixSkills { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<SkillOperations> SkillOperations { get; set; } = new List<SkillOperations>();
+
+        public List<Guid> GetOperationIds()
+        {
+            return SkillOperations.Select(o => o.OperationGuid).ToList();
+        }
     }
 }
