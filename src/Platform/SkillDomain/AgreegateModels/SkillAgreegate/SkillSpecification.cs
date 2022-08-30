@@ -61,6 +61,7 @@ namespace SkillDomain.AgreegateModels.SkillAgreegate
             if (IsInclude)
             {
                 AddInclude(w => w.MatrixSkills);
+                AddInclude(w => w.SkillOperations);
             }
 
         }

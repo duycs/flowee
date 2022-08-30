@@ -1,15 +1,22 @@
 ﻿using AppShareDomain.DTOs.Job;
-using JobDomain.AgreegateModels.JobAgreegate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AppShareDomain.DTOs.Specification;
 
 namespace JobApplication.Services
 {
     public interface IJobService
     {
-        public Task<List<StepDto>> GenerateStepFromProduct(int productId);
+        /// <summary>
+        /// Product => Specification => Steps
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public Task<List<StepDto>> GenerateSteps(int jobId, int productId, bool isInclude);
+
+        /// <summary>
+        /// Product => Specifications of Catalog and Addons
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public Task<List<SpecificationDto>> GetSpecifications(int productId);
     }
 }

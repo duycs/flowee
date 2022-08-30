@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AppShareDomain.DTOs.Specification;
 
 namespace AppShareDomain.DTOs.Skill
 {
@@ -11,6 +7,6 @@ namespace AppShareDomain.DTOs.Skill
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        //public List<MatrixSkillDto> MatrixSkills { get; set; }
+        public List<OperationDto>? Operations { get; set; }
     }
 }

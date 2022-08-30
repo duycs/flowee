@@ -24,58 +24,44 @@ namespace JobApplication.Services
             _mappingService = mappingService;
         }
 
-        public async Task<List<StepDto>> GenerateStepFromProduct(int productId)
+        public async Task<List<StepDto>> GenerateSteps(int jobId, int productId, bool isInclude)
         {
-            var steps = new List<Step>();
-            int orderNumber = 0;
-            var catalogId = productId;
-            var catalogDto = await _catalogClientService.Get(catalogId, true);
-            var specificationDtos = new List<SpecificationDto>();
-
-            if (catalogDto is not null)
+            var stepDtos = new List<StepDto>();
+            var specificationDtos = await GetSpecifications(productId);
+            if (specificationDtos is not null && specificationDtos.Any())
             {
-                //var matrixSkills = await _skillClientService.GetMatrixSkills((int)specificationSkill.SkillId, null, specification.Id, true);
-
-                var catalogStep = MappingSpecificationSkillToStep(catalogDto.Specification, ref orderNumber);
-                steps.AddRange(catalogStep);
-
-                if (catalogDto.Addons is not null && catalogDto.Addons.Any())
+                var operationDtos = specificationDtos.Where(s => s is not null && s.Operations.Any()).SelectMany(s => s.Operations).ToList();
+                var operationIds = operationDtos.Select(o => o.Guid).ToArray();
+                if (operationIds.Any())
                 {
-                    foreach (var addon in catalogDto.Addons)
+                    var skillDtos = await _skillClientService.GetSkillsByOperations(operationIds, isInclude);
+                    foreach (var skill in skillDtos)
                     {
-                        var addOnSteps = MappingSpecificationSkillToStep(addon.Specification, ref orderNumber);
-                        steps.AddRange(addOnSteps);
-
-                        specificationDtos.Add(addon.Specification);
+                        if (skill.Operations is not null && skill.Operations.Any())
+                        {
+                            var stepOperationIds = skill.Operations.Select(o => o.Guid).ToList();
+                            var stepDto = _mappingService.Map<StepDto>(Step.Create(jobId, skill.Id, stepOperationIds));
+                            stepDtos.Add(stepDto);
+                        }
                     }
                 }
-
-                specificationDtos.Add(catalogDto.Specification);
             }
-
-            var stepDtos = _mappingService.Map<List<StepDto>>(steps);
-
-            stepDtos.ForEach(stepDto =>
-            {
-                stepDto.Specification = specificationDtos.FirstOrDefault(s => s.Id == stepDto.SpecificationId);
-            });
 
             return stepDtos;
         }
 
-        private List<Step> MappingSpecificationSkillToStep(SpecificationDto specification, ref int orderNumber)
+        public async Task<List<SpecificationDto>> GetSpecifications(int productId)
         {
-            var steps = new List<Step>();
-            if (specification is not null && specification.SpecificationSkills is not null && specification.SpecificationSkills.Any())
+            var specificationDtos = new List<SpecificationDto>();
+            var catalogId = productId;
+            var catalogDto = await _catalogClientService.Get(catalogId, true);
+            if (catalogDto is not null && catalogDto.Addons is not null && catalogDto.Addons.Any())
             {
-                foreach (var specificationSkill in specification.SpecificationSkills)
-                {
-                    orderNumber++;
-                    steps.Add(Step.Create(specification.Id, specificationSkill.SkillId, specification.Instruction, orderNumber));
-                }
+                var addonSpecifications = catalogDto.Addons.Where(c => c is not null).Select(a => a.Specification).ToList();
+                specificationDtos.Add(_mappingService.Map<SpecificationDto>(addonSpecifications));
             }
 
-            return steps;
+            return specificationDtos;
         }
     }
 }

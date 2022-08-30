@@ -24,7 +24,7 @@ namespace SkillDomain.AgreegateModels.SkillAgreegate
 
         public List<Guid> GetOperationIds()
         {
-            return SkillOperations.Select(o => o.OperationGuid).ToList();
+            return SkillOperations.Select(o => o.OperationId).ToList();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         /// </summary>
         /// <param name="function"></param>
         /// <returns></returns>
-        public Response Invoke(string function)
+        public Response Execute(string function)
         {
             // send command to execute function
             return Response.Create(1, String.Empty);

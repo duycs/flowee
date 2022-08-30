@@ -2,35 +2,50 @@
 
 namespace JobDomain.AgreegateModels.JobAgreegate
 {
-    /// <summary>
-    /// JobSteps in Job
-    /// 1. Single JobSteps 
-    /// 2. Multiple JobSteps run as linked
-    /// 3. Multiple JobSteps run as parallel
-    /// 4. Can run some JobSteps 1. and 2. and 3.
-    /// </summary>
     public class Step : Entity
     {
         /// <summary>
-        /// Each Step have a Specification
-        /// Input is defiend in specification
+        /// Step of Job
         /// </summary>
-        public int? SpecificationId { get; set; }
+        public int JobId { get; set; }
+        public Job Job { get; set; }
 
-        public int? WorkerId { get; set; }
         public int? SkillId { get; set; }
-        //public int? WorkerSkillLevelId { get; set; }
-        //public int? SpecificationSkillLevelId { get; set; }
 
+        /// <summary>
+        /// Skill => Operations
+        /// </summary>
+        public ICollection<Guid>? OperationIds { get; set; }
+
+        /// <summary>
+        /// Text instruction all operations
+        /// </summary>
         public string? Instruction { get; set; }
 
         /// <summary>
-        /// TODO: dynamic output
+        /// Woker will be assign to this step
+        /// </summary>
+        public int? WorkerId { get; set; }
+
+        /// <summary>
+        /// Json input
+        /// </summary>
+        public string? Input { get; set; }
+
+        /// <summary>
+        /// Json output
         /// </summary>
         public string? Output { get; set; }
 
-        public int? OrderNumber { get; set; }
-        public int? OrderOperationNumber { get; set; }
+        /// <summary>
+        /// Next steps will be set up by who manage the workflow or process mining suggestion
+        /// </summary>
+        public List<int>? NextStepIds { get; set; }
+
+        /// <summary>
+        /// Last steps will be set up by who manage the workflow or process mining suggestion
+        /// </summary>
+        public List<int>? LastStepIds { get; set; }
 
         public int StepStatusId { get; set; }
         public StepStatus StepStatus { get; set; }
@@ -38,16 +53,33 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
-        public static Step Create(int specificationId, int? skillId, string instruction, int orderNumber)
+        public static Step Create(int jobId, int skillId, List<Guid>? operationIds, string? input = "")
         {
             return new Step()
             {
-                SpecificationId = specificationId,
+                JobId = jobId,
                 SkillId = skillId,
-                Instruction = instruction,
-                OrderNumber = orderNumber,
+                OperationIds = operationIds,
+                Input = input,
                 StepStatus = StepStatus.None
             };
+        }
+
+        public Step AssignWorker(int workerId)
+        {
+            WorkerId = workerId;
+            return this;
+        }
+
+        public void Execute()
+        {
+            // execute
+            Transition(1);
+        }
+
+        public void Transition(int nextStepId)
+        {
+            // validate conditions
         }
 
         public void SetInstruction(string instruction)
