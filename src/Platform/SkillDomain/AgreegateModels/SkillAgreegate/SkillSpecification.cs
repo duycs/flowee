@@ -60,8 +60,7 @@ namespace SkillDomain.AgreegateModels.SkillAgreegate
             // include related entity
             if (IsInclude)
             {
-                AddInclude(w => w.MatrixSkills);
-                AddInclude(w => w.SkillOperations);
+                AddInclude(w => w.OperationIds);
             }
 
         }

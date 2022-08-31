@@ -17,14 +17,12 @@ namespace SkillDomain.AgreegateModels.SkillAgreegate
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public virtual ICollection<MatrixSkill> MatrixSkills { get; set; }
+        /// <summary>
+        /// Operations execute same time
+        /// </summary>
+        public ICollection<Guid> OperationIds { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<SkillOperations> SkillOperations { get; set; } = new List<SkillOperations>();
-
-        public List<Guid> GetOperationIds()
-        {
-            return SkillOperations.Select(o => o.OperationId).ToList();
-        }
     }
 }

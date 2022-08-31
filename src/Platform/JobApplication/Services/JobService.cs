@@ -3,11 +3,6 @@ using AppShareDomain.DTOs.Specification;
 using AppShareServices.Mappings;
 using AppShareServices.Services;
 using JobDomain.AgreegateModels.JobAgreegate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JobApplication.Services
 {
@@ -34,16 +29,17 @@ namespace JobApplication.Services
                 var operationIds = operationDtos.Select(o => o.Guid).ToArray();
                 if (operationIds.Any())
                 {
+                    var steps = new List<Step>();
                     var skillDtos = await _skillClientService.GetSkillsByOperations(operationIds, isInclude);
                     foreach (var skill in skillDtos)
                     {
                         if (skill.Operations is not null && skill.Operations.Any())
                         {
                             var stepOperationIds = skill.Operations.Select(o => o.Guid).ToList();
-                            var stepDto = _mappingService.Map<StepDto>(Step.Create(jobId, skill.Id, stepOperationIds));
-                            stepDtos.Add(stepDto);
+                            steps.Add(Step.Create(jobId, skill.Id, stepOperationIds));
                         }
                     }
+                    stepDtos = _mappingService.Map<List<StepDto>>(steps);
                 }
             }
 
