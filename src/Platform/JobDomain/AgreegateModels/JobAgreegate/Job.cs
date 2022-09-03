@@ -21,8 +21,6 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public ICollection<int> StepIds { get; set; } = new List<int>();
         public ICollection<Step> Steps { get; set; } = new List<Step>();
 
-        private List<int> _specifications;
-
         /// <summary>
         /// Statistic
         /// </summary>

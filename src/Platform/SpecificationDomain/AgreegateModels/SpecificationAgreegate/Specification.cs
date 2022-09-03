@@ -25,6 +25,18 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public virtual ICollection<SpecificationSkill>? SpecificationSkills { get; set; }
 
         /// <summary>
+        /// Specification is a context generate operations
+        /// List operations generate from rules of settings
+        /// </summary>
+        /// <returns></returns>
+        public List<Operation>? GetOperations()
+        {
+            var rules = GetStatisfyRules();
+            var operations = rules.Where(r => r.Operations is not null && r.Operations.Any()).SelectMany(r => r.Operations).ToList();
+            return operations;
+        }
+
+        /// <summary>
         /// Get all statisfy rules of specification
         /// </summary>
         /// <returns></returns>
@@ -55,24 +67,6 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
             }
 
             return GetStatisfyRules().Select(r => r.Setting).ToList();
-        }
-
-        /// <summary>
-        /// Specification is a context generate operations
-        /// List operations generate from rules of settings
-        /// </summary>
-        /// <returns></returns>
-        public List<Operation>? GetOperations()
-        {
-            if (Rules is null || !Rules.Any())
-            {
-                return new List<Operation>();
-            }
-
-            var operations = Rules.Where(r => r.Operations is not null && r.Operations.Any())
-                .SelectMany(r => r?.Operations.Where(o => o.IsStatify())).ToList();
-
-            return operations;
         }
 
         /// <summary>

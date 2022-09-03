@@ -1,3 +1,4 @@
+using AppShareDomain.DTOs.Job;
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
@@ -67,8 +68,9 @@ namespace JobAPI.Controllers
         {
             int totalRecords;
             var jobSpecification = new JobSpecification(isInclude, searchValue, filter.ColumnOrders.ToColumnOrders());
-            var pagedData = _repositoryService.Find<Job>(filter.PageNumber, filter.PageSize, jobSpecification, out totalRecords).ToList();
-            var pagedReponse = PaginationHelper.CreatePagedReponse<Job>(pagedData, filter, totalRecords, _uriService, Request.Path.Value ?? "");
+            var jobs = _repositoryService.Find<Job>(filter.PageNumber, filter.PageSize, jobSpecification, out totalRecords).ToList();
+            var jobDtos = _mappingService.Map<List<JobDto>>(jobs);
+            var pagedReponse = PaginationHelper.CreatePagedReponse<JobDto>(jobDtos, filter, totalRecords, _uriService, Request.Path.Value ?? "");
             return Ok(pagedReponse);
         }
 
@@ -85,11 +87,23 @@ namespace JobAPI.Controllers
             return Ok(jobExisting);
         }
 
-        [HttpGet("generate-step-from-product")]
-        public async Task<IActionResult> GenerateStepFromProduct([FromQuery] int produtId)
+        [HttpGet("generate-steps")]
+        public async Task<IActionResult> GenerateStepFromProduct([FromQuery] int jobId, [FromQuery] int produtId)
         {
-            var steps = await _jobService.GenerateStepFromProduct(produtId);
-            return Ok(steps);
+            var stepDtos = await _jobService.GenerateSteps(jobId, produtId, true);
+            if (stepDtos is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(stepDtos);
+        }
+
+        [HttpPost("update-steps")]
+        public async Task<IActionResult> UpdateSteps([FromQuery] int jobId, [FromQuery] int produtId)
+        {
+            await _jobService.UpdateSteps(jobId, produtId);
+            return Ok();
         }
     }
 }
