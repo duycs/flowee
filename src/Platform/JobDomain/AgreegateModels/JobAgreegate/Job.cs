@@ -10,6 +10,7 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// Product has Specifications(Specification of catalog and addons)
         /// </summary>
         public int ProductId { get; set; }
+
         public string? Description { get; set; }
 
         public int JobStatusId { get; set; }
@@ -20,8 +21,6 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
         public ICollection<int> StepIds { get; set; } = new List<int>();
         public ICollection<Step> Steps { get; set; } = new List<Step>();
-
-        private List<int> _specifications;
 
         /// <summary>
         /// Statistic
@@ -56,6 +55,22 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public void EndJob()
         {
             EndTime = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Chain steps from root step
+        /// </summary>
+        /// <param name="fromStepId"></param>
+        /// <returns></returns>
+        public List<List<Step>>? GetChainSteps(int rootStepId)
+        {
+            var chains = new List<List<Step>>();
+            foreach(var step in Steps) {
+                var nextSteps = step.GetNextSteps();
+
+                // find next steps
+            }
+            return chains;
         }
 
     }

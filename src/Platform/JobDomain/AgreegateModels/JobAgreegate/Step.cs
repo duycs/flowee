@@ -37,20 +37,12 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// </summary>
         public string? Output { get; set; }
 
-        /// <summary>
-        /// Next steps will be set up by who manage the workflow or process mining suggestion
-        /// </summary>
-        public List<int>? NextStepIds { get; set; }
-
-        /// <summary>
-        /// Last steps will be set up by who manage the workflow or process mining suggestion
-        /// </summary>
-        public List<int>? LastStepIds { get; set; }
+        public ICollection<Transition>? Transitions { get; set; }
 
         public int StepStatusId { get; set; }
         public StepStatus StepStatus { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
         public static Step Create(int jobId, int skillId, List<Guid>? operationIds, string? input = "")
@@ -71,20 +63,51 @@ namespace JobDomain.AgreegateModels.JobAgreegate
             return this;
         }
 
-        public void Execute()
+        public bool PreProcess()
         {
-            // execute
-            Transition(1);
+            return true;
         }
 
-        public void Transition(int nextStepId)
+        public bool Processing()
         {
-            // validate conditions
+            return true;
         }
 
-        public void SetInstruction(string instruction)
+        public bool PostProcess()
         {
-            Instruction = instruction;
+            return true;
+        }
+
+        public void Transition()
+        {
+            bool successProcess = PreProcess() && Processing() && PostProcess();
+            bool failProcess = !successProcess;
+        }
+
+        /// <summary>
+        /// This step is from step in Transitions
+        /// </summary>
+        public List<Step>? GetNextSteps()
+        {
+            if (Transitions is null || Transitions.Any())
+            {
+                return new List<Step>();
+            }
+
+            return Transitions.Where(t => t.FromStep.Id == this.Id).Select(t => t.ToStep).ToList();
+        }
+
+        /// <summary>
+        /// This step is to step in Transitions
+        /// </summary>
+        public List<Step>? GetLastSteps()
+        {
+            if (Transitions is null || Transitions.Any())
+            {
+                return new List<Step>();
+            }
+
+            return Transitions.Where(t => t.ToStep.Id == this.Id).Select(t => t.FromStep).ToList();
         }
     }
 }
