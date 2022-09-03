@@ -1,29 +1,54 @@
 ﻿using AppShareDomain.DTOs.Specification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppShareDomain.DTOs.Job
 {
     public class StepDto : DtoBase
     {
-        public int? SpecificationId { get; set; }
-        public SpecificationDto? Specification { get; set; }
-        public int? WorkerId { get; set; }
-        public int? SkillId { get; set; }
-        //public int? WorkerSkillLevelId { get; set; }
-        //public EnumerationDto? WorkerSkillLevel { get; set; }
-        //public int? SpecificationSkillLevelId { get; set; }
-        //public EnumerationDto? SpecificationSkillLevel { get; set; }
+        public int JobId { get; set; }
+        public JobDto Job { get; set; }
+
+        public int SkillId { get; set; }
+
+        /// <summary>
+        /// Skill => Operations
+        /// </summary>
+        public List<Guid>? OperationIds { get; set; }
+        public List<OperationDto>? Operations { get; set; }
+
+        /// <summary>
+        /// Text instruction all operations
+        /// </summary>
         public string? Instruction { get; set; }
+
+        /// <summary>
+        /// Woker will be assign to this step
+        /// </summary>
+        public int? WorkerId { get; set; }
+
+        /// <summary>
+        /// Json input
+        /// </summary>
+        public string? Input { get; set; }
+
+        /// <summary>
+        /// Json output
+        /// </summary>
         public string? Output { get; set; }
-        public int? OrderNumber { get; set; }
-        public int? OrderOperationNumber { get; set; }
-        public int StepStatusId { get; set; }
-        public EnumerationDto StepStatus { get; set; }
-        public DateTime StartTime { get; set; }
+
+        /// <summary>
+        /// Next steps will be set up by who manage the workflow or process mining suggestion
+        /// </summary>
+        public List<int>? NextStepIds { get; set; }
+
+        /// <summary>
+        /// Last steps will be set up by who manage the workflow or process mining suggestion
+        /// </summary>
+        public List<int>? LastStepIds { get; set; }
+
+        public int? StepStatusId { get; set; }
+        public EnumerationDto? StepStatus { get; set; }
+
+        public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace AppShareServices.Services
         public Task<IEnumerable<SkillDto>> Get(int[] ids, bool isInclude);
 
         [Get("/skills/operation/{id}")]
-        public Task<IEnumerable<SkillDto>> GetSkillsByOperations(Guid[] operationIds, bool isInclude);
+        public Task<IEnumerable<SkillDto>> GetSkillsByOperations(Guid[] operationIds, bool? isInclude);
 
         [Get("/skills/worker-skill-levels")]
         public Task<IEnumerable<EnumerationDto>> GetWorkerSkillLevels(int[] ids, bool isInclude);
