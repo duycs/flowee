@@ -1,4 +1,5 @@
-﻿using AppShareDomain.DTOs;
+﻿using AppShareApplication.Services;
+using AppShareDomain.DTOs;
 using AppShareDomain.DTOs.Job;
 using AppShareDomain.DTOs.Specification;
 using AppShareServices.DataAccess.Repository;
@@ -12,20 +13,22 @@ namespace JobApplication.Services
     {
         private readonly ICatalogClientService _catalogClientService;
         private readonly ISkillClientService _skillClientService;
+        private readonly IOperationClientService _operationClientService;
         private readonly IMappingService _mappingService;
         private readonly IRepositoryService _repositoryService;
 
-        public JobService(ICatalogClientService catalogClientService, ISkillClientService skillClientService, IMappingService mappingService, IRepositoryService repositoryService)
+        public JobService(ICatalogClientService catalogClientService, ISkillClientService skillClientService, IOperationClientService operationClientService,
+            IMappingService mappingService, IRepositoryService repositoryService)
         {
             _catalogClientService = catalogClientService;
             _skillClientService = skillClientService;
+            _operationClientService = operationClientService;
             _mappingService = mappingService;
             _repositoryService = repositoryService;
         }
 
-        public Task AssignWorkersToJob(int jobId, int[] workerIds)
+        public async Task AssignWorkersToJob(int jobId, int[] workerIds)
         {
-            throw new NotImplementedException();
         }
 
         public Task AssignWorkerToStep(int stepId, int workerId)
@@ -39,7 +42,29 @@ namespace JobApplication.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<StepDto>> GenerateSteps(int jobId, int productId, bool? isInclude)
+        /// <summary>
+        /// Start job: fire performed operations
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public async Task Start(int jobId)
+        {
+            var steps = _repositoryService.List<Step>(s => s.JobId == jobId);
+            if (steps.Any())
+            {
+                foreach (var step in steps)
+                {
+                    // Trigger start performed operations
+                    if (step.OperationIds is not null && step.OperationIds.Any())
+                    {
+                        await _operationClientService.PerformedOperations(step.OperationIds.ToArray());
+                    }
+                }
+            }
+        }
+
+
+        public async Task<List<StepDto>> GenerateSteps(int jobId, bool? isInclude)
         {
             var jobExisting = _repositoryService.Find<Job>(jobId);
             if (jobExisting is null)
@@ -48,7 +73,7 @@ namespace JobApplication.Services
             }
 
             var stepDtos = new List<StepDto>();
-            var specificationDtos = await GetSpecifications(productId);
+            var specificationDtos = await GetSpecifications(jobExisting.ProductId);
             if (specificationDtos is not null && specificationDtos.Any())
             {
                 var operationDtos = specificationDtos.Where(s => s is not null && s.Operations.Any()).SelectMany(s => s.Operations).ToList();
@@ -96,24 +121,9 @@ namespace JobApplication.Services
             return specificationDtos;
         }
 
-        public Task SetLastSteps(int[] lastSteps)
+        public async Task UpdateSteps(int jobId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task SetNextSteps(int[] nextStepIds)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateJobStatus(EnumerationDto jobStatus)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task UpdateSteps(int jobId, int productId)
-        {
-            var stepDtos = await GenerateSteps(jobId, productId, true);
+            var stepDtos = await GenerateSteps(jobId, true);
             if (!stepDtos.Any())
             {
                 return;
@@ -134,6 +144,21 @@ namespace JobApplication.Services
             }
 
             _repositoryService.SaveChanges();
+        }
+
+        public void Transformed(int jobId, int stepId, string outputOperation)
+        {
+            var jobExisting = _repositoryService.Find<Job>(j => j.Id == jobId);
+            if(jobExisting is not null)
+            {
+                // Job change step then update
+                var job = jobExisting.Transformed(stepId, outputOperation, out bool isChange);
+                if (isChange)
+                {
+                    _repositoryService.Update(job);
+                    _repositoryService.SaveChanges();
+                }
+            }
         }
     }
 }

@@ -10,11 +10,14 @@ namespace JobApplication.Services
 
         public Task AssignWorkerToStep(int stepId, int workerId);
 
-        public Task SetNextSteps(int[] nextStepIds);
+        public Task Start(int jobId);
 
-        public Task SetLastSteps(int[] lastSteps);
-
-        public Task UpdateJobStatus(EnumerationDto jobStatus);
+        /// <summary>
+        /// Transformed Steps in job by operations: if valid output operation then transition from step to next step
+        /// </summary>
+        /// <param name="outputOperation"></param>
+        /// <returns></returns>
+        public void Transformed(int jobId, int stepId, string outputOperation);
 
         /// <summary>
         /// Generate steps then update the steps for job
@@ -22,7 +25,7 @@ namespace JobApplication.Services
         /// <param name="jobId"></param>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public Task UpdateSteps(int jobId, int productId);
+        public Task UpdateSteps(int jobId);
 
         /// <summary>
         /// Product => Specifications => Steps
@@ -30,7 +33,7 @@ namespace JobApplication.Services
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public Task<List<StepDto>> GenerateSteps(int jobId, int productId, bool? isInclude);
+        public Task<List<StepDto>> GenerateSteps(int jobId, bool? isInclude);
 
         /// <summary>
         /// Product => Specifications of Catalog and Addons

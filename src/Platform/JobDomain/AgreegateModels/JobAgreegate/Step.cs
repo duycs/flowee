@@ -39,8 +39,10 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
         public ICollection<Transition>? Transitions { get; set; }
 
-        public int StepStatusId { get; set; }
-        public StepStatus StepStatus { get; set; }
+        public int StateId { get; set; }
+        public State State { get; set; }
+
+        public bool IsCurrentState { get; set; }
 
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
@@ -63,25 +65,50 @@ namespace JobDomain.AgreegateModels.JobAgreegate
             return this;
         }
 
-        public bool PreProcess()
+        public void PreProcess()
         {
-            return true;
+            try
+            {
+                // Validation
+                bool isValid = true;
+
+                // Call Processing
+                if (isValid)
+                {
+                    Processing();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public bool Processing()
+        public void Processing()
         {
-            return true;
+            try
+            {
+                // Fire event execute operations
+                foreach (var o in OperationIds)
+                {
+                    string outputOperation = "outputOperation";
+                }
+
+                // Listen operation output
+
+                // Check transition
+
+                PostProcess();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public bool PostProcess()
+        public void PostProcess()
         {
-            return true;
-        }
-
-        public void Transition()
-        {
-            bool successProcess = PreProcess() && Processing() && PostProcess();
-            bool failProcess = !successProcess;
+            // Snapshoot
         }
 
         /// <summary>

@@ -22,6 +22,8 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public ICollection<int> StepIds { get; set; } = new List<int>();
         public ICollection<Step> Steps { get; set; } = new List<Step>();
 
+        public Step? CurrentStep { get; set; }
+
         /// <summary>
         /// Statistic
         /// </summary>
@@ -71,6 +73,29 @@ namespace JobDomain.AgreegateModels.JobAgreegate
                 // find next steps
             }
             return chains;
+        }
+
+        /// <summary>
+        /// Transformed a step
+        /// </summary>
+        /// <param name="stepId"></param>
+        /// <param name="outputOperation"></param>
+        /// <returns></returns>
+        public Job Transformed(int stepId, string outputOperation, out bool isChange)
+        {
+            isChange = false;
+            var step = this.Steps.FirstOrDefault(s => s.Id == stepId);
+            if (step is not null && step.Transitions is not null && step.Transitions.Any())
+            {
+                var validTransition = step.Transitions.FirstOrDefault(t => t.IsValidCondition(outputOperation));
+                if (validTransition is not null)
+                {
+                    this.CurrentStep = validTransition.To();
+                    isChange = true;
+                }
+            }
+
+            return this;
         }
 
     }
