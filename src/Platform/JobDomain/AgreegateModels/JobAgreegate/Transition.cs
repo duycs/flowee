@@ -24,9 +24,29 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// </summary>
         public TransitionType TransitionType { get; set; }
 
-        public bool IsValidCondition(string outputOperation)
+        /// <summary>
+        /// Count total performed operations
+        /// Validate results of operations
+        /// </summary>
+        /// <param name="outputOperation"></param>
+        /// <returns></returns>
+        public bool IsValid()
         {
-            return Condition == outputOperation;
+            if (FromStep.StepOperations is null || !FromStep.StepOperations.Any())
+            {
+                return false;
+            }
+
+            var isAllPerformed = FromStep.StepOperations.All(s => s.IsPerformed);
+            var allOutputPerformed = FromStep.StepOperations.Select(s => s.OutputOperation);
+            string outputConditions = allOutputPerformed.Any() ? String.Join(",", allOutputPerformed) : "";
+
+            if (isAllPerformed && outputConditions == Condition)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public Step To()

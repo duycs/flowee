@@ -16,6 +16,7 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// Skill => Operations
         /// </summary>
         public ICollection<Guid>? OperationIds { get; set; }
+        public ICollection<StepOperation>? StepOperations { get; set; }
 
         /// <summary>
         /// Text instruction all operations
@@ -55,7 +56,7 @@ namespace JobDomain.AgreegateModels.JobAgreegate
                 SkillId = skillId,
                 OperationIds = operationIds,
                 Input = input,
-                StepStatus = StepStatus.None
+                State = State.None
             };
         }
 
@@ -63,6 +64,17 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         {
             WorkerId = workerId;
             return this;
+        }
+
+
+        public bool IsPerformedAllOperations()
+        {
+            if(StepOperations is null || !StepOperations.Any())
+            {
+                return false;
+            }
+
+            return StepOperations.All(o => o.IsPerformed);
         }
 
         public void PreProcess()

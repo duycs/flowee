@@ -9,7 +9,8 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// A Job defiend status of Product util made done
         /// Product has Specifications(Specification of catalog and addons)
         /// </summary>
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
+        public int CatalogId { get; set; }
 
         public string? Description { get; set; }
 
@@ -29,11 +30,12 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// </summary>
         private List<int>? WorkerIds { get; set; }
 
-        public static Job Create(int productId, string? description)
+        public static Job Create(int catalogId, string? description)
         {
             return new Job()
             {
-                ProductId = productId,
+                ProductId = new Guid(),
+                CatalogId = catalogId,
                 Description = description,
                 JobStatus = JobStatus.None,
             };
@@ -81,14 +83,15 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// <param name="stepId"></param>
         /// <param name="outputOperation"></param>
         /// <returns></returns>
-        public Job Transformed(int stepId, string outputOperation, out bool isChange)
+        public Job Transformed(int stepId, out bool isChange)
         {
             isChange = false;
             var step = this.Steps.FirstOrDefault(s => s.Id == stepId);
             if (step is not null && step.Transitions is not null && step.Transitions.Any())
             {
-                var validTransition = step.Transitions.FirstOrDefault(t => t.IsValidCondition(outputOperation));
-                if (validTransition is not null)
+                // is performed all operations and condition
+                var validTransition = step.Transitions.FirstOrDefault(t => t.IsValid());
+                if (validTransition is not null && step.IsPerformedAllOperations())
                 {
                     this.CurrentStep = validTransition.To();
                     isChange = true;

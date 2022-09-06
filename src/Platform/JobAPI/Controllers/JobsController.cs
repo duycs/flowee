@@ -88,9 +88,9 @@ namespace JobAPI.Controllers
         }
 
         [HttpGet("generate-steps")]
-        public async Task<IActionResult> GenerateStepFromProduct([FromQuery] int jobId, [FromQuery] int produtId)
+        public async Task<IActionResult> GenerateStepFromProduct([FromQuery] int jobId, [FromQuery] int catalogId)
         {
-            var stepDtos = await _jobService.GenerateSteps(jobId, produtId, true);
+            var stepDtos = await _jobService.GenerateSteps(jobId, true);
             if (stepDtos is null)
             {
                 return NotFound();
@@ -100,9 +100,9 @@ namespace JobAPI.Controllers
         }
 
         [HttpPost("update-steps")]
-        public async Task<IActionResult> UpdateSteps([FromQuery] int jobId, [FromQuery] int produtId)
+        public async Task<IActionResult> UpdateSteps([FromQuery] int jobId)
         {
-            await _jobService.UpdateSteps(jobId, produtId);
+            await _jobService.UpdateSteps(jobId);
             return Ok();
         }
     }

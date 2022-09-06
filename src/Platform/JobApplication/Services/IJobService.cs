@@ -6,18 +6,18 @@ namespace JobApplication.Services
 {
     public interface IJobService
     {
-        public Task AssignWorkersToJob(int jobId, int[] workerIds);
+        public Task AutoAssignWorkersToJob(int jobId);
 
-        public Task AssignWorkerToStep(int stepId, int workerId);
+        public Task AutoAssignWorkerToStep(int jobId, int stepId);
 
         public Task Start(int jobId);
 
         /// <summary>
-        /// Transformed Steps in job by operations: if valid output operation then transition from step to next step
+        /// Trigger step transformed
         /// </summary>
-        /// <param name="outputOperation"></param>
-        /// <returns></returns>
-        public void Transformed(int jobId, int stepId, string outputOperation);
+        /// <param name="jobId"></param>
+        /// <param name="stepId"></param>
+        public void Transformed(int jobId, int stepId);
 
         /// <summary>
         /// Generate steps then update the steps for job
@@ -40,6 +40,6 @@ namespace JobApplication.Services
         /// </summary>
         /// <param name="productId">Product is a catalog with specifications is ready in production</param>
         /// <returns></returns>
-        public Task<List<SpecificationDto>> GetSpecifications(int productId);
+        public Task<List<SpecificationDto>> GetSpecifications(int catalogId);
     }
 }

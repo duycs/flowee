@@ -14,30 +14,43 @@ namespace JobApplication.Services
         private readonly ICatalogClientService _catalogClientService;
         private readonly ISkillClientService _skillClientService;
         private readonly IOperationClientService _operationClientService;
+        private readonly IStepService _stepService;
         private readonly IMappingService _mappingService;
         private readonly IRepositoryService _repositoryService;
 
         public JobService(ICatalogClientService catalogClientService, ISkillClientService skillClientService, IOperationClientService operationClientService,
-            IMappingService mappingService, IRepositoryService repositoryService)
+            IStepService stepService,
+            MappingService mappingService, IRepositoryService repositoryService)
         {
             _catalogClientService = catalogClientService;
             _skillClientService = skillClientService;
             _operationClientService = operationClientService;
+            _stepService = stepService;
             _mappingService = mappingService;
             _repositoryService = repositoryService;
         }
 
-        public async Task AssignWorkersToJob(int jobId, int[] workerIds)
+        public async Task AutoAssignWorkersToJob(int jobId)
         {
+            // Find all skills of job
+
+            // Get all active workers
+
+            // Assignee: Worker Skills match to Steps
+
+            throw new NotImplementedException();
         }
 
-        public Task AssignWorkerToStep(int stepId, int workerId)
+        /// <summary>
+        /// Find a active worker match to Step
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="stepId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task AutoAssignWorkerToStep(int jobId, int stepId)
         {
-            // Find skills of workers
-
-            // Matching skill of worker with skill of step
-
-            // Add worker matched to the step
+            // Assignee: Worker Skill match to Step
 
             throw new NotImplementedException();
         }
@@ -73,7 +86,7 @@ namespace JobApplication.Services
             }
 
             var stepDtos = new List<StepDto>();
-            var specificationDtos = await GetSpecifications(jobExisting.ProductId);
+            var specificationDtos = await GetSpecifications(jobExisting.CatalogId);
             if (specificationDtos is not null && specificationDtos.Any())
             {
                 var operationDtos = specificationDtos.Where(s => s is not null && s.Operations.Any()).SelectMany(s => s.Operations).ToList();
@@ -102,10 +115,9 @@ namespace JobApplication.Services
             return stepDtos;
         }
 
-        public async Task<List<SpecificationDto>> GetSpecifications(int productId)
+        public async Task<List<SpecificationDto>> GetSpecifications(int catalogId)
         {
             var specificationDtos = new List<SpecificationDto>();
-            var catalogId = productId;
             var catalogDto = await _catalogClientService.Get(catalogId, true);
 
             // catalog specification
@@ -146,13 +158,13 @@ namespace JobApplication.Services
             _repositoryService.SaveChanges();
         }
 
-        public void Transformed(int jobId, int stepId, string outputOperation)
+        public void Transformed(int jobId, int stepId)
         {
             var jobExisting = _repositoryService.Find<Job>(j => j.Id == jobId);
             if(jobExisting is not null)
             {
-                // Job change step then update
-                var job = jobExisting.Transformed(stepId, outputOperation, out bool isChange);
+                // Change step then update
+                var job = jobExisting.Transformed(stepId, out bool isChange);
                 if (isChange)
                 {
                     _repositoryService.Update(job);
