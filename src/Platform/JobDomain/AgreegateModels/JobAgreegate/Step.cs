@@ -48,14 +48,13 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
-        public static Step Create(int jobId, int skillId, List<Guid>? operationIds, string? input = "")
+        public static Step Create(int jobId, int skillId, List<Guid>? operationIds)
         {
             return new Step()
             {
                 JobId = jobId,
                 SkillId = skillId,
                 OperationIds = operationIds,
-                Input = input,
                 State = State.None
             };
         }
@@ -66,7 +65,6 @@ namespace JobDomain.AgreegateModels.JobAgreegate
             return this;
         }
 
-
         public bool IsPerformedAllOperations()
         {
             if(StepOperations is null || !StepOperations.Any())
@@ -75,52 +73,6 @@ namespace JobDomain.AgreegateModels.JobAgreegate
             }
 
             return StepOperations.All(o => o.IsPerformed);
-        }
-
-        public void PreProcess()
-        {
-            try
-            {
-                // Validation
-                bool isValid = true;
-
-                // Call Processing
-                if (isValid)
-                {
-                    Processing();
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public void Processing()
-        {
-            try
-            {
-                // Fire event execute operations
-                foreach (var o in OperationIds)
-                {
-                    string outputOperation = "outputOperation";
-                }
-
-                // Listen operation output
-
-                // Check transition
-
-                PostProcess();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public void PostProcess()
-        {
-            // Snapshoot
         }
 
         /// <summary>

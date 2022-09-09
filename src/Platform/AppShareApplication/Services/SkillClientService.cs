@@ -47,7 +47,7 @@ namespace AppShareServices.Services
             return await _httpClient.GetFromJsonAsync<IEnumerable<MatrixSkillDto>>($"matrix-skills?{keyValueParams.ToQueries(isInclude)}");
         }
 
-        public Task<IEnumerable<SkillDto>> GetSkillsByOperations(Guid[] operationIds, bool isInclude)
+        public Task<IEnumerable<SkillDto>> GetSkillsByOperations(Guid[] operationIds, bool? isInclude)
         {
             throw new NotImplementedException();
         }

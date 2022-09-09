@@ -10,6 +10,7 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// Product has Specifications(Specification of catalog and addons)
         /// </summary>
         public Guid ProductId { get; set; }
+
         public int CatalogId { get; set; }
 
         public string? Description { get; set; }
@@ -25,39 +26,26 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
         public Step? CurrentStep { get; set; }
 
-        /// <summary>
-        /// Statistic
-        /// </summary>
-        private List<int>? WorkerIds { get; set; }
-
         public static Job Create(int catalogId, string? description)
         {
             return new Job()
             {
-                ProductId = new Guid(),
+                ProductId = Guid.NewGuid(),
                 CatalogId = catalogId,
                 Description = description,
                 JobStatus = JobStatus.None,
             };
         }
 
-        public void AddWorker(int workerId)
-        {
-            WorkerIds?.Add(workerId);
-        }
-
-        public void AddWorkers(int[] workerIds)
-        {
-            WorkerIds?.AddRange(workerIds);
-        }
-
         public void StartJob()
         {
+            JobStatus = JobStatus.Doing;
             StartTime = DateTime.UtcNow;
         }
 
         public void EndJob()
         {
+            JobStatus = JobStatus.Finish;
             EndTime = DateTime.UtcNow;
         }
 
@@ -69,7 +57,8 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public List<List<Step>>? GetChainSteps(int rootStepId)
         {
             var chains = new List<List<Step>>();
-            foreach(var step in Steps) {
+            foreach (var step in Steps)
+            {
                 var nextSteps = step.GetNextSteps();
 
                 // find next steps

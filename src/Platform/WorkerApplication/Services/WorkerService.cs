@@ -2,11 +2,7 @@
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AppShareServices.Services;
 using WorkerDomain.AgreegateModels.WorkerAgreegate;
 
 namespace WorkerApplication.Services

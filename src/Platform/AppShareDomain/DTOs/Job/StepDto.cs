@@ -1,4 +1,5 @@
-﻿using AppShareDomain.DTOs.Specification;
+﻿using AppShareDomain.DTOs.Skill;
+using AppShareDomain.DTOs.Specification;
 
 namespace AppShareDomain.DTOs.Job
 {
@@ -8,12 +9,15 @@ namespace AppShareDomain.DTOs.Job
         public JobDto Job { get; set; }
 
         public int SkillId { get; set; }
+        public SkillDto Skill { get; set; }
 
         /// <summary>
         /// Skill => Operations
         /// </summary>
-        public List<Guid>? OperationIds { get; set; }
-        public List<OperationDto>? Operations { get; set; }
+        public ICollection<Guid>? OperationIds { get; set; }
+        public ICollection<OperationDto>? Operations { get; set; }
+
+        public ICollection<StepOperationDto>? StepOperations { get; set; }
 
         /// <summary>
         /// Text instruction all operations
@@ -35,18 +39,12 @@ namespace AppShareDomain.DTOs.Job
         /// </summary>
         public string? Output { get; set; }
 
-        /// <summary>
-        /// Next steps will be set up by who manage the workflow or process mining suggestion
-        /// </summary>
-        public List<int>? NextStepIds { get; set; }
+        public ICollection<TransitionDto>? Transitions { get; set; }
 
-        /// <summary>
-        /// Last steps will be set up by who manage the workflow or process mining suggestion
-        /// </summary>
-        public List<int>? LastStepIds { get; set; }
+        public int? StateId { get; set; }
+        public EnumerationDto? State { get; set; }
 
-        public int? StepStatusId { get; set; }
-        public EnumerationDto? StepStatus { get; set; }
+        public bool IsCurrentState { get; set; }
 
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }

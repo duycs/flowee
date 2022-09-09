@@ -25,6 +25,11 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public TransitionType TransitionType { get; set; }
 
         /// <summary>
+        /// Count number of transition step
+        /// </summary>
+        public int Count { get; set; }
+
+        /// <summary>
         /// Count total performed operations
         /// Validate results of operations
         /// </summary>

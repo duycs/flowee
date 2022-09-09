@@ -3,6 +3,7 @@ using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
 using AppShareServices.Mappings;
 using AppShareServices.Pagging;
+using JobApplication.Commands;
 using JobApplication.Services;
 using JobApplication.ViewModels;
 using JobDomain.AgreegateModels.JobAgreegate;
@@ -37,28 +38,11 @@ namespace JobAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateJobVM createJobVM)
         {
-            _repositoryService.Add<Job>(Job.Create(createJobVM.ProductId, createJobVM.Description));
-            var result = _repositoryService.SaveChanges();
-            if (!result)
+            var result = await _jobService.Create(createJobVM);
+            if (result is null)
             {
                 return StatusCode(500, "The Job can not add");
             }
-
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Remove(int id)
-        {
-            var jobExisting = _repositoryService.Find<Job>(id);
-
-            if (jobExisting is null)
-            {
-                return BadRequest("The Job not found");
-            }
-
-            _repositoryService.Delete<Job>(jobExisting);
-            _repositoryService.SaveChanges();
 
             return Ok();
         }
@@ -87,10 +71,26 @@ namespace JobAPI.Controllers
             return Ok(jobExisting);
         }
 
-        [HttpGet("generate-steps")]
-        public async Task<IActionResult> GenerateStepFromProduct([FromQuery] int jobId, [FromQuery] int catalogId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(int id)
         {
-            var stepDtos = await _jobService.GenerateSteps(jobId, true);
+            var jobExisting = _repositoryService.Find<Job>(id);
+
+            if (jobExisting is null)
+            {
+                return BadRequest("The Job not found");
+            }
+
+            _repositoryService.Delete<Job>(jobExisting);
+            _repositoryService.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpGet("{id}/generate-steps")]
+        public async Task<IActionResult> GenerateSteps(int id)
+        {
+            var stepDtos = await _jobService.GenerateSteps(id, true);
             if (stepDtos is null)
             {
                 return NotFound();
@@ -99,11 +99,32 @@ namespace JobAPI.Controllers
             return Ok(stepDtos);
         }
 
-        [HttpPost("update-steps")]
-        public async Task<IActionResult> UpdateSteps([FromQuery] int jobId)
+        [HttpPost("{id}/generate-update-steps")]
+        public async Task<IActionResult> GenerateUpdateSteps(int id)
         {
-            await _jobService.UpdateSteps(jobId);
+            var stepDtos = await _jobService.GenerateUpdateSteps(id);
+            return Ok(stepDtos);
+        }
+
+        [HttpPut("{id}/assign-workers")]
+        public async Task<IActionResult> AssignWorkers(int id)
+        {
+            await _jobService.AutoAssignWorkers(id);
             return Ok();
+        }
+
+        [HttpPut("{id}/start")]
+        public async Task<IActionResult> Start(int id)
+        {
+            await _jobService.Start(id);
+            return Ok();
+        }
+
+        [HttpPut("{id}/transformed")]
+        public async Task<IActionResult> Transformed(int id, int stepId)
+        {
+            var job = _jobService.Transformed(id, stepId, out bool isChange);
+            return Ok(new { Job = job, IsChange = isChange });
         }
     }
 }

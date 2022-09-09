@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppShareApplication\AppShareApplication.csproj" />
     <ProjectReference Include="..\JobDomain\JobDomain.csproj" />
     <ProjectReference Include="..\SkillDomain\SkillDomain.csproj" />
     <ProjectReference Include="..\WorkerInfrastructure\WorkerInfrastructure.csproj" />
