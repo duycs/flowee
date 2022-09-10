@@ -75,20 +75,23 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         public Job Transformed(int stepId, out bool isChange)
         {
             isChange = false;
+
+            // Step is trigger
             var step = this.Steps.FirstOrDefault(s => s.Id == stepId);
             if (step is not null && step.Transitions is not null && step.Transitions.Any())
             {
-                // is performed all operations and condition
-                var validTransition = step.Transitions.FirstOrDefault(t => t.IsValid());
+                // Is performed all operations and vaid condition
+                var validTransition = step.Transitions.FirstOrDefault(t => t.IsSatisfy());
                 if (validTransition is not null && step.IsPerformedAllOperations())
                 {
                     this.CurrentStep = validTransition.To();
+                    // Set job state by rule
+
                     isChange = true;
                 }
             }
 
             return this;
         }
-
     }
 }

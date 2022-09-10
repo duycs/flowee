@@ -48,9 +48,10 @@ namespace JobApplication.Services
 
         /// <summary>
         /// Performed operation trigger tranformed step in job
+        /// Operation => Step => Trigger this
         /// </summary>
         /// <param name="jobId"></param>
         /// <param name="stepId"></param>
-        public JobDto Transformed(int jobId, int stepId, out bool isChange);
+        public JobDto Transformed(int jobId, Guid operationId, out bool isChange);
     }
 }

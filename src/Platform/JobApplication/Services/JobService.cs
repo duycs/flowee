@@ -177,16 +177,11 @@ namespace JobApplication.Services
                 return;
             }
 
-            // First step?
-            var firstStep = job.Steps.First();
+            // All operations of job
+            var operationIds = job.Steps.Where(s => s.OperationIds is not null && s.OperationIds.Any()).SelectMany(s => s.OperationIds).ToArray();
 
-            if (firstStep.OperationIds is null || !firstStep.OperationIds.Any())
-            {
-                return;
-            }
-
-            // Fire trigger performed operations
-            bool isSuccess = await _operationClientService.PerformedOperations(firstStep.OperationIds.ToArray());
+            // Fire event performed operations by humance or auto
+            bool isSuccess = await _operationClientService.FireOperations(operationIds);
             if (isSuccess)
             {
                 job.StartJob();
@@ -195,17 +190,29 @@ namespace JobApplication.Services
             }
         }
 
-        public JobDto? Transformed(int jobId, int stepId, out bool isChange)
+        public JobDto? Transformed(int jobId, Guid operationId, out bool isChange)
         {
-            var jobExisting = _repositoryService.Find<Job>(j => j.Id == jobId);
-            if (jobExisting is null)
+            isChange = false;
+
+            // Job do not exist
+            var job = _repositoryService.Find<Job>(j => j.Id == jobId);
+            if (job is null)
             {
-                isChange = false;
+                return null;
+            }
+
+            // Step need trigger is step have operation do not performed
+            // Choose first default step valid
+            var stepTrigger = job.Steps.FirstOrDefault(s => s.GetOperationNotPerformed(operationId) is not null);
+
+            // Step do not exist
+            if (stepTrigger is null)
+            {
                 return null;
             }
 
             // Change step then update job
-            var jobTransformed = jobExisting.Transformed(stepId, out isChange);
+            var jobTransformed = job.Transformed(stepTrigger.Id, out isChange);
             if (isChange)
             {
                 _repositoryService.Update(jobTransformed);
@@ -214,7 +221,23 @@ namespace JobApplication.Services
                 return _mappingService.Map<JobDto>(jobTransformed);
             }
 
-            return _mappingService.Map<JobDto>(jobExisting);
+            return _mappingService.Map<JobDto>(job);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns></returns>
+        private Step FindFirstStep(Job job)
+        {
+            var step = job.Steps.FirstOrDefault();
+            var operationIds = job.Steps.Select(s => s.OperationIds).ToList();
+
+            // What is operation is execute first => step is execute first
+
+            return step;
         }
 
 

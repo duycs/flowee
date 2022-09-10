@@ -35,18 +35,18 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// </summary>
         /// <param name="outputOperation"></param>
         /// <returns></returns>
-        public bool IsValid()
+        public bool IsSatisfy()
         {
             if (FromStep.StepOperations is null || !FromStep.StepOperations.Any())
             {
                 return false;
             }
 
-            var isAllPerformed = FromStep.StepOperations.All(s => s.IsPerformed);
-            var allOutputPerformed = FromStep.StepOperations.Select(s => s.OutputOperation);
-            string outputConditions = allOutputPerformed.Any() ? String.Join(",", allOutputPerformed) : "";
+            var isAllOperationPerformed = FromStep.StepOperations.All(s => s.IsPerformed);
+            var allOutputOperationPerformed = FromStep.StepOperations.Select(s => s.OutputOperation);
+            string outputOperationConditions = allOutputOperationPerformed.Any() ? String.Join(",", allOutputOperationPerformed) : "";
 
-            if (isAllPerformed && outputConditions == Condition)
+            if (isAllOperationPerformed && outputOperationConditions == Condition)
             {
                 return true;
             }

@@ -47,6 +47,13 @@ namespace JobApplication.Services
                 }
             }
         }
+
+        private Step FirstStep()
+        {
+            var step = new Step();
+
+            return step;
+        }
     }
 }
 

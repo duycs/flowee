@@ -15,7 +15,8 @@ namespace JobDomain.AgreegateModels.JobAgreegate
         /// <summary>
         /// Skill => Operations
         /// </summary>
-        public ICollection<Guid>? OperationIds { get; set; }
+        public ICollection<Guid> OperationIds { get; set; } = new HashSet<Guid>();
+
         public ICollection<StepOperation>? StepOperations { get; set; }
 
         /// <summary>
@@ -67,12 +68,28 @@ namespace JobDomain.AgreegateModels.JobAgreegate
 
         public bool IsPerformedAllOperations()
         {
-            if(StepOperations is null || !StepOperations.Any())
+            if (StepOperations is null || !StepOperations.Any())
             {
                 return false;
             }
 
             return StepOperations.All(o => o.IsPerformed);
+        }
+
+        public Step? GetOperationNotPerformed(Guid operationId)
+        {
+            if(StepOperations is null || !StepOperations.Any())
+            {
+                return null;
+            }
+
+            var stepOperation = StepOperations.FirstOrDefault(so => so.OperationId == operationId && !so.IsPerformed);
+            if(stepOperation is null)
+            {
+                return null;
+            }
+
+            return stepOperation.Step;
         }
 
         /// <summary>
