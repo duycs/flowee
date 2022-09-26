@@ -11,10 +11,6 @@
     <None Remove="AgreegateModels\OperationAgreegate\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AgreegateModels\" />
-    <Folder Include="AgreegateModels\OperationAgreegate\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
   </ItemGroup>

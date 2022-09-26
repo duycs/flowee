@@ -85,7 +85,7 @@ namespace JobDomain.AgreegateModels.JobAgreegate
                 if (validTransition is not null && step.IsPerformedAllOperations())
                 {
                     this.CurrentStep = validTransition.To();
-                    // Set job state by rule
+                    // Set job state by rule 
 
                     isChange = true;
                 }

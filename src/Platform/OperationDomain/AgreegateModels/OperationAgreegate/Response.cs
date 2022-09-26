@@ -8,14 +8,14 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         /// <summary>
         /// Json result
         /// </summary>
-        public string Result { get; set; }
+        public string Data { get; set; }
 
-        public static Response Create(int statusCode, string result)
+        public static Response Create(int statusCode, string data)
         {
             return new Response()
             {
                 StatusCode = statusCode,
-                Result = result
+                Data = data
             };
         }
     }

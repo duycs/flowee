@@ -26,7 +26,7 @@ namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
         public virtual ICollection<SpecificationRule>? SpecificationRules { get; set; }
 
 
-        public virtual ICollection<Operation>? Operations { get; set; }
+        public virtual ICollection<Guid>? OperationIds { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<OperationRule>? OperationRules { get; set; }

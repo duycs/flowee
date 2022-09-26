@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerInfrastructure", "Wor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppShareServices", "AppShareServices\AppShareServices.csproj", "{9B38DC3C-5B57-455D-B423-877F2C02CFFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerApplication", "WorkerApplication\WorkerApplication.csproj", "{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerApplication", "WorkerApplication\WorkerApplication.csproj", "{9C3E91BB-5DF9-4AD0-8A99-80F3EE38EBC7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerCrossCutting", "WorkerCrossCutting\WorkerCrossCutting.csproj", "{2B285130-D6AA-41A9-AD45-3867BCABA90E}"
 EndProject
@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogCrossCutting", "Cata
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogAPI", "CatalogAPI\CatalogAPI.csproj", "{D90AA78B-5F73-47FE-979A-18CD626ABA21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecificationDomain", "SpecificationDomain\SpecificationDomain.csproj", "{950F7B3B-1EE2-48B8-AF01-DCE65BD120B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecificationDomain", "SpecificationDomain\SpecificationDomain.csproj", "{950F7B3B-1EE2-48B8-AF01-DCE65BD120B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecificationAPI", "SpecificationAPI\SpecificationAPI.csproj", "{4D5EF16A-3E1D-4ADC-A690-EED52EB98D11}"
 EndProject
@@ -77,7 +77,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecificationApplication", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecificationCrossCutting", "SpecificationCrossCutting\SpecificationCrossCutting.csproj", "{953BAA96-E1B5-4079-8930-E3A5EA0591F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecificationInfrastructure", "SpecificationInfrastructure\SpecificationInfrastructure.csproj", "{A361FBC9-9C0B-401E-B04E-CACC4641543B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecificationInfrastructure", "SpecificationInfrastructure\SpecificationInfrastructure.csproj", "{A361FBC9-9C0B-401E-B04E-CACC4641543B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{BF09BAB2-94C6-4417-8296-AECCC1ECA400}"
 EndProject
@@ -89,31 +89,33 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackingDomain", "TrackingD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderAPI", "OrderAPI\OrderAPI.csproj", "{309D4601-5493-4A9D-AD0E-0CC0ED53E241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobCrossCutting", "JobCrossCutting\JobCrossCutting.csproj", "{B4EC99CB-8D62-4FE2-8EAB-15E30578C168}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobCrossCutting", "JobCrossCutting\JobCrossCutting.csproj", "{B4EC99CB-8D62-4FE2-8EAB-15E30578C168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplication", "JobApplication\JobApplication.csproj", "{DD44742A-2781-432D-A361-18BBAC8C657F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobApplication", "JobApplication\JobApplication.csproj", "{DD44742A-2781-432D-A361-18BBAC8C657F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogTests", "CatalogTests\CatalogTests.csproj", "{5870E272-BBD8-464E-A64A-AF1E917B7F77}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppShareCrossCutting", "AppShareCrossCutting\AppShareCrossCutting.csproj", "{2A8C8AD0-6C28-415A-BF27-0E15D28CF059}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppShareApplication", "AppShareApplication\AppShareApplication.csproj", "{7EA2B763-65DE-4B02-90E6-5ACDB9AC1AC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppShareApplication", "AppShareApplication\AppShareApplication.csproj", "{7EA2B763-65DE-4B02-90E6-5ACDB9AC1AC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skill", "Skill", "{C9B0D88D-CE23-4D55-BCFF-B040D968E094}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillDomain", "SkillDomain\SkillDomain.csproj", "{2D4DEFAB-4E76-4D1D-9289-A04D47EAA35C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillDomain", "SkillDomain\SkillDomain.csproj", "{2D4DEFAB-4E76-4D1D-9289-A04D47EAA35C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillApplication", "SkillApplication\SkillApplication.csproj", "{047435AF-431B-4C83-9ED0-F8271D646498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillApplication", "SkillApplication\SkillApplication.csproj", "{047435AF-431B-4C83-9ED0-F8271D646498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillCrossCutting", "SkillCrossCutting\SkillCrossCutting.csproj", "{BCB74EB3-0B68-4D11-BE4B-5CF997BC03FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillCrossCutting", "SkillCrossCutting\SkillCrossCutting.csproj", "{BCB74EB3-0B68-4D11-BE4B-5CF997BC03FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillInfrastructure", "SkillInfrastructure\SkillInfrastructure.csproj", "{D84021E6-DABD-4394-83A8-333B780A8C96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillInfrastructure", "SkillInfrastructure\SkillInfrastructure.csproj", "{D84021E6-DABD-4394-83A8-333B780A8C96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillAPI", "SkillAPI\SkillAPI.csproj", "{F9DCF241-D3E7-459B-914C-5F487219B714}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillAPI", "SkillAPI\SkillAPI.csproj", "{F9DCF241-D3E7-459B-914C-5F487219B714}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Operation", "Operation", "{15EF6BF1-6829-45EE-8128-B259CF04FA8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperationDomain", "OperationDomain\OperationDomain.csproj", "{34465D08-6B64-421E-9BAE-77823FFCBA40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OperationDomain", "OperationDomain\OperationDomain.csproj", "{34465D08-6B64-421E-9BAE-77823FFCBA40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperationApplication", "OperationApplication\OperationApplication.csproj", "{8347F750-24B5-4C15-9C0B-689C7F5517B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -301,6 +303,10 @@ Global
 		{34465D08-6B64-421E-9BAE-77823FFCBA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34465D08-6B64-421E-9BAE-77823FFCBA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34465D08-6B64-421E-9BAE-77823FFCBA40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8347F750-24B5-4C15-9C0B-689C7F5517B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8347F750-24B5-4C15-9C0B-689C7F5517B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8347F750-24B5-4C15-9C0B-689C7F5517B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8347F750-24B5-4C15-9C0B-689C7F5517B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -347,6 +353,7 @@ Global
 		{D84021E6-DABD-4394-83A8-333B780A8C96} = {C9B0D88D-CE23-4D55-BCFF-B040D968E094}
 		{F9DCF241-D3E7-459B-914C-5F487219B714} = {C9B0D88D-CE23-4D55-BCFF-B040D968E094}
 		{34465D08-6B64-421E-9BAE-77823FFCBA40} = {15EF6BF1-6829-45EE-8128-B259CF04FA8D}
+		{8347F750-24B5-4C15-9C0B-689C7F5517B0} = {15EF6BF1-6829-45EE-8128-B259CF04FA8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7835FFFA-FB98-4C93-AE3B-F3DDEA4576E0}

@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using OperationApplication.Commands;
 
 namespace SpecificationApplication.Commands
 {
     public class OperationCommandHandler : IRequestHandler<GetInstructionOperationCommand, string>,
         IRequestHandler<DownloadFileOperationCommand>,
-        IRequestHandler<UploadFileOperationCommand>
+        IRequestHandler<UploadFileOperationCommand>,
+        IRequestHandler<ReviewResultOperationCommand>
     {
         public async Task<string> Handle(GetInstructionOperationCommand request, CancellationToken cancellationToken)
         {
