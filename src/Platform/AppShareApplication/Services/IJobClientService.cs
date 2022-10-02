@@ -10,5 +10,6 @@ namespace AppShareApplication.Services
     public interface IJobClientService
     {
         public StepDto GetStep(int stepId);
+        public void GoToStep(int stepId, string comment);
     }
 }

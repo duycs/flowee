@@ -20,28 +20,27 @@ namespace OperationApplication.CommandHandlers
 
         public Task<Unit> Handle(ReviewResultOperationCommand request, CancellationToken cancellationToken)
         {
-            // Submit Approved
-            if (request.SubmitType.Equals(SubmitType.Approved))
+            switch (request.SubmitType)
             {
-                // Update to go next step
-                return Unit.Task;
-            }
+                case SubmitType.Approved:
+                    break;
 
-            // Submit Rejected
-            if (request.SubmitType.Equals(SubmitType.Rejected))
-            {
-                // Update to back step
+                case SubmitType.Rejected:
+                    foreach (var stepId in request.RejectToSteps)
+                    {
+                        var stepDto = _jobClientService.GetStep(stepId);
+                        // update step rejected
 
-                foreach (var stepId in request.RejectToSteps)
-                {
-                    var stepDto = _jobClientService.GetStep(stepId);
-                    // update step rejected
-                }
+                        _jobClientService.GoToStep(stepId, request.Comment);
+                    }
+                    break;
 
-                return Unit.Task;
+                default:
+                    break;
             }
 
             return Unit.Task;
         }
+
     }
 }
