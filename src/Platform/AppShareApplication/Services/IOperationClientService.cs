@@ -1,4 +1,5 @@
 ﻿using System;
+using AppShareDomain.DTOs.Operation;
 using AppShareDomain.DTOs.Specification;
 using Refit;
 
@@ -17,4 +18,3 @@ namespace AppShareApplication.Services
 		public Task<OperationDto> Find(int id);
 	}
 }
-

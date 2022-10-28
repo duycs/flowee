@@ -1,4 +1,5 @@
 ﻿using AppShareServices.Pagging;
+using AppShareServices.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

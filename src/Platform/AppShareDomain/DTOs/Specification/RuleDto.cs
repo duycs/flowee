@@ -1,5 +1,6 @@
 ﻿using AppShareDomain.DTOs;
 using AppShareDomain.DTOs.Job;
+using AppShareDomain.DTOs.Operation;
 using AppShareDomain.DTOs.Specification;
 using System;
 using System.Collections.Generic;

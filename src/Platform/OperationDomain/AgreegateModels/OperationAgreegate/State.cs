@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AppShareDomain.Models;
 
-namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
+namespace SpecificationDomain.AgreegateModels.OperationAgreegate
 {
     public class State : Enumeration
     {

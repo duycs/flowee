@@ -2,7 +2,6 @@
 using AppShareDomain.DTOs.Skill;
 using AutoMapper;
 using SkillDomain.AgreegateModels.SkillAgreegate;
-using Action = SkillDomain.AgreegateModels.SkillAgreegate.Action;
 
 namespace AppShareApplication.MappingConfigurations
 {
@@ -14,8 +13,6 @@ namespace AppShareApplication.MappingConfigurations
             CreateMap<WorkerSkillLevel, EnumerationDto>();
             CreateMap<Skill, SkillDto>();
             CreateMap<Action, ActionDto>();
-            CreateMap<Result, ResultDto>();
-            CreateMap<MatrixSkill, MatrixSkillDto>();
         }
     }
 }

@@ -8,9 +8,8 @@ namespace JobInfrastructure.DataAccess
     {
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobStatus> JobStatus { get; set; }
-        public DbSet<Operation> Operations { get; set; }
         public DbSet<Step> Steps { get; set; }
-        public DbSet<StepStatus> StepStatus { get; set; }
+        public DbSet<State> States { get; set; }
         public DbSet<StructType> StructTypes { get; set; }
 
         /// <summary>
@@ -65,19 +64,18 @@ namespace JobInfrastructure.DataAccess
                .HasMaxLength(250)
                .IsRequired();
 
-            modelBuilder.Entity<StepStatus>().ToTable("StepStatus").HasKey(c => c.Id);
-            modelBuilder.Entity<StepStatus>().Property(c => c.Id)
+            modelBuilder.Entity<State>().ToTable("States").HasKey(c => c.Id);
+            modelBuilder.Entity<State>().Property(c => c.Id)
                 .HasDefaultValue(1)
                 .ValueGeneratedNever()
                 .IsRequired();
-            modelBuilder.Entity<StepStatus>().Property(c => c.Name)
+            modelBuilder.Entity<State>().Property(c => c.Name)
                .HasMaxLength(250)
                .IsRequired();
 
             modelBuilder.Entity<Job>().HasOne(c => c.JobStatus);
-            modelBuilder.Entity<Job>().HasMany(c => c.Operations).WithOne(c => c.Job);
 
-            modelBuilder.Entity<Step>().HasOne(c => c.StepStatus);
+            modelBuilder.Entity<Step>().HasOne(c => c.State);
         }
     }
 }

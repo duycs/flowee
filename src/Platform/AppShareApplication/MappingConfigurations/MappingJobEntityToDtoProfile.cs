@@ -1,7 +1,10 @@
 ﻿using AppShareDomain.DTOs;
 using AppShareDomain.DTOs.Job;
+using AppShareDomain.DTOs.Operation;
 using AutoMapper;
 using JobDomain.AgreegateModels.JobAgreegate;
+using SpecificationDomain.AgreegateModels.OperationAgreegate;
+using State = JobDomain.AgreegateModels.JobAgreegate.State;
 
 namespace AppShareApplication.MappingConfigurations
 {
@@ -13,7 +16,7 @@ namespace AppShareApplication.MappingConfigurations
             CreateMap<Step, StepDto>();
             CreateMap<Operation, OperationDto>();
             CreateMap<JobStatus, EnumerationDto>();
-            CreateMap<StepStatus, EnumerationDto>();
+            CreateMap<State, EnumerationDto>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AppShareDomain.DTOs.Catalog;
+using AppShareDomain.DTOs.Operation;
 using AppShareDomain.DTOs.Skill;
 
 namespace AppShareDomain.DTOs.Specification

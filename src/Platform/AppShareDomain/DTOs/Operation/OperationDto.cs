@@ -1,7 +1,7 @@
 ﻿using AppShareDomain.DTOs.Catalog;
 using AppShareDomain.DTOs.Skill;
 using System;
-namespace AppShareDomain.DTOs.Specification
+namespace AppShareDomain.DTOs.Operation
 {
     public class OperationDto : DtoBase
     {

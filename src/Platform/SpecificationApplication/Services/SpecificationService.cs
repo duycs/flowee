@@ -1,4 +1,5 @@
-﻿using AppShareDomain.DTOs.Skill;
+﻿using AppShareDomain.DTOs.Operation;
+using AppShareDomain.DTOs.Skill;
 using AppShareDomain.DTOs.Specification;
 using AppShareServices.Commands;
 using AppShareServices.DataAccess.Repository;
@@ -43,11 +44,14 @@ namespace SpecificationApplication.Services
                     specificationSkill.SkillLevel = specificationSkillLevelDtos.FirstOrDefault(s => s.Id == specificationSkill.SkillLevelId);
                 });
 
+                // TODO:
+                /*
                 var operations = specificationExisting.GetOperations();
                 if (operations is not null && operations.Any())
                 {
                     specificationDto.Operations = _mappingService.Map<List<OperationDto>>(operations);
                 }
+                */
             }
 
             return specificationDto;
@@ -102,12 +106,14 @@ namespace SpecificationApplication.Services
         {
             var operationDtos = new List<OperationDto>();
             var specificationExisting = _repositoryService.Find<Specification>(specificationId, new SpecificationSpecification(isInclude));
+            // TODO:
+            /*
             var operations = specificationExisting.GetOperations();
             if (operations is not null && operations.Any())
             {
                 operationDtos = _mappingService.Map<List<OperationDto>>(operations);
             }
-
+            */
             return operationDtos;
         }
 

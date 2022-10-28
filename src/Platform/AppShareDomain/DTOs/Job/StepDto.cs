@@ -1,4 +1,5 @@
-﻿using AppShareDomain.DTOs.Skill;
+﻿using AppShareDomain.DTOs.Operation;
+using AppShareDomain.DTOs.Skill;
 using AppShareDomain.DTOs.Specification;
 
 namespace AppShareDomain.DTOs.Job

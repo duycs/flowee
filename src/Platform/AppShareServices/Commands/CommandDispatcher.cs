@@ -32,9 +32,9 @@ namespace AppShareServices.Commands
             return _mediator.Send(command);
         }
 
-        public Task<int> SendGetResponse<T>(T command) where T : CommandResponseId
+        async Task<string> ICommandDispatcher.SendGetResponse<T>(T command)
         {
-            return _mediator.Send(command);
+            return await _mediator.Send(command);
         }
     }
 }

@@ -106,6 +106,7 @@ public class SpecificationContext : DbContext, IDatabaseService
            });
 
         // Operations - Rules
+        /*
         modelBuilder.Entity<Operation>()
        .HasMany(i => i.Rules)
        .WithMany(i => i.Operations)
@@ -124,6 +125,7 @@ public class SpecificationContext : DbContext, IDatabaseService
            {
                j.Ignore(w => w.Id).HasKey(w => new { w.OperationId, w.RuleId });
            });
+        */
 
         // Specification-Skills
         modelBuilder.Entity<SpecificationSkill>()

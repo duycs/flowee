@@ -1,20 +1,17 @@
 ﻿using AppShareServices.DataAccess.Persistences;
 using Microsoft.EntityFrameworkCore;
 using SkillDomain.AgreegateModels.SkillAgreegate;
-using Action = SkillDomain.AgreegateModels.SkillAgreegate.Action;
 
 namespace SkillInfrastructure.DataAccess
 {
     public class SkillContext : DbContext, IDatabaseService
     {
-        public const string DEFAULT_SCHEMA = "workerdb";
+        public const string DEFAULT_SCHEMA = "skill";
 
         public DbSet<Skill> Skills { get; set; }
         public DbSet<WorkerSkillLevel> WorkerSkillLevels { get; set; }
         public DbSet<SpecificationSkillLevel> SpecificationSkillLevels { get; set; }
         public DbSet<Action> Actions { get; set; }
-        public DbSet<Result> Results { get; set; }
-        public DbSet<MatrixSkill> MatrixSkills { get; set; }
 
         DbSet<T> IDatabaseService.GetDbSet<T>()
         {
@@ -69,11 +66,7 @@ namespace SkillInfrastructure.DataAccess
                  .HasMaxLength(250)
                  .IsRequired();
 
-            // MatrixSkill
-            modelBuilder.Entity<MatrixSkill>()
-            .HasOne(s => s.Skill)
-            .WithMany(c => c.MatrixSkills)
-            .HasForeignKey(s => s.SkillId);
+           
         }
     }
 }

@@ -7,15 +7,5 @@ namespace SkillApplication.Services
     {
         public SkillDto FindSkill(int skillId, bool isInclude = false);
         public List<SkillDto> FindSkills(int[] skillIds, bool isInclude = false);
-
-        /// <summary>
-        /// Worker has skill same as specification require skill and has configuration workerLEvelSkill and specificationLevelSkill
-        /// </summary>
-        /// <param name="skillId"></param>
-        /// <param name="workerSkillLevelId"></param>
-        /// <param name="specificationSkillLevelId"></param>
-        /// <returns></returns>
-        public List<MatrixSkillDto> FindMatrixSkill(int skillId, int? workerSkillLevelId, int? specificationSkillLevelId, bool? isInclude = false);
-
     }
 }

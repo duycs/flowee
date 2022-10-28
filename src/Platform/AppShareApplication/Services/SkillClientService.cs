@@ -37,16 +37,6 @@ namespace AppShareServices.Services
             return await _httpClient.GetFromJsonAsync<IEnumerable<EnumerationDto>>($"specification-skill-levels?{ids.ToIdsQueries(isInclude)}");
         }
 
-        public async Task<IEnumerable<MatrixSkillDto>> GetMatrixSkills(int skillId, int? workerSkillLevelId, int? specificationLevelId, bool isInclude)
-        {
-            var keyValueParams = new Dictionary<string, string>();
-            keyValueParams.Add("skillId", skillId.ToString());
-            keyValueParams.Add("workerSkillLevelId", workerSkillLevelId?.ToString());
-            keyValueParams.Add("specificationLevelId", specificationLevelId?.ToString());
-
-            return await _httpClient.GetFromJsonAsync<IEnumerable<MatrixSkillDto>>($"matrix-skills?{keyValueParams.ToQueries(isInclude)}");
-        }
-
         public Task<IEnumerable<SkillDto>> GetSkillsByOperations(Guid[] operationIds, bool? isInclude)
         {
             throw new NotImplementedException();

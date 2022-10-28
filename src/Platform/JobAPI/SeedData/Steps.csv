@@ -1,5 +1,5 @@
-﻿SpecificationId,WorkerId,SkillId,OrderNumber,StepStatus
-1,1,1,1,WaitingAssign
-2,2,2,2,WaitingAssign
-3,3,3,3,WaitingAssign
-4,4,4,4,WaitingAssign
+﻿JobId,WorkerId,SkillId,State
+1,1,1,WaitingAssign
+2,2,2,WaitingAssign
+3,3,3,WaitingAssign
+4,4,4,WaitingAssign

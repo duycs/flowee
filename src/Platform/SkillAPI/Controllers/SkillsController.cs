@@ -54,11 +54,5 @@ namespace SkillAPI.Controllers
             return Ok(specificationSkillLevelDtos);
         }
 
-        [HttpGet("matrix-skills")]
-        public IActionResult GetMatchingMatrixSkill([FromQuery] int skillId, [FromQuery] int? workerSkillLevelId, [FromQuery] int? specificationLevelId, [FromQuery] bool isInclude = true)
-        {
-            var matrixSkills = _skillService.FindMatrixSkill(skillId, workerSkillLevelId, specificationLevelId, isInclude);
-            return Ok(matrixSkills);
-        }
     }
 }

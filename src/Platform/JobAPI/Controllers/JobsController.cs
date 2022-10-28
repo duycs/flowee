@@ -121,9 +121,9 @@ namespace JobAPI.Controllers
         }
 
         [HttpPut("{id}/transformed")]
-        public async Task<IActionResult> Transformed(int id, int stepId)
+        public async Task<IActionResult> Transformed(int id, Guid operationId)
         {
-            var job = _jobService.Transformed(id, stepId, out bool isChange);
+            var job = _jobService.Transformed(id, operationId, out bool isChange);
             return Ok(new { Job = job, IsChange = isChange });
         }
     }

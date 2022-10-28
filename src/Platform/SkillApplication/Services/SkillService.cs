@@ -16,12 +16,6 @@ namespace SkillApplication.Services
             _mappingService = mappingService;
         }
 
-        public List<MatrixSkillDto> FindMatrixSkill(int skillId, int? workerSkillLevelId, int? specificationSkillLevelId, bool? isInclude)
-        {
-            var matrixSkillsExisting = _repositoryService.Find<MatrixSkill>(new MatrixSkillSpecification(isInclude ?? false, skillId, specificationSkillLevelId, workerSkillLevelId)).ToList();
-            return _mappingService.Map<List<MatrixSkillDto>>(matrixSkillsExisting);
-        }
-
         public SkillDto FindSkill(int skillId, bool isInclude = false)
         {
             var skillExisting = _repositoryService.Find<Skill>(skillId, new SkillSpecification(isInclude));

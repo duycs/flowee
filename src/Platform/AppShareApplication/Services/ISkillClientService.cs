@@ -20,8 +20,5 @@ namespace AppShareServices.Services
 
         [Get("/skills/specification-skill-levels")]
         public Task<IEnumerable<EnumerationDto>> GetSpecificationSkillLevels(int[] ids, bool isInclude);
-
-        [Get("/skills/matrix-skills")]
-        public Task<IEnumerable<MatrixSkillDto>> GetMatrixSkills(int skillId, int? workerSkillLevelId, int? specificationLevelId, bool isInclude);
     }
 }

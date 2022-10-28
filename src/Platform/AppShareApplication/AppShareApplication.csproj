@@ -17,6 +17,7 @@
 		<ProjectReference Include="..\SpecificationDomain\SpecificationDomain.csproj" />
 		<ProjectReference Include="..\WorkerDomain\WorkerDomain.csproj" />
 		<PackageReference Include="Refit" Version="6.3.2" />
+		<ProjectReference Include="..\OperationDomain\OperationDomain.csproj" />
 	</ItemGroup>
 
 </Project>

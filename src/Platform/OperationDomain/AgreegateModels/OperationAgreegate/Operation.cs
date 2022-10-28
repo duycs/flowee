@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
+namespace SpecificationDomain.AgreegateModels.OperationAgreegate
 {
     /// <summary>
     /// Operation

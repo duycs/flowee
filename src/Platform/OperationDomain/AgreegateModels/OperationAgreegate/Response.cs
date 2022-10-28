@@ -1,5 +1,5 @@
 ﻿using System;
-namespace SpecificationDomain.AgreegateModels.SpecificationAgreegate
+namespace SpecificationDomain.AgreegateModels.OperationAgreegate
 {
     public class Response
     {
