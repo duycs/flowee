@@ -1,4 +1,5 @@
 ﻿using System;
+using AppShareDomain.DTOs.Specification;
 using Refit;
 
 namespace AppShareApplication.Services
@@ -12,6 +13,8 @@ namespace AppShareApplication.Services
 		/// <returns>true is succes otherwise</returns>
         [Get("/operations/performed")]
         public Task<bool> FireOperations(Guid[] ids);
+
+		public Task<OperationDto> Find(int id);
 	}
 }
 

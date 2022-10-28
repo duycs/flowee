@@ -9,7 +9,9 @@ namespace OperationApplication.Commands
         public string Body { get; set; }
 
         public int CommentorId { get; set; }
-        public string CommentFor { get; set; }
+
+        public string CommentForObject { get; set; }
+        public int CommentForObjectId { get; set; }
 
         public override bool IsValid()
         {
@@ -22,7 +24,8 @@ namespace OperationApplication.Commands
         public CommentCommandValidator()
         {
             RuleFor(c => c.Body).NotEmpty().WithMessage("The body is require");
-            RuleFor(c => c.Title).NotEmpty().WithMessage("The title is require");
+            RuleFor(c => c.CommentForObject).NotEmpty().WithMessage("The object is require");
+            RuleFor(c => c.CommentForObjectId).NotEmpty().WithMessage("The object id is require");
         }
     }
 }

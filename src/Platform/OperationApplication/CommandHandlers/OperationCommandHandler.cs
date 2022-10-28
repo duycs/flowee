@@ -27,5 +27,10 @@ namespace SpecificationApplication.Commands
         {
             throw new NotImplementedException();
         }
+
+        public Task<Unit> Handle(ReviewResultOperationCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
