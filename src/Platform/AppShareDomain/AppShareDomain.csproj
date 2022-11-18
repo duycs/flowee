@@ -15,7 +15,6 @@
     <None Remove="DTOs\Operation\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DTOs\Log\" />
     <Folder Include="DTOs\Operation\" />
   </ItemGroup>
 </Project>

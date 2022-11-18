@@ -1,9 +1,8 @@
-﻿using System;
-using AppShareDomain.DTOs.Log;
+﻿using AppShareDomain.DTOs.Log;
 
 namespace AppShareApplication.Services
 {
-	public interface ILogClientService
+    public interface ILogClientService
 	{
 		public Task Add(LogDto logDto);
 		public Task Update(int id, LogDto Dto);

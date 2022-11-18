@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppShareDomain\AppShareDomain.csproj" />
     <ProjectReference Include="..\AppShareServices\AppShareServices.csproj" />
     <ProjectReference Include="..\SpecificationApplication\SpecificationApplication.csproj" />
     <ProjectReference Include="..\SpecificationCrossCutting\SpecificationCrossCutting.csproj" />
